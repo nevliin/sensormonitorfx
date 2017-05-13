@@ -1,0 +1,11 @@
+abbreviation#de
+language#Deutsch
+value#TITLE#SensorMonitor
+value#GRAPH_TEMPERATURE#Temperatur
+value#GRAPH_PRESSURE#Druck
+value#GRAPH_REVOLUTIONS#Umdrehungen
+value#RECORDING_START#Aufnahme starten
+value#RECORDING_STOP#Aufnahme beenden
+value#MENU_FILE#Datei
+value#MENU_RECORDINGS#Aufnahmen
+value#MENU_HELP#Hilfe

@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.lang.*?>
+<?import java.util.*?>
+<?import javafx.scene.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import de.hfts.sensormonitor.chart.SensorChart?>
+
+
+<BorderPane xmlns:fx="http://javafx.com/fxml/1" fx:controller="de.hfts.sensormonitor.controller.MainController">
+    <top>
+        <MenuBar>
+            <Menu text="File">
+                <MenuItem text="Quit" onAction="#manageMenuItemQuit"></MenuItem> 
+            </Menu> 
+        </MenuBar> 
+    </top>
+    <center>
+        <TabPane>
+            <Tab>
+                <GridPane>
+                    
+                </GridPane>
+            </Tab>
+        </TabPane>
+    </center>
+</BorderPane>

@@ -1,0 +1,78 @@
+.chart {
+    -fx-padding: 10px;
+}
+
+.chart-content {
+    -fx-padding: 10px;
+}
+
+.chart-legend {    
+   -fx-background-color:  transparent;
+   -fx-padding: 10px;
+}
+
+.chart-legend-item-symbol{
+   
+}
+
+.chart-plot-background {
+    -fx-background-color: transparent;
+}
+
+.tab{
+    -fx-background-insets: 0 1 0 1,0,0;
+}
+
+.tab-pane .tab
+{
+    -fx-padding: 0.5em 0.75em 0.5em 0.75em;
+}
+
+.tab .tab-label { 
+    -fx-alignment: CENTER;
+    -fx-font-size: 12px;
+    -fx-font-weight: bold;
+}
+
+.tab:selected .tab-label { 
+    -fx-alignment: CENTER;
+}
+
+#table-list .button {
+    -fx-font-size: 16;
+}
+
+#table-list .list-cell {
+    -fx-font-size: 14;
+}
+
+.menu-bar .menu {
+    -fx-text-size: 16;
+}
+
+.menu-bar .menu .menu-item {
+    -fx-text-size: 16;
+}
+
+.menu-bar {
+    -fx-padding: 0.25em 0.25em 0.25em 0.25em;
+}
+
+#edit-graph-grid {
+    -fx-hgap: 5;
+    -fx-vgap: 5;
+    -fx-padding: 10px;
+}
+
+#edit-graph-grid .separator {
+    -fx-padding: 10px 0px 10px 0px;
+}
+
+.chart-series-line {    
+    -fx-stroke-width: 3px;
+    -fx-effect: null;
+}
+
+.onHover{
+    -fx-background-insets: 0, 5;
+}
