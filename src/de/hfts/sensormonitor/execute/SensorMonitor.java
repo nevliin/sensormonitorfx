@@ -35,6 +35,7 @@ public class SensorMonitor extends Application {
     } 
 
     public static void main(String[] args) { 
+        // Start the application
         launch(args); 
     } 
 } 
