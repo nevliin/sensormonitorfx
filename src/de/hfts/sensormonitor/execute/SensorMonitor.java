@@ -23,10 +23,9 @@ public class SensorMonitor extends Application {
     public void start(Stage stage) throws Exception{
         ResourceBundle bundle = ResourceBundle.getBundle("lang.lang", new Locale("en"));
     	FXMLLoader loader = new FXMLLoader();
-        loader.setResources(bundle);
-    	InputStream stream = this.getClass().getClassLoader().getResourceAsStream("de/hfts/sensormonitor/fxml/main_fxml.fxml");
-    	
-    	BorderPane root = (BorderPane) loader.load(stream);
+        loader.setLocation(this.getClass().getClassLoader().getResource("de/hfts/sensormonitor/fxml/main_fxml.fxml"));
+        loader.setResources(bundle);    	
+    	BorderPane root = (BorderPane) loader.load();
     	
     	Scene scene = new Scene(root);
     	stage.setScene(scene);

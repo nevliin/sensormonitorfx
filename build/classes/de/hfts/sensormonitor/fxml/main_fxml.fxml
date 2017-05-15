@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import java.lang.*?>
+<?import java.net.*?>
 <?import java.util.*?>
 <?import javafx.scene.*?>
 <?import javafx.scene.control.*?>
@@ -10,34 +11,16 @@
 
 
 <BorderPane xmlns:fx="http://javafx.com/fxml/1" fx:controller="de.hfts.sensormonitor.controller.MainController">
+    <stylesheets>
+        <URL value="@/resources/stylesheets/base.css"/>
+    </stylesheets>
     <top>
-        <fx:include fx:id="menubar" source="menubar_fxml.fxml"/>
+        <fx:include fx:id="MenuBar" source="menubar_fxml.fxml"/>
     </top>
     <center>
         <TabPane>
             <Tab>
-                <GridPane>
-                    <children>
-                        <CheckComboBox 
-                            GridPane.columnIndex="0" GridPane.rowIndex="0"
-                        />
-                        <Separator 
-                            GridPane.columnIndex="0" GridPane.rowIndex="1"
-                            GridPane.columnSpan="3" />
-                        
-                    </children>
-                    <columnConstraints>
-                        <ColumnConstraints hgrow="ALWAYS"/>                        
-                        <ColumnConstraints hgrow="ALWAYS"/>
-                        <ColumnConstraints hgrow="ALWAYS"/>
-                    </columnConstraints>
-                    <rowConstraints>
-                        <RowConstraints vgrow="NEVER" minHeight="25.0"/>
-                        <RowConstraints vgrow="NEVER" minHeight="25.0"/>
-                        <RowConstraints vgrow="ALWAYS" minHeight="25.0"/>
-                        <RowConstraints vgrow="NEVER" minHeight="25.0"/>
-                    </rowConstraints>
-                </GridPane>
+                <fx:include fx:id="Overview" source="overview.fxml"/>
             </Tab>
         </TabPane>
     </center>

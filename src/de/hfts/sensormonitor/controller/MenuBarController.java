@@ -5,6 +5,7 @@
  */
 package de.hfts.sensormonitor.controller;
 
+import de.hfts.sensormonitor.main.IO;
 import java.net.URL;
 import java.util.ResourceBundle;
 import javafx.fxml.Initializable;
@@ -14,6 +15,8 @@ import javafx.fxml.Initializable;
  * @author Polarix IT Solutions
  */
 public class MenuBarController implements Initializable {
+    
+    private IO io;
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
@@ -38,5 +41,15 @@ public class MenuBarController implements Initializable {
     public void manageMenuItemSettings() {
         
     }
+
+    public IO getIo() {
+        return io;
+    }
+
+    public void setIo(IO io) {
+        this.io = io;
+    }
+    
+    
 
 }
