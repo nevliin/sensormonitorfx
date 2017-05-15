@@ -9,15 +9,11 @@ import javafx.scene.control.Label;
 
 public class MainController implements Initializable {
 
-    @FXML
-    private Label label;
+    @FXML private MenuBarController menubar;
+    
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-    }
-
-    public void manageMenuItemQuit() {
-        quitProgramm();
     }
 
     /**

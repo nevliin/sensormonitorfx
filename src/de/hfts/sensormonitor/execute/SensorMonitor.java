@@ -5,6 +5,8 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.InputStream;
 import java.net.URL;
+import java.util.Locale;
+import java.util.ResourceBundle;
 
 import javafx.application.Application; 
 import javafx.fxml.FXMLLoader; 
@@ -18,8 +20,10 @@ import javafx.stage.Stage;
 public class SensorMonitor extends Application { 
      
     @Override 
-    public void start(Stage stage) throws Exception{ 
+    public void start(Stage stage) throws Exception{
+        ResourceBundle bundle = ResourceBundle.getBundle("lang.lang", new Locale("en"));
     	FXMLLoader loader = new FXMLLoader();
+        loader.setResources(bundle);
     	InputStream stream = this.getClass().getClassLoader().getResourceAsStream("de/hfts/sensormonitor/fxml/main_fxml.fxml");
     	
     	BorderPane root = (BorderPane) loader.load(stream);

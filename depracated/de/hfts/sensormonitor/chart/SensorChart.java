@@ -1,7 +1,9 @@
 package de.hfts.sensormonitor.chart;
 
+import java.io.IOException;
 import java.util.*;
 import javafx.event.EventHandler;
+import javafx.fxml.FXMLLoader;
 import javafx.geometry.Orientation;
 import javafx.scene.Scene;
 import javafx.scene.chart.LineChart;
@@ -42,6 +44,14 @@ public class SensorChart extends LineChart implements DataChangeListener {
      */
     public SensorChart(double xmin, double xmax, double ymin, double ymax, String xunit, String yunit, ResourceBundle langpack, String chartname) {
         super(new NumberAxis(xunit, xmin, xmax, (xmax - xmin) / 10), new NumberAxis(yunit, ymin, ymax, (ymax - ymin) / 10));
+        FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("Hello.fxml"));
+        fxmlLoader.setRoot(this);
+        fxmlLoader.setController(this);
+        try {
+            fxmlLoader.load();
+        } catch (IOException exception) {
+            throw new RuntimeException(exception);
+        }
         this.setAnimated(false);
         this.setCreateSymbols(true);
         this.setTitle(chartname);
@@ -55,7 +65,7 @@ public class SensorChart extends LineChart implements DataChangeListener {
         this.addEventHandler(MouseEvent.MOUSE_PRESSED, event -> {
             popupmenu.hide();
         });
-        
+
     }
 
     /**
@@ -119,26 +129,26 @@ public class SensorChart extends LineChart implements DataChangeListener {
                         + chartdata.getLangpack().getString("x_value") + ": " + Math.round(Double.valueOf(data.getXValue().toString()) * 100) / 100.0 + " " + chartdata.getXUnit() + "\n"
                         + chartdata.getLangpack().getString("y_value") + ": " + data.getYValue() + " " + chartdata.getYUnit());
                 try {
-                //Adding class on hover
-                data.getNode().setOnMouseEntered(new EventHandler<MouseEvent>() {
-                    @Override
-                    public void handle(MouseEvent event) {
-                        data.getNode().getStyleClass().add("onHover");
-                        tooltip.show(data.getNode().getScene().getWindow(), data.getNode().getScene().getX() + event.getScreenX() + 10, data.getNode().getScene().getX() + event.getScreenY() + 10);
-                    }
+                    //Adding class on hover
+                    data.getNode().setOnMouseEntered(new EventHandler<MouseEvent>() {
+                        @Override
+                        public void handle(MouseEvent event) {
+                            data.getNode().getStyleClass().add("onHover");
+                            tooltip.show(data.getNode().getScene().getWindow(), data.getNode().getScene().getX() + event.getScreenX() + 10, data.getNode().getScene().getX() + event.getScreenY() + 10);
+                        }
 
-                });
+                    });
 
-                //Removing class on exit
-                data.getNode().setOnMouseExited(new EventHandler<MouseEvent>() {
-                    @Override
-                    public void handle(MouseEvent event) {
-                        data.getNode().getStyleClass().remove("onHover");
-                        tooltip.hide();
-                    }
-                });
+                    //Removing class on exit
+                    data.getNode().setOnMouseExited(new EventHandler<MouseEvent>() {
+                        @Override
+                        public void handle(MouseEvent event) {
+                            data.getNode().getStyleClass().remove("onHover");
+                            tooltip.hide();
+                        }
+                    });
                 } catch (NullPointerException ex) {
-                    
+
                 }
             }
         }
@@ -321,8 +331,7 @@ public class SensorChart extends LineChart implements DataChangeListener {
      * Add a graph to the LineChart. Only to be used for static recordings,
      * won't work with dynamic data.
      *
-     * @param points List of GraphPoints, containing the graph to be
-     * displayed
+     * @param points List of GraphPoints, containing the graph to be displayed
      * @param graphname Sensor ID (name) of the graph
      */
     public void addGraph(List<GraphPoint> points, String graphname) {

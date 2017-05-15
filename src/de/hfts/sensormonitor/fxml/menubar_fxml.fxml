@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.lang.*?>
+<?import java.util.*?>
+<?import javafx.scene.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import de.hfts.sensormonitor.chart.SensorChart?>
+<?import org.controlsfx.control.CheckComboBox?>
+
+
+
+<MenuBar xmlns:fx="http://javafx.com/fxml/1" fx:controller="de.hfts.sensormonitor.controller.MenuBarController">
+    <Menu text="%file">
+        <MenuItem text="%quit" onAction="#manageMenuItemQuit"></MenuItem>
+        <MenuItem text="%reboot" onAction="#manageMenuItemReboot"></MenuItem>  
+    </Menu> 
+    <Menu text="%recordings">
+        <MenuItem text="%show_all" onAction="#manageMenuItemShowAll"></MenuItem>
+        <MenuItem text="%delete_all" onAction="#manageMenuItemDeleteAll"></MenuItem>  
+    </Menu> 
+    <Menu text="%help">
+        <MenuItem text="%settings" onAction="#manageMenuItemSettings"></MenuItem>  
+    </Menu> 
+</MenuBar> 
+

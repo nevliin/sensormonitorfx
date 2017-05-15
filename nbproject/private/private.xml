@@ -4,9 +4,15 @@
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
             <file>file:/N:/Dropbox/Programme/SensorMonitor_FXML/depracated/de/hfts/sensormonitor/main/MainStage.java</file>
+            <file>file:/N:/Dropbox/Programme/SensorMonitor_FXML/src/de/hfts/sensormonitor/controller/MainController.java</file>
+            <file>file:/N:/Dropbox/Programme/SensorMonitor_FXML/depracated/de/hfts/sensormonitor/main/SensorMonitor.java</file>
+            <file>file:/N:/Dropbox/Programme/SensorMonitor_FXML/resources/lang/lang_en.properties</file>
             <file>file:/N:/Dropbox/Programme/SensorMonitor_FXML/src/de/hfts/sensormonitor/execute/SensorMonitor.java</file>
+            <file>file:/N:/Dropbox/Programme/SensorMonitor_FXML/src/de/hfts/sensormonitor/controller/MenuBarController.java</file>
+            <file>file:/N:/Dropbox/Programme/SensorMonitor_FXML/src/de/hfts/sensormonitor/fxml/menubar_fxml.fxml</file>
             <file>file:/N:/Dropbox/Programme/SensorMonitor_FXML/src/de/hfts/sensormonitor/fxml/main_fxml.fxml</file>
             <file>file:/N:/Dropbox/Programme/SensorMonitor_FXML/depracated/de/hfts/sensormonitor/main/CeBarRoundMonitor.java</file>
+            <file>file:/N:/Dropbox/Programme/SensorMonitor_FXML/depracated/de/hfts/sensormonitor/chart/SensorChart.java</file>
         </group>
     </open-files>
 </project-private>
