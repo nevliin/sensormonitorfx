@@ -1,4 +1,4 @@
-#recording-pane {
+#recordingControls {
     -fx-padding: 5px;
     -fx-margin: 5px;
     -fx-background-insets: 0,1;
@@ -11,22 +11,22 @@
         linear-gradient(to bottom,#aaaaaa 0%,#cccccc 100%);
 }
 
-#recording-pane > .check-box {       
+#recordingControls > .check-box {       
     -fx-font: 14 "Arial";
     -fx-text-fill: black;
 }
 
-#recording-pane > .label {
+#recordingControls > .label {
     -fx-font: 16 "Arial";
     -fx-text-fill: black;
 }
 
-#recording-pane > .button {
+#recordingControls > .button {
     -fx-font: 16 "Arial";
     -fx-text-fill: black;
 }
 
-#grid-pane {
+#dataOverview {
     -fx-background-color: #434343;
     -fx-padding: 10;
     -fx-hgap: 10;

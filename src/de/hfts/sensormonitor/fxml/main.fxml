@@ -4,6 +4,7 @@
 <?import java.net.*?>
 <?import java.util.*?>
 <?import javafx.scene.*?>
+<?import javafx.scene.chart.*?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 <?import de.hfts.sensormonitor.chart.SensorChart?>
@@ -27,30 +28,97 @@
         </MenuBar>
     </top>
     <center>
-        <TabPane>
-            <Tab>
-                <GridPane>
-                    <children>
-                        <CheckComboBox 
-                            GridPane.columnIndex="0" GridPane.rowIndex="0" />
-                        <Label fx:id="labelInfo"
-                            GridPane.columnIndex="1" GridPane.rowIndex="1" />  
-                        <Separator 
-                            GridPane.columnIndex="0" GridPane.rowIndex="1"
-                            GridPane.columnSpan="3" />                        
-                    </children>
-                    <columnConstraints>
-                        <ColumnConstraints hgrow="ALWAYS"/>                        
-                        <ColumnConstraints hgrow="ALWAYS"/>
-                        <ColumnConstraints hgrow="ALWAYS"/>
-                    </columnConstraints>
-                    <rowConstraints>
-                        <RowConstraints vgrow="NEVER" minHeight="25.0"/>
-                        <RowConstraints vgrow="NEVER" minHeight="25.0"/>
-                        <RowConstraints vgrow="ALWAYS" minHeight="25.0"/>
-                        <RowConstraints vgrow="NEVER" minHeight="25.0"/>
-                    </rowConstraints>
-                </GridPane>
+        <TabPane tabClosingPolicy="ALL_TABS" >
+            <Tab text="%realtime" closable="false" >                
+                <TabPane tabClosingPolicy="UNAVAILABLE" >
+                    <Tab>
+                        <GridPane fx:id="dataOverview">
+                            <children>
+                                <CheckComboBox 
+                                    GridPane.columnIndex="0" GridPane.rowIndex="0" />
+                                <Label fx:id="labelInfo"
+                                       GridPane.columnIndex="1" GridPane.rowIndex="1" />  
+                                <Separator 
+                                    GridPane.columnIndex="0" GridPane.rowIndex="1"
+                                    GridPane.columnSpan="3" />       
+                                <LineChart fx:id="chartTemperature"
+                                           GridPane.columnIndex="0" GridPane.rowIndex="2"
+                                           title="%temperature">
+                                    <xAxis>
+                                        <NumberAxis label="sec" />
+                                    </xAxis>
+                                    <yAxis>
+                                        <NumberAxis label="°C" />
+                                    </yAxis>
+                                </LineChart>
+                                <LineChart fx:id="chartPressure"
+                                           GridPane.columnIndex="1" GridPane.rowIndex="2"
+                                           title="%pressure" >
+                                    <xAxis>
+                                        <NumberAxis label="sec" />
+                                    </xAxis>
+                                    <yAxis>
+                                        <NumberAxis label="hPa" />
+                                    </yAxis>
+                                </LineChart>
+                                <LineChart fx:id="chartRevolutions"
+                                           GridPane.columnIndex="2" GridPane.rowIndex="2"
+                                           title="%revolutions" >
+                                    <xAxis>
+                                        <NumberAxis label="sec" />
+                                    </xAxis>
+                                    <yAxis>
+                                        <NumberAxis label="RPM" />
+                                    </yAxis>
+                                </LineChart>
+                                <GridPane fx:id="recordingControls" 
+                                          GridPane.columnIndex="0" GridPane.rowIndex="4"
+                                          GridPane.columnSpan="3" >
+                                    <children>
+                                    <Button fx:id="buttonStartRecording"
+                                            text="%start_recording" onAction="#handleButtonStartRecording" 
+                                            GridPane.columnIndex="0" GridPane.rowIndex="0" />
+                                    <Button fx:id="buttonStopRecording"
+                                            text="%stop_recording" onAction="#handleButtonStopRecording"
+                                            disable="true" 
+                                            GridPane.columnIndex="1" GridPane.rowIndex="0" />
+                                    <Label
+                                        text="%recording_selection"
+                                        GridPane.columnIndex="2" GridPane.rowIndex="0" />
+                                    <CheckBox
+                                        text="%temperature" onAction="#handleCheckBoxTemperature" 
+                                        GridPane.columnIndex="3" GridPane.rowIndex="0" />
+                                    <CheckBox
+                                        text="%pressure" onAction="#handleCheckBoxPressure" 
+                                        GridPane.columnIndex="4" GridPane.rowIndex="0" />
+                                    <CheckBox
+                                        text="%revolutions" onAction="#handleCheckBoxRevolutions" 
+                                        GridPane.columnIndex="5" GridPane.rowIndex="0" />
+                                    </children>
+                                    <columnConstraints>
+                                        <ColumnConstraints hgrow="ALWAYS"/> 
+                                        <ColumnConstraints hgrow="ALWAYS"/>      
+                                        <ColumnConstraints hgrow="ALWAYS"/>      
+                                        <ColumnConstraints hgrow="ALWAYS"/>      
+                                        <ColumnConstraints hgrow="ALWAYS"/>      
+                                        <ColumnConstraints hgrow="ALWAYS"/>              
+                                    </columnConstraints>                                
+                                </GridPane>                 
+                            </children>
+                            <columnConstraints>
+                                <ColumnConstraints hgrow="ALWAYS"/>                        
+                                <ColumnConstraints hgrow="ALWAYS"/>
+                                <ColumnConstraints hgrow="ALWAYS"/>
+                            </columnConstraints>
+                            <rowConstraints>
+                                <RowConstraints vgrow="NEVER" minHeight="25.0"/>
+                                <RowConstraints vgrow="NEVER" minHeight="25.0"/>
+                                <RowConstraints vgrow="ALWAYS" minHeight="25.0"/>
+                                <RowConstraints vgrow="NEVER" minHeight="25.0"/>
+                            </rowConstraints>
+                        </GridPane>
+                    </Tab>
+                </TabPane>
             </Tab>
         </TabPane>
     </center>
