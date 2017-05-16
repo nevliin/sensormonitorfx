@@ -7,7 +7,7 @@ import de.hfts.sensormonitor.exceptions.IllegalTableNameException;
 import de.hfts.sensormonitor.exceptions.DatabaseConnectException;
 import de.hfts.sensormonitor.sensor.CeBarRoundDataSensor;
 import de.hfts.sensormonitor.sensor.CeBarRoundDataSensorV2;
-import de.hfts.sensormonitor.sensor.DataSensor;
+import de.hfts.sensormonitor.sensor.BaseSensor;
 import java.io.*;
 import java.net.*;
 import java.nio.file.FileSystem;
@@ -341,8 +341,8 @@ public class IO {
      * @return
      * @throws IllegalSensorAmountException
      */
-    public List<DataSensor> loadSensors() throws IllegalSensorAmountException {        
-        List<DataSensor> result = new ArrayList<>();
+    public List<BaseSensor> loadSensors() throws IllegalSensorAmountException {        
+        List<BaseSensor> result = new ArrayList<>();
         Properties sensors = new Properties();
         InputStream stream = this.getClass().getClassLoader().getResourceAsStream("defaultconfig/sensors.properties");
         try {

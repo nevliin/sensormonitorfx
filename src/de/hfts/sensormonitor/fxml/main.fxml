@@ -15,20 +15,20 @@
     <top>
         <MenuBar>
             <Menu text="%file">
-                <MenuItem text="%quit" onAction="#manageMenuItemQuit"></MenuItem>
-                <MenuItem text="%reboot" onAction="#manageMenuItemReboot"></MenuItem>  
+                <MenuItem text="%quit" onAction="#handleMenuItemQuit"></MenuItem>
+                <MenuItem text="%reboot" onAction="#handleMenuItemReboot"></MenuItem>  
             </Menu> 
             <Menu text="%recordings">
-                <MenuItem text="%show_all" onAction="#manageMenuItemShowAll"></MenuItem>
-                <MenuItem text="%delete_all" onAction="#manageMenuItemDeleteAll"></MenuItem>  
+                <MenuItem text="%show_all" onAction="#handleMenuItemShowAll"></MenuItem>
+                <MenuItem text="%delete_all" onAction="#handleMenuItemDeleteAll"></MenuItem>  
             </Menu> 
             <Menu text="%help">
-                <MenuItem text="%settings" onAction="#manageMenuItemSettings"></MenuItem>  
+                <MenuItem text="%settings" onAction="#handleMenuItemSettings"></MenuItem>  
             </Menu> 
         </MenuBar>
     </top>
     <center>
-        <TabPane tabClosingPolicy="ALL_TABS" >
+        <TabPane fx:id="mainTabPane" tabClosingPolicy="ALL_TABS" >
             <Tab text="%realtime" closable="false" >                
                 <TabPane tabClosingPolicy="UNAVAILABLE" >
                     <Tab>

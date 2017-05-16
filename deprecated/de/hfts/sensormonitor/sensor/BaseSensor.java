@@ -6,13 +6,13 @@ import java.util.Random;
  *
  * @author Polarix IT Solutions
  */
-public class DataSensor {
+public class BaseSensor {
     
     private double sensortypecode;
     private double uniquesensoridentifier;
     private SensorData data;
     
-    public DataSensor() {
+    public BaseSensor() {
         Random rand = new Random();
         sensortypecode = rand.nextInt(10000);
         uniquesensoridentifier = rand.nextInt(1000000);

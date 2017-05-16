@@ -3,14 +3,16 @@ package de.hfts.sensormonitor.controller;
 import de.hfts.sensormonitor.exceptions.IllegalTableNameException;
 import de.hfts.sensormonitor.main.SensorMonitor;
 import de.hfts.sensormonitor.misc.IO;
-import de.hfts.sensormonitor.sensor.DataSensor;
+import de.hfts.sensormonitor.sensor.BaseSensor;
 import de.hfts.sensormonitor.sensor.SensorData;
 import java.io.IOException;
 import java.net.URL;
+import java.util.List;
 import java.util.Optional;
 import java.util.ResourceBundle;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javafx.collections.ObservableList;
 
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -18,6 +20,8 @@ import javafx.fxml.Initializable;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.control.Tab;
+import javafx.scene.control.TabPane;
 import javafx.scene.control.TextInputDialog;
 import javafx.scene.layout.BorderPane;
 import javafx.stage.Stage;
@@ -30,6 +34,8 @@ public class MainController implements Initializable {
     private Button buttonStartRecording;
     @FXML
     private Button buttonStopRecording;
+    @FXML
+    private TabPane mainTabPane;
     private IO io;
     private Stage recordingswindow;
     private Stage settingswindow;
@@ -51,7 +57,7 @@ public class MainController implements Initializable {
          * @param sensor
          * @param io
          */
-        public LiveRecording(DataSensor sensor, IO io) {
+        public LiveRecording(BaseSensor sensor, IO io) {
             genericName = io.createGenericTable();
             this.io = io;
             this.rowid = 0;
@@ -71,7 +77,7 @@ public class MainController implements Initializable {
          * @param data
          * @param sensor
          */
-        public void recordData(SensorData data, DataSensor sensor) {
+        public void recordData(SensorData data, BaseSensor sensor) {
             String insertstmt = rowid + ", " + Integer.toString((int) sensor.getUniquesensoridentifier()) + ", " + Integer.toString((int) sensor.getSensortypecode());
             if (recordTemperature) {
                 insertstmt += ", " + Integer.toString((int) (double) sensor.getData().getData().get("Temperature"));
@@ -154,14 +160,14 @@ public class MainController implements Initializable {
     public void initialize(URL location, ResourceBundle resources) {
     }
 
-    public void manageMenuItemQuit() {
+    public void handleMenuItemQuit() {
     }
 
-    public void manageMenuItemReboot() {
+    public void handleMenuItemReboot() {
 
     }
 
-    public void manageMenuItemShowAll() {
+    public void handleMenuItemShowAll() {
         if (recordingswindow == null) {
             try {
                 FXMLLoader loader = new FXMLLoader(this.getClass().getClassLoader().getResource("de/hfts/sensormonitor/fxml/recordingslist.fxml"), io.getLangpack());
@@ -172,6 +178,9 @@ public class MainController implements Initializable {
                 scene.getStylesheets().addAll(labelInfo.getScene().getStylesheets());
                 recordingswindow.setScene(scene);
                 recordingswindow.sizeToScene();
+                recordingswindow.setOnCloseRequest(eh -> {
+                    recordingswindow = null;
+                });
                 recordingswindow.show();
             } catch (IOException ex) {
                 Logger.getLogger(MainController.class.getName()).log(Level.SEVERE, null, ex);
@@ -181,16 +190,16 @@ public class MainController implements Initializable {
         }
     }
 
-    public void manageMenuItemDeleteAll() {
+    public void handleMenuItemDeleteAll() {
 
     }
 
-    public void manageMenuItemSettings() {
+    public void handleMenuItemSettings() {
 
     }
 
     public void handleButtonStartRecording() {
-        recording = new LiveRecording(new DataSensor(), io);
+        recording = new LiveRecording(new BaseSensor(), io);
         buttonStopRecording.setDisable(false);
         buttonStartRecording.setDisable(true);
     }
@@ -200,21 +209,25 @@ public class MainController implements Initializable {
         buttonStopRecording.setDisable(true);
         buttonStartRecording.setDisable(false);
     }
-    
+
     public void handleCheckBoxTemperature() {
-        
+
     }
-    
+
     public void handleCheckBoxPressure() {
-        
+
     }
-    
+
     public void handleCheckBoxRevolutions() {
-        
+
     }
 
     public void setIo(IO io) {
         this.io = io;
+    }
+
+    public IO getIo() {
+        return this.io;
     }
 
     /**
@@ -228,6 +241,28 @@ public class MainController implements Initializable {
         //}
         //io.closeConnection();
         System.exit(0);
+    }
+
+    public void closeTab(String name) {
+        ObservableList<Tab> tabs = mainTabPane.getTabs();
+        for (Tab t : tabs) {
+            if (t.getText().equalsIgnoreCase(name)) {
+                mainTabPane.getTabs().remove(t.getId());
+            }
+        }
+    }
+
+    public void closeTab(List<String> names) {
+        ObservableList<Tab> tabs = mainTabPane.getTabs();
+        for (Tab t : tabs) {
+            if (names.contains(t.getText())) {
+                mainTabPane.getTabs().remove(t.getId());
+            }
+        }
+    }
+    
+    public void displayRecording(String recordingName) {
+        
     }
 
 }

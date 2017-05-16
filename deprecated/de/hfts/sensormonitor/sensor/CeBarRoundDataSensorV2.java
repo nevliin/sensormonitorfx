@@ -9,7 +9,7 @@ package de.hfts.sensormonitor.sensor;
  *
  * @author Polarix IT Solutions
  */
-public class CeBarRoundDataSensorV2 extends DataSensor {
+public class CeBarRoundDataSensorV2 extends BaseSensor {
     
     public CeBarRoundDataSensorV2() {
         super();

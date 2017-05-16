@@ -6,7 +6,7 @@ import de.hfts.sensormonitor.chart.SensorChart;
 import de.hfts.sensormonitor.chart.GraphPoint;
 import de.hfts.sensormonitor.chart.SensorChartData;
 import de.hfts.sensormonitor.sensor.SensorData;
-import de.hfts.sensormonitor.sensor.DataSensor;
+import de.hfts.sensormonitor.sensor.BaseSensor;
 import de.hfts.sensormonitor.exceptions.DatabaseConnectException;
 import de.hfts.sensormonitor.exceptions.IllegalSensorAmountException;
 import de.hfts.sensormonitor.exceptions.IllegalTableNameException;
@@ -46,7 +46,7 @@ public class SensorMonitor extends Scene implements CeBarRoundObserver<CeBarRoun
     HashMap<String, SensorChartData> chartdata = new HashMap<>();
 
     LiveRecording recording; // Current recording (null if none is running)
-    List<DataSensor> sensors; // Sensor monitored in real time
+    List<BaseSensor> sensors; // Sensor monitored in real time
     IO io; // Instance of IO, handles loading/saving from properties and the DB
     ResourceBundle langpack; // LanguagePack in the language saved in config.properties
     HashMap<String, Locale> availableLangs = new HashMap<>();
@@ -79,7 +79,7 @@ public class SensorMonitor extends Scene implements CeBarRoundObserver<CeBarRoun
          * @param sensor
          * @param io
          */
-        public LiveRecording(DataSensor sensor, IO io) {
+        public LiveRecording(BaseSensor sensor, IO io) {
             genericName = io.createGenericTable();
             this.io = io;
             this.rowid = 0;
@@ -99,7 +99,7 @@ public class SensorMonitor extends Scene implements CeBarRoundObserver<CeBarRoun
          * @param data
          * @param sensor
          */
-        public void recordData(SensorData data, DataSensor sensor) {
+        public void recordData(SensorData data, BaseSensor sensor) {
             String insertstmt = rowid + ", " + Integer.toString((int) sensor.getUniquesensoridentifier()) + ", " + Integer.toString((int) sensor.getSensortypecode());
             if (recordTemperature) {
                 insertstmt += ", " + Integer.toString((int) (double) sensor.getData().getData().get("Temperature"));
@@ -623,7 +623,7 @@ public class SensorMonitor extends Scene implements CeBarRoundObserver<CeBarRoun
         gridPane_OverView.getColumnConstraints().addAll(column, column, column);
 
         List<String> sensorids = new ArrayList<>();
-        for (DataSensor s : sensors) {
+        for (BaseSensor s : sensors) {
             sensorids.add(Integer.toString((int) s.getUniquesensoridentifier()));
         }
         CheckComboBox combobox_sensorid = new CheckComboBox(FXCollections.observableArrayList(sensorids));
@@ -756,7 +756,7 @@ public class SensorMonitor extends Scene implements CeBarRoundObserver<CeBarRoun
         // Create a timeline to constantly update the SensorChartData (will be replaced with a Listener)
         if (isRealtime) {
             Timeline timeline = new Timeline(new KeyFrame(Duration.millis(1000), ae -> {
-                for (DataSensor s : sensors) {
+                for (BaseSensor s : sensors) {
                     s.createNewData();
                     if (isRecording) {
                         recording.recordData(s.getData(), s);
@@ -816,7 +816,7 @@ public class SensorMonitor extends Scene implements CeBarRoundObserver<CeBarRoun
         panel_recordings.add(checkbox_revolutions, 5, 0);
 
         button_startrecording.setOnAction(al -> {
-            recording = new LiveRecording(new DataSensor(), io);
+            recording = new LiveRecording(new BaseSensor(), io);
             isRecording = true;
             button_stoprecording.setDisable(false);
             button_startrecording.setDisable(true);
@@ -874,7 +874,7 @@ public class SensorMonitor extends Scene implements CeBarRoundObserver<CeBarRoun
             infoBar.getChildren().add(label_title);
 
             List<String> sensorids = new ArrayList<>();
-            for (DataSensor s : sensors) {
+            for (BaseSensor s : sensors) {
                 sensorids.add(Integer.toString((int) s.getUniquesensoridentifier()));
             }
             gridPane.add(infoBar, 0, 0, 2, 1);
