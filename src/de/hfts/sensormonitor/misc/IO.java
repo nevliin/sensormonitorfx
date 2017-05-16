@@ -1,5 +1,6 @@
-package de.hfts.sensormonitor.main;
+package de.hfts.sensormonitor.misc;
 
+import de.hfts.sensormonitor.main.*;
 import de.hft.ss17.cebarround.CeBarRoundObserver;
 import de.hfts.sensormonitor.exceptions.IllegalSensorAmountException;
 import de.hfts.sensormonitor.exceptions.IllegalTableNameException;
@@ -35,6 +36,7 @@ public class IO {
     private Connection conn; // Connection to the H2 embedded database
     private Properties prop; // Properties file loaded from the home.dir/.sensormonitor
     private Statement stat; // Statement to execute queries and commands
+    private ResourceBundle langpack;
 
     /**
      * Standard constructor; tries to load the configuration and creates it if
@@ -111,6 +113,7 @@ public class IO {
                 System.exit(0);
             }
         }
+        this.langpack = ResourceBundle.getBundle("lang.lang", new Locale(getConfigProp("lang")));
     }
 
 // <--- Database Operations -->    
@@ -511,4 +514,17 @@ public class IO {
             this.saveData(namesplit[0], insertstmt, timestamp);
         }
     }
+
+    public ResourceBundle getLangpack() {
+        return langpack;
+    }
+
+    public void setLangpack(ResourceBundle langpack) {
+        this.langpack = langpack;
+    }
+
+
+    
 }
+
+

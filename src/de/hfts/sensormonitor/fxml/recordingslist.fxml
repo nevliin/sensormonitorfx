@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.lang.*?>
+<?import java.util.*?>
+<?import javafx.scene.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<BorderPane xmlns:fx="http://javafx.com/fxml/1" fx:controller="de.hfts.sensormonitor.controller.RecordingsListController">
+    <center>
+        <ListView fx:id="recordingsList" />
+    </center>
+    <bottom>
+        <GridPane>
+            <Button text="%display_recording" onAction="#handleButtonDisplayRecording" 
+                    GridPane.columnIndex="0" GridPane.rowIndex="0" />
+            <Button text="%delete_recording" onAction="#handleButtonDeleteRecording" 
+                    GridPane.columnIndex="1" GridPane.rowIndex="0" />
+            <Button text="%export" onAction="#handleButtonExportRecording"
+                    GridPane.columnIndex="2" GridPane.rowIndex="0" />
+        </GridPane>
+    </bottom>
+</BorderPane>

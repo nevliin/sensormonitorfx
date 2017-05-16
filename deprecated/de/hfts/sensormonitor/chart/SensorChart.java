@@ -44,14 +44,6 @@ public class SensorChart extends LineChart implements DataChangeListener {
      */
     public SensorChart(double xmin, double xmax, double ymin, double ymax, String xunit, String yunit, ResourceBundle langpack, String chartname) {
         super(new NumberAxis(xunit, xmin, xmax, (xmax - xmin) / 10), new NumberAxis(yunit, ymin, ymax, (ymax - ymin) / 10));
-        FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("Hello.fxml"));
-        fxmlLoader.setRoot(this);
-        fxmlLoader.setController(this);
-        try {
-            fxmlLoader.load();
-        } catch (IOException exception) {
-            throw new RuntimeException(exception);
-        }
         this.setAnimated(false);
         this.setCreateSymbols(true);
         this.setTitle(chartname);

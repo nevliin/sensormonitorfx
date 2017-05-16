@@ -125,7 +125,7 @@
     -fx-background-color: #787878;
 }
 
-#table-list .button {
+#recordingsList .button {
     -fx-text-fill: #cccccc;
     -fx-background-color: #434343;
     -fx-border-radius: 3px;
@@ -133,34 +133,34 @@
     -fx-margin: 5px;
 }
 
-#table-list .button:hover {
+#recordingsList .button:hover {
     -fx-background-color: #6e6e6e;
     -fx-text-fill: white;
 }
 
-#table-list .list-cell:filled:selected {
+#recordingsList .list-cell:filled:selected {
     -fx-background-color: #7c4110;
     -fx-text-fill: #cccccc;
 }
 
-#table-list .list-cell {
+#recordingsList .list-cell {
     -fx-text-fill: #cccccc;
 }
 
-#table-list .list-cell:even {
+#recordingsList .list-cell:even {
     -fx-background-color: #666666;
 }
 
-#table-list .list-cell:odd {    
+#recordingsList .list-cell:odd {    
     -fx-background-color: #6e6e6e;
 }
 
-#table-list .list-cell:filled:hover {
+#recordingsList .list-cell:filled:hover {
     -fx-background-color: #ce630b;
     -fx-text-fill: #cccccc;
 }
 
-#table-list {
+#recordingsList {
     -fx-background-color: #434343;
 }
 
