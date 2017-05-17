@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.lang.*?>
+<?import java.net.*?>
+<?import java.util.*?>
+<?import javafx.scene.*?>
+<?import javafx.scene.chart.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import org.controlsfx.control.CheckComboBox?>
+
+
+<GridPane fx:id="RecordingDisplay" xmlns:fx="http://javafx.com/fxml/1" fx:controller="de.hfts.sensormonitor.controller.RecordingDisplayController">
+    <children>
+        <CheckComboBox 
+            GridPane.columnIndex="0" GridPane.rowIndex="0" />
+        <Label fx:id="labelInfo"
+               GridPane.columnIndex="1" GridPane.rowIndex="1" />  
+        <Separator 
+            GridPane.columnIndex="0" GridPane.rowIndex="1"
+            GridPane.columnSpan="3" />       
+        <LineChart fx:id="chartTemperature"
+                   GridPane.columnIndex="0" GridPane.rowIndex="2"
+                   title="%temperature">
+            <xAxis>
+                <NumberAxis label="sec" />
+            </xAxis>
+            <yAxis>
+                <NumberAxis label="°C" />
+            </yAxis>
+        </LineChart>
+        <LineChart fx:id="chartPressure"
+                   GridPane.columnIndex="1" GridPane.rowIndex="2"
+                   title="%pressure" >
+            <xAxis>
+                <NumberAxis label="sec" />
+            </xAxis>
+            <yAxis>
+                <NumberAxis label="hPa" />
+            </yAxis>
+        </LineChart>
+        <LineChart fx:id="chartRevolutions"
+                   GridPane.columnIndex="2" GridPane.rowIndex="2"
+                   title="%revolutions" >
+            <xAxis>
+                <NumberAxis label="sec" />
+            </xAxis>
+            <yAxis>
+                <NumberAxis label="RPM" />
+            </yAxis>
+        </LineChart>              
+    </children>
+    <columnConstraints>
+        <ColumnConstraints hgrow="ALWAYS"/>                        
+        <ColumnConstraints hgrow="ALWAYS"/>
+        <ColumnConstraints hgrow="ALWAYS"/>
+    </columnConstraints>
+    <rowConstraints>
+        <RowConstraints vgrow="NEVER" minHeight="25.0"/>
+        <RowConstraints vgrow="NEVER" minHeight="25.0"/>
+        <RowConstraints vgrow="ALWAYS" minHeight="25.0"/>
+        <RowConstraints vgrow="NEVER" minHeight="25.0"/>
+    </rowConstraints>
+</GridPane>

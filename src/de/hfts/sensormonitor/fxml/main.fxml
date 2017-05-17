@@ -18,7 +18,7 @@
                 <MenuItem text="%quit" onAction="#handleMenuItemQuit"></MenuItem>
                 <MenuItem text="%reboot" onAction="#handleMenuItemReboot"></MenuItem>  
             </Menu> 
-            <Menu text="%recordings">
+            <Menu fx:id="menuRecordings" text="%recordings">
                 <MenuItem text="%show_all" onAction="#handleMenuItemShowAll"></MenuItem>
                 <MenuItem text="%delete_all" onAction="#handleMenuItemDeleteAll"></MenuItem>  
             </Menu> 

@@ -20,6 +20,7 @@ import javafx.fxml.Initializable;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.control.Menu;
 import javafx.scene.control.Tab;
 import javafx.scene.control.TabPane;
 import javafx.scene.control.TextInputDialog;
@@ -36,6 +37,8 @@ public class MainController implements Initializable {
     private Button buttonStopRecording;
     @FXML
     private TabPane mainTabPane;
+    @FXML 
+    private Menu menuRecordings;
     private IO io;
     private Stage recordingswindow;
     private Stage settingswindow;
@@ -45,6 +48,22 @@ public class MainController implements Initializable {
     boolean recordTemperature = true;
     boolean recordPressure = true;
     boolean recordRevolutions = true;
+    boolean isDBConnected;
+
+    public boolean isDBConnected() {
+        return isDBConnected;
+    }
+
+    public void setIsDBConnected(boolean isDBConnected) {
+        this.isDBConnected = isDBConnected;
+        if(isDBConnected) {
+            menuRecordings.setDisable(false);
+            buttonStartRecording.setDisable(false);
+        } else {
+            menuRecordings.setDisable(true);
+            buttonStartRecording.setDisable(true);
+        }
+    }
 
     public class LiveRecording {
 
