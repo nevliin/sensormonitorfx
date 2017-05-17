@@ -1,13 +1,13 @@
 package de.hfts.sensormonitor.misc;
 
+import de.hft.ss17.cebarround.BaseSensor;
+import de.hft.ss17.cebarround.CeBarRoundDataSensor;
+import de.hft.ss17.cebarround.CeBarRoundDataSensorV2;
 import de.hfts.sensormonitor.main.*;
 import de.hft.ss17.cebarround.CeBarRoundObserver;
 import de.hfts.sensormonitor.exceptions.IllegalSensorAmountException;
 import de.hfts.sensormonitor.exceptions.IllegalTableNameException;
 import de.hfts.sensormonitor.exceptions.DatabaseConnectException;
-import de.hfts.sensormonitor.sensor.CeBarRoundDataSensor;
-import de.hfts.sensormonitor.sensor.CeBarRoundDataSensorV2;
-import de.hfts.sensormonitor.sensor.BaseSensor;
 import java.io.*;
 import java.net.*;
 import java.nio.file.FileSystem;

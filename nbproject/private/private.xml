@@ -3,19 +3,22 @@
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
-            <file>file:/C:/WiInfProjekt/sensormonitorfx/src/de/hfts/sensormonitor/fxml/main.fxml</file>
-            <file>file:/C:/WiInfProjekt/sensormonitorfx/src/de/hfts/sensormonitor/misc/IO.java</file>
-            <file>file:/C:/WiInfProjekt/sensormonitorfx/resources/lang/lang_en.properties</file>
-            <file>file:/C:/WiInfProjekt/sensormonitorfx/test/de/hfts/sensormonitor/controller/MainControllerTest.java</file>
-            <file>file:/C:/WiInfProjekt/sensormonitorfx/resources/lang/lang_de.properties</file>
-            <file>file:/C:/WiInfProjekt/sensormonitorfx/src/de/hfts/sensormonitor/fxml/overview.fxml</file>
-            <file>file:/C:/WiInfProjekt/sensormonitorfx/src/de/hfts/sensormonitor/controller/MainController.java</file>
-            <file>file:/C:/WiInfProjekt/sensormonitorfx/src/de/hfts/sensormonitor/controller/RecordingsListController.java</file>
-            <file>file:/C:/WiInfProjekt/sensormonitorfx/deprecated/de/hfts/sensormonitor/sensor/BaseSensor.java</file>
-            <file>file:/C:/WiInfProjekt/sensormonitorfx/src/de/hfts/sensormonitor/fxml/recordingslist.fxml</file>
-            <file>file:/C:/WiInfProjekt/sensormonitorfx/deprecated/de/hfts/sensormonitor/main/SensorMonitor.java</file>
-            <file>file:/C:/WiInfProjekt/sensormonitorfx/src/de/hfts/sensormonitor/execute/SensorMonitor.java</file>
-            <file>file:/C:/WiInfProjekt/sensormonitorfx/deprecated/de/hfts/sensormonitor/sensor/CeBarRoundDataSensor.java</file>
+            <file>file:/I:/WiInfProjekt/sensormonitorfx/src/de/hfts/sensormonitor/misc/IO.java</file>
+            <file>file:/I:/WiInfProjekt/sensormonitorfx/src/de/hfts/sensormonitor/fxml/recordingslist.fxml</file>
+            <file>file:/I:/WiInfProjekt/sensormonitorfx/resources/lang/lang_de.properties</file>
+            <file>file:/I:/WiInfProjekt/sensormonitorfx/deprecated/de/hfts/sensormonitor/main/CeBarRoundMonitor.java</file>
+            <file>file:/I:/WiInfProjekt/sensormonitorfx/src/de/hfts/sensormonitor/execute/SensorMonitor.java</file>
+            <file>file:/I:/WiInfProjekt/sensormonitorfx/resources/stylesheets/default.css</file>
+            <file>file:/I:/WiInfProjekt/sensormonitorfx/src/de/hfts/sensormonitor/fxml/main.fxml</file>
+            <file>file:/I:/WiInfProjekt/sensormonitorfx/resources/lang/lang_en.properties</file>
+            <file>file:/I:/WiInfProjekt/sensormonitorfx/src/de/hfts/sensormonitor/controller/RecordingsListController.java</file>
+            <file>file:/I:/WiInfProjekt/sensormonitorfx/src/de/hfts/sensormonitor/fxml/overview.fxml</file>
+            <file>file:/I:/WiInfProjekt/sensormonitorfx/deprecated/de/hfts/sensormonitor/chart/SensorChart.java</file>
+            <file>file:/I:/WiInfProjekt/sensormonitorfx/resources/stylesheets/dark.css</file>
+            <file>file:/I:/WiInfProjekt/sensormonitorfx/deprecated/de/hfts/sensormonitor/main/SensorMonitor.java</file>
+            <file>file:/I:/WiInfProjekt/sensormonitorfx/src/de/hfts/sensormonitor/controller/MainController.java</file>
+            <file>file:/I:/WiInfProjekt/sensormonitorfx/resources/stylesheets/base.css</file>
+            <file>file:/I:/WiInfProjekt/sensormonitorfx/deprecated/de/hfts/sensormonitor/sensor/SensorData.java</file>
         </group>
     </open-files>
 </project-private>

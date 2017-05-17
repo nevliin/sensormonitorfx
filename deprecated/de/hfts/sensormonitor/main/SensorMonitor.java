@@ -1,12 +1,11 @@
 package de.hfts.sensormonitor.main;
 
+import de.hft.ss17.cebarround.BaseSensor;
 import de.hft.ss17.cebarround.CeBarRoundEvent;
 import de.hft.ss17.cebarround.CeBarRoundObserver;
 import de.hfts.sensormonitor.chart.SensorChart;
 import de.hfts.sensormonitor.chart.GraphPoint;
 import de.hfts.sensormonitor.chart.SensorChartData;
-import de.hfts.sensormonitor.sensor.SensorData;
-import de.hfts.sensormonitor.sensor.BaseSensor;
 import de.hfts.sensormonitor.exceptions.DatabaseConnectException;
 import de.hfts.sensormonitor.exceptions.IllegalSensorAmountException;
 import de.hfts.sensormonitor.exceptions.IllegalTableNameException;
@@ -624,7 +623,7 @@ public class SensorMonitor extends Scene implements CeBarRoundObserver<CeBarRoun
 
         List<String> sensorids = new ArrayList<>();
         for (BaseSensor s : sensors) {
-            sensorids.add(Integer.toString((int) s.getUniquesensoridentifier()));
+            sensorids.add(Integer.toString((int) s.uniqueId()));
         }
         CheckComboBox combobox_sensorid = new CheckComboBox(FXCollections.observableArrayList(sensorids));
         gridPane_OverView.add(combobox_sensorid, 0, 0);
