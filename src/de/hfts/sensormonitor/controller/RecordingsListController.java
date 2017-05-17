@@ -42,7 +42,7 @@ public class RecordingsListController implements Initializable {
         }        
     }
     
-    public void handleButtonDeleteRecordin() {
+    public void handleButtonDeleteRecording() {
         List<String> selectedrecordings = recordingsList.getSelectionModel().getSelectedItems();
         for (String recording : selectedrecordings) {
             parentController.getIo().dropTable(recording);            

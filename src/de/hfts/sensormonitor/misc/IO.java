@@ -7,7 +7,6 @@ import de.hfts.sensormonitor.main.*;
 import de.hft.ss17.cebarround.CeBarRoundObserver;
 import de.hfts.sensormonitor.exceptions.IllegalSensorAmountException;
 import de.hfts.sensormonitor.exceptions.IllegalTableNameException;
-import de.hfts.sensormonitor.exceptions.DatabaseConnectException;
 import java.io.*;
 import java.net.*;
 import java.nio.file.FileSystem;
@@ -123,8 +122,7 @@ public class IO {
      *
      * @throws DatabaseConnectException
      */
-    public void connectDB() throws DatabaseConnectException {
-        try {
+    public void connectDB() throws ClassNotFoundException, SQLException {
             Class.forName("org.h2.Driver");
             conn = DriverManager.getConnection("jdbc:h2:" + getConfigProp("savepath") + "/recordings", "root", "root");
             DatabaseMetaData meta = conn.getMetaData();
@@ -136,10 +134,6 @@ public class IO {
             res.close();
             stat = conn.createStatement();
 
-        } catch (ClassNotFoundException | IllegalStateException | SQLException ex) {
-            Logger.getLogger(SensorMonitor.class.getName()).log(Level.SEVERE, null, ex);
-            throw new DatabaseConnectException();
-        }
     }
 
     /**
@@ -522,8 +516,10 @@ public class IO {
     public void setLangpack(ResourceBundle langpack) {
         this.langpack = langpack;
     }
-
-
+    
+    public String getLangpackString(String key) {
+        return langpack.getString(key);
+    }
     
 }
 

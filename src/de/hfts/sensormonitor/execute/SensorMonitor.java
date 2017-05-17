@@ -1,10 +1,15 @@
 package de.hfts.sensormonitor.execute;
 
+import de.hft.ss17.cebarround.BaseSensor;
 import de.hfts.sensormonitor.controller.MainController;
-import de.hfts.sensormonitor.exceptions.DatabaseConnectException;
+import de.hfts.sensormonitor.exceptions.IllegalSensorAmountException;
 import de.hfts.sensormonitor.exceptions.SensorMonitorException;
+import de.hfts.sensormonitor.misc.ExceptionDialog;
 import de.hfts.sensormonitor.misc.IO;
 import java.net.URL;
+import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Locale;
 import java.util.ResourceBundle;
 import javafx.application.Application;
@@ -19,20 +24,28 @@ public class SensorMonitor extends Application {
     public void start(Stage stage) throws Exception {
         boolean isDBConnected = true;
         IO io = new IO();
-        SensorMonitorException.langpack = io.getLangpack();
         try {
             io.connectDB();
-        } catch (DatabaseConnectException e) {
+        } catch (ClassNotFoundException | SQLException e) {
             isDBConnected = false;
+            new ExceptionDialog(io.getLangpackString("exception_databaseconnect"), null);
+        }
+        List<BaseSensor> sensors = null;
+        try {
+           sensors = io.loadSensors();
+        } catch (IllegalSensorAmountException e) {
+            new ExceptionDialog(io.getLangpackString("exception_illegalsensoramount"), null);
+            System.exit(0);
         }
         FXMLLoader loader = new FXMLLoader();
-        URL url = this.getClass().getClassLoader().getResource("de/hfts/sensormonitor/fxml/main.fxml");
+        URL url = this.getClass().getClassLoader().getResource("de/hfts/sensormonitor/view/main.fxml");
         loader.setLocation(url);
         loader.setResources(io.getLangpack());
         BorderPane root = (BorderPane) loader.load();
 
         ((MainController) loader.getController()).setIo(io);
         ((MainController) loader.getController()).setIsDBConnected(isDBConnected);
+        ((MainController) loader.getController()).startDisplay(sensors);
 
         Scene scene = new Scene(root);
         scene.getStylesheets().addAll(io.getStyleSheet("base"), io.getStyleSheet(io.getConfigProp("style")));
@@ -43,6 +56,8 @@ public class SensorMonitor extends Application {
             ((MainController) loader.getController()).quitProgramm();
         });
         stage.show();
+               
+        
     }
 
     public static void main(String[] args) {

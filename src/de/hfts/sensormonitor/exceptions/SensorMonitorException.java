@@ -9,14 +9,7 @@ import javafx.scene.control.Alert;
  */
 public class SensorMonitorException extends Exception {
 
-    public static ResourceBundle langpack;
-
     public SensorMonitorException(String exceptionMessage) {
-        Alert alert = new Alert(Alert.AlertType.ERROR);
-        alert.setTitle("Exception");
-        alert.setHeaderText(langpack.getString(exceptionMessage));
-        alert.setContentText(null);
-        alert.showAndWait();
     }
     
     public SensorMonitorException() {

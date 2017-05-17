@@ -1,10 +1,14 @@
 package de.hfts.sensormonitor.controller;
 
+import de.hft.ss17.cebarround.BaseSensor;
+import de.hft.ss17.cebarround.CeBarRoundObserver;
+import de.hft.ss17.cebarround.SensorEvent;
+import de.hfts.sensormonitor.exceptions.IllegalSensorAmountException;
 import de.hfts.sensormonitor.exceptions.IllegalTableNameException;
 import de.hfts.sensormonitor.main.SensorMonitor;
+import de.hfts.sensormonitor.misc.ExceptionDialog;
 import de.hfts.sensormonitor.misc.IO;
-import de.hfts.sensormonitor.sensor.BaseSensor;
-import de.hfts.sensormonitor.sensor.SensorData;
+import de.hfts.sensormonitor.model.SensorData;
 import java.io.IOException;
 import java.net.URL;
 import java.util.List;
@@ -37,11 +41,13 @@ public class MainController implements Initializable {
     private Button buttonStopRecording;
     @FXML
     private TabPane mainTabPane;
-    @FXML 
+    @FXML
     private Menu menuRecordings;
     private IO io;
     private Stage recordingswindow;
     private Stage settingswindow;
+
+    List<BaseSensor> sensors;
 
     LiveRecording recording;
 
@@ -56,7 +62,7 @@ public class MainController implements Initializable {
 
     public void setIsDBConnected(boolean isDBConnected) {
         this.isDBConnected = isDBConnected;
-        if(isDBConnected) {
+        if (isDBConnected) {
             menuRecordings.setDisable(false);
             buttonStartRecording.setDisable(false);
         } else {
@@ -76,7 +82,7 @@ public class MainController implements Initializable {
          * @param sensor
          * @param io
          */
-        public LiveRecording(BaseSensor sensor, IO io) {
+        public LiveRecording(IO io) {
             genericName = io.createGenericTable();
             this.io = io;
             this.rowid = 0;
@@ -96,8 +102,8 @@ public class MainController implements Initializable {
          * @param data
          * @param sensor
          */
-        public void recordData(SensorData data, BaseSensor sensor) {
-            String insertstmt = rowid + ", " + Integer.toString((int) sensor.getUniquesensoridentifier()) + ", " + Integer.toString((int) sensor.getSensortypecode());
+        public void recordData(BaseSensor sensor) {
+            /*String insertstmt = rowid + ", " + Integer.toString((int) sensor.getUniquesensoridentifier()) + ", " + Integer.toString((int) sensor.getSensortypecode());
             if (recordTemperature) {
                 insertstmt += ", " + Integer.toString((int) (double) sensor.getData().getData().get("Temperature"));
             } else {
@@ -115,7 +121,7 @@ public class MainController implements Initializable {
             }
 
             io.saveData(genericName, insertstmt, data.getTime());
-            rowid++;
+            rowid++;*/
         }
 
         public void saveRecording() {
@@ -179,6 +185,14 @@ public class MainController implements Initializable {
     public void initialize(URL location, ResourceBundle resources) {
     }
 
+    public void startDisplay(List<BaseSensor> sensors) {
+        SensorData data = new SensorData();
+        for(BaseSensor b : sensors) {
+            b.addListener(data);
+            b.startMeasure();
+        }
+    }
+    
     public void handleMenuItemQuit() {
     }
 
@@ -218,7 +232,7 @@ public class MainController implements Initializable {
     }
 
     public void handleButtonStartRecording() {
-        recording = new LiveRecording(new BaseSensor(), io);
+        recording = new LiveRecording(io);
         buttonStopRecording.setDisable(false);
         buttonStartRecording.setDisable(true);
     }
@@ -279,9 +293,9 @@ public class MainController implements Initializable {
             }
         }
     }
-    
+
     public void displayRecording(String recordingName) {
-        
+
     }
 
 }
