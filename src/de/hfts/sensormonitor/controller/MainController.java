@@ -22,6 +22,7 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Scene;
+import javafx.scene.chart.LineChart;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.Menu;
@@ -44,11 +45,11 @@ public class MainController implements Initializable {
     @FXML
     private Menu menuRecordings;
     @FXML
-    private SensorChart chartTemperature;
+    private LineChart chartTemperature;
     @FXML
-    private SensorChart chartPressure;
+    private LineChart chartPressure;
     @FXML
-    private SensorChart chartRevolutions;
+    private LineChart chartRevolutions;
     private IO io;
     private Stage recordingswindow;
     private Stage settingswindow;
@@ -214,10 +215,22 @@ public class MainController implements Initializable {
         dataRevolutions.setyScaleMax(Double.valueOf(io.getConfigProp("revolutions_yscalemax")));
         dataRevolutions.setyScaleMin(Double.valueOf(io.getConfigProp("revolutions_yscalemin")));
 
-        chartTemperature.setChartData(dataTemperature);
+        dataTemperature.setyMin(-25);
+        dataTemperature.setyMax(75);
+        dataPressure.setyMin(90);
+        dataPressure.setyMax(110);
+        dataRevolutions.setyMin(0);
+        dataRevolutions.setyMax(5000);
+
+        SensorChart sensorChartTemperature = new SensorChart(chartTemperature, dataTemperature);
+        SensorChart sensorChartPressure = new SensorChart(chartPressure, dataPressure);
+        SensorChart sensorChartRevolutions = new SensorChart(chartRevolutions, dataRevolutions);
 
         for (BaseSensor b : sensors) {
             b.addListener(data);
+            b.stopMeasure();
+        }
+        for (BaseSensor b : sensors) {
             b.startMeasure();
         }
     }

@@ -42,18 +42,36 @@
                                 <Separator 
                                     GridPane.columnIndex="0" GridPane.rowIndex="1"
                                     GridPane.columnSpan="3" />       
-                                <SensorChart fx:id="chartTemperature"
-                                             GridPane.columnIndex="0" GridPane.rowIndex="2"
-                                             title="%temperature">
-                                </SensorChart>
-                                <SensorChart fx:id="chartPressure"
+                                <LineChart fx:id="chartTemperature"
+                                           GridPane.columnIndex="0" GridPane.rowIndex="2"
+                                           title="%temperature">
+                                    <xAxis>
+                                        <NumberAxis label="%seconds" autoRanging="false"  />
+                                    </xAxis>
+                                    <yAxis>
+                                        <NumberAxis label="°C" autoRanging="false"  />
+                                    </yAxis>
+                                </LineChart>
+                                <LineChart fx:id="chartPressure"
                                            GridPane.columnIndex="1" GridPane.rowIndex="2"
                                            title="%pressure" >
-                                </SensorChart>
-                                <SensorChart fx:id="chartRevolutions"
+                                    <xAxis>
+                                        <NumberAxis label="%seconds" autoRanging="false"  />
+                                    </xAxis>
+                                    <yAxis>
+                                        <NumberAxis label="hPa" autoRanging="false"  />
+                                    </yAxis>
+                                </LineChart>
+                                <LineChart fx:id="chartRevolutions"
                                            GridPane.columnIndex="2" GridPane.rowIndex="2"
                                            title="%revolutions" >
-                                </SensorChart>
+                                    <xAxis>
+                                        <NumberAxis label="%seconds" autoRanging="false" />
+                                    </xAxis>
+                                    <yAxis>
+                                        <NumberAxis label="RPM" autoRanging="false"  />
+                                    </yAxis>
+                                </LineChart>
                                 <GridPane fx:id="recordingControls" 
                                           GridPane.columnIndex="0" GridPane.rowIndex="4"
                                           GridPane.columnSpan="3" >

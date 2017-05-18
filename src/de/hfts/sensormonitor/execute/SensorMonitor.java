@@ -32,7 +32,7 @@ public class SensorMonitor extends Application {
         }
         List<BaseSensor> sensors = null;
         try {
-           sensors = io.loadSensors();
+            sensors = io.loadSensors();
         } catch (IllegalSensorAmountException e) {
             new ExceptionDialog(io.getLangpackString("exception_illegalsensoramount"), null);
             System.exit(0);
@@ -45,7 +45,6 @@ public class SensorMonitor extends Application {
 
         ((MainController) loader.getController()).setIo(io);
         ((MainController) loader.getController()).setIsDBConnected(isDBConnected);
-        ((MainController) loader.getController()).startDisplay(sensors);
 
         Scene scene = new Scene(root);
         scene.getStylesheets().addAll(io.getStyleSheet("base"), io.getStyleSheet(io.getConfigProp("style")));
@@ -56,8 +55,8 @@ public class SensorMonitor extends Application {
             ((MainController) loader.getController()).quitProgramm();
         });
         stage.show();
-               
-        
+        ((MainController) loader.getController()).startDisplay(sensors);
+
     }
 
     public static void main(String[] args) {

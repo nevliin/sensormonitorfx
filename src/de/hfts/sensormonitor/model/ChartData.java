@@ -22,94 +22,69 @@ import javafx.scene.chart.XYChart;
  */
 public class ChartData implements DataChangeListener {
 
-    private ObservableList<XYChart.Series> chartSeries;
+    private ArrayList<ChartDataChangeListener> listeners;
+    private HashMap<Long, ArrayList<SensorDataPoint>> chartGraphs;
     private SensorData sensorData;
     private Data type;
     private double xScaleMin;
     private double xScaleMax;
     private double yScaleMin;
     private double yScaleMax;
-    private double xMin = -50;
+    private double xMin;
     private double xMax;
     private double yMin;
     private double yMax;
 
     public ChartData(Data type, SensorData sensorData) {
-        this.chartSeries = new ObservableListWrapper<XYChart.Series>(new ArrayList<XYChart.Series>());
+        listeners = new ArrayList<>();
+        this.chartGraphs = new HashMap<>();
         this.type = type;
         this.sensorData = sensorData;
         sensorData.addListener(this);
     }
-
-    public ObservableList<XYChart.Series> getChartSeries() {
-        return chartSeries;
+    
+        // <--- Listener operations --->
+    /**
+     * Add listener implementing DataChangeListener to the SensorChartData
+     *
+     * @param toAdd Object to be notified of changes
+     */
+    public void addListener(ChartDataChangeListener toAdd) {
+        listeners.add(toAdd);
     }
 
-    public void setChartSeries(ObservableList<XYChart.Series> chartSeries) {
-        this.chartSeries = chartSeries;
+    /**
+     * Remove listener from the list
+     *
+     * @param toRemove Object to remove from the listeners
+     */
+    public void removeListener(ChartDataChangeListener toRemove) {
+        listeners.remove(toRemove);
+    }
+
+    /**
+     * Notifies all listeners of a change in the graph data
+     *
+     * @param graphname Sensor ID (name) of the graph that was changed
+     */
+    public void notifyListenersOfDataChange(long sensorID) {
+        for (ChartDataChangeListener dcl : listeners) {
+            dcl.dataChanged(sensorID);
+        }
+    }
+
+    public ArrayList<SensorDataPoint> getPoints(long sensorID) {
+        return chartGraphs.get(sensorID);
     }
 
     @Override
     public void dataChanged(long sensorID) {
         ArrayList<SensorDataPoint> points = sensorData.getPoints(type, sensorID);
-        if (containsSensorID(sensorID)) {
-            XYChart.Series series = new XYChart.Series();
-            series.setName(Long.toString(sensorID));
-            chartSeries.add(series);
+        if (chartGraphs.get(sensorID) == null) {
+            chartGraphs.put(sensorID, new ArrayList<>());
         }
-        if (points != null) {
-            setPointsToSeries(getSeries(sensorID), points);
-        }
-    }
-
-    /**
-     * Clear the Series and add the GraphPoint's in the List to it
-     *
-     * @param series
-     * @param points
-     */
-    private void setPointsToSeries(XYChart.Series series, List<SensorDataPoint> points) {
-        try {
-            series.getData().clear();
-        } catch (NullPointerException e) {
-            // Catching NullPointerException if the series doesn't have any data yet
-        }
-        Date lastPoint = null;
-        for (SensorDataPoint p : points) {
-            double time = 0;
-            if (lastPoint != null) {
-                time = lastPoint.getTime() - p.time.getTime();
-                time = (time / 1000.0);
-            }
-            if (time > xMin) {
-                if (!p.isEmpty()) {
-                    try {
-                        series.getData().add(new XYChart.Data(time, p.value));
-                    } catch (NullPointerException e) {
-
-                    }
-                }
-            }
-            lastPoint = p.time;
-        }
-    }
-
-    public boolean containsSensorID(long sensorID) {
-        for (XYChart.Series s : chartSeries) {
-            if (s.getName().equalsIgnoreCase(Long.toString(sensorID))) {
-                return true;
-            }
-        }
-        return false;
-    }
-
-    public XYChart.Series getSeries(long sensorID) {
-        for (XYChart.Series s : chartSeries) {
-            if (s.getName().equalsIgnoreCase(Long.toString(sensorID))) {
-                return s;
-            }
-        }
-        return null;
+        chartGraphs.put(sensorID, points);
+        notifyListenersOfDataChange(sensorID);
     }
 
     public double getxScaleMin() {

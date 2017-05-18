@@ -2,8 +2,11 @@ package de.hfts.sensormonitor.misc;
 
 import de.hfts.sensormonitor.chart.*;
 import de.hfts.sensormonitor.model.ChartData;
+import de.hfts.sensormonitor.model.ChartDataChangeListener;
+import de.hfts.sensormonitor.model.SensorDataPoint;
 import java.io.IOException;
 import java.util.*;
+import javafx.application.Platform;
 import javafx.beans.NamedArg;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
@@ -28,11 +31,13 @@ import javafx.stage.Stage;
  *
  * @author Polarix IT Solutions
  */
-public class SensorChart extends LineChart {
+public class SensorChart implements ChartDataChangeListener {
+
+    private LineChart lineChart;
 
     private HashMap<String, XYChart.Series> seriesdata = new HashMap<>();
     private ContextMenu popupmenu;
-    private SensorChartData chartdata;
+    private ChartData chartdata;
     private Stage editChartWindow;
 
     /**
@@ -74,10 +79,13 @@ public class SensorChart extends LineChart {
         });
 
     }*/
-    public SensorChart() {
-        super(new NumberAxis(), new NumberAxis());
-        ((NumberAxis) this.getXAxis()).setLabel("sec");
-        this.setAnimated(false);
+    public SensorChart(LineChart lineChart, ChartData chartData) {
+        this.chartdata = chartData;
+        chartData.addListener(this);
+        this.lineChart = lineChart;
+        lineChart.setAnimated(false);
+        lineChart.setCreateSymbols(false);
+        updateAxis();
     }
 
     /**
@@ -98,7 +106,7 @@ public class SensorChart extends LineChart {
      * on static data.
      */
     public void installTooltips() {
-        for (XYChart.Series s : seriesdata.values()) {
+        /*for (XYChart.Series s : seriesdata.values()) {
             for (Object d : s.getData()) {
                 XYChart.Data data = (XYChart.Data) d;
                 Tooltip tooltip = new Tooltip(chartdata.getLangpack().getString("sensor_id") + ": " + s.getName() + "\n"
@@ -128,7 +136,7 @@ public class SensorChart extends LineChart {
 
                 }
             }
-        }
+        }*/
     }
 
     /**
@@ -139,7 +147,7 @@ public class SensorChart extends LineChart {
      */
     private ContextMenu initContextMenu() {
         ContextMenu contextMenu = new ContextMenu();
-        MenuItem menuitem_help = new MenuItem(chartdata.getLangpack().getString("help"));
+        /*MenuItem menuitem_help = new MenuItem(chartdata.getLangpack().getString("help"));
         MenuItem menuitem_edit = new MenuItem(chartdata.getLangpack().getString("edit"));
         contextMenu.getItems().addAll(menuitem_help, menuitem_edit);
 
@@ -158,7 +166,7 @@ public class SensorChart extends LineChart {
                 editChartWindow.toFront();
             }
         });
-
+         */
         return contextMenu;
     }
 
@@ -168,7 +176,7 @@ public class SensorChart extends LineChart {
      */
     private void initEditChartWindow() {
         // Create the stage, fill it and show itw
-        editChartWindow = new Stage();
+        /*editChartWindow = new Stage();
         editChartWindow.setOnCloseRequest(eh -> {
             editChartWindow = null;
         });
@@ -283,7 +291,7 @@ public class SensorChart extends LineChart {
                 updateAxis();
                 editChartWindow.hide();
             }
-        });
+        });*/
     }
 
 // <--- Graph operations --->
@@ -295,13 +303,6 @@ public class SensorChart extends LineChart {
      * graphs to be display
      */
     public void setUpGraphs(String[] graphs) {
-        for (String s : graphs) {
-            this.chartdata.put(s, new GraphSeries(s));
-            XYChart.Series series = new XYChart.Series();
-            series.setName(s);
-            seriesdata.put(s, series);
-            this.getData().add(series);
-        }
     }
 
     /**
@@ -312,12 +313,6 @@ public class SensorChart extends LineChart {
      * @param graphname Sensor ID (name) of the graph
      */
     public void addGraph(List<GraphPoint> points, String graphname) {
-        chartdata.put(graphname, new GraphSeries(graphname, points));
-        XYChart.Series series = new XYChart.Series();
-        setPointsToSeries(series, points);
-        series.setName(graphname);
-        seriesdata.put(graphname, series);
-        this.getData().add(series);
     }
 
     /**
@@ -328,7 +323,7 @@ public class SensorChart extends LineChart {
      */
     private void setGraphVisible(String graphname, boolean isVisible) {
         if (isVisible) {
-            setPointsToSeries(seriesdata.get(graphname), chartdata.get(graphname).getPoints());
+            setPointsToSeries(seriesdata.get(graphname), chartdata.getPoints(Long.valueOf(graphname)));
         } else {
             seriesdata.get(graphname).getData().clear();
         }
@@ -347,10 +342,10 @@ public class SensorChart extends LineChart {
         if (graphname == null) {
             return "NaN";
         }
-        List<GraphPoint> points = chartdata.get(graphname).getPoints();
+        List<SensorDataPoint> points = chartdata.getPoints(Long.valueOf(graphname));
         List<Double> values = new ArrayList<>();
-        for (GraphPoint p : points) {
-            values.add(p.y);
+        for (SensorDataPoint p : points) {
+            values.add(p.value);
         }
         double total = 0;
         for (double d : values) {
@@ -364,13 +359,15 @@ public class SensorChart extends LineChart {
      * Updates the X- and Y-axis of the LineChart if the bounds changed
      */
     public void updateAxis() {
-        ((NumberAxis) this.getXAxis()).setLowerBound(chartdata.getXMin());
-        ((NumberAxis) this.getXAxis()).setUpperBound(chartdata.getXMax());
-        ((NumberAxis) this.getXAxis()).setTickUnit((chartdata.getXMax() - chartdata.getXMin()) / 10);
+        Platform.runLater(() -> {
+            ((NumberAxis) lineChart.getXAxis()).setLowerBound(chartdata.getxMin());
+            ((NumberAxis) lineChart.getXAxis()).setUpperBound(chartdata.getxMax());
+            ((NumberAxis) lineChart.getXAxis()).setTickUnit((chartdata.getxMax() - chartdata.getxMin()) / 10);
 
-        ((NumberAxis) this.getYAxis()).setLowerBound(chartdata.getYMin());
-        ((NumberAxis) this.getYAxis()).setUpperBound(chartdata.getYMax());
-        ((NumberAxis) this.getYAxis()).setTickUnit((chartdata.getYMax() - chartdata.getYMin()) / 10);
+            ((NumberAxis) lineChart.getYAxis()).setLowerBound(chartdata.getyMin());
+            ((NumberAxis) lineChart.getYAxis()).setUpperBound(chartdata.getyMax());
+            ((NumberAxis) lineChart.getYAxis()).setTickUnit((chartdata.getyMax() - chartdata.getyMin()) / 10);
+        });
     }
 
     /**
@@ -379,15 +376,31 @@ public class SensorChart extends LineChart {
      * @param series
      * @param points
      */
-    private void setPointsToSeries(XYChart.Series series, List<GraphPoint> points) {
+    private void setPointsToSeries(XYChart.Series series, List<SensorDataPoint> points) {
         try {
             series.getData().clear();
         } catch (NullPointerException e) {
+            // Catching NullPointerException if the series doesn't have any data yet
         }
-        for (GraphPoint p : points) {
-            if (!p.isEmpty()) {
-                series.getData().add(new XYChart.Data(p.x, p.y));
+        double lastTime = 0;
+        Date lastPoint = null;
+        for (SensorDataPoint p : points) {
+            double time = 0;
+            if (lastPoint != null) {
+                time = lastPoint.getTime() - p.time.getTime();
+                time = lastTime - (time / 1000.0);
             }
+            if (time > chartdata.getxMin()) {
+                if (!p.isEmpty()) {
+                    try {
+                        series.getData().add(new XYChart.Data(time, p.value));
+                    } catch (NullPointerException e) {
+
+                    }
+                }
+            }
+            lastPoint = p.time;
+            lastTime = time;
         }
     }
 
@@ -398,10 +411,9 @@ public class SensorChart extends LineChart {
      * @param data
      */
     public void setChartData(ChartData data) {
-        this.setData(data.getChartSeries());
-        NumberAxis xAxis = (NumberAxis) this.getXAxis();
-        xAxis.setUpperBound(data.getxMax());
-        xAxis.setLowerBound(data.getxMin());
+        chartdata = data;
+        data.addListener(this);
+        updateAxis();
     }
 
     /**
@@ -411,8 +423,8 @@ public class SensorChart extends LineChart {
      * @param xscalemax Maximum upper bound of the X-axis
      */
     public void setXScaleBounds(double xscalemin, double xscalemax) {
-        chartdata.setXScaleMin(xscalemin);
-        chartdata.setXScaleMax(xscalemax);
+        chartdata.setxScaleMin(xscalemin);
+        chartdata.setxScaleMax(xscalemax);
     }
 
     /**
@@ -422,24 +434,32 @@ public class SensorChart extends LineChart {
      * @param yscalemax Maximum upper bound of the Y-axis
      */
     public void setYScaleBounds(double yscalemin, double yscalemax) {
-        chartdata.setYScaleMin(yscalemin);
-        chartdata.setYScaleMax(yscalemax);
+        chartdata.setxScaleMin(yscalemin);
+        chartdata.setxScaleMax(yscalemax);
     }
 
     /**
      *
      * @return
      */
-    public ResourceBundle getLangpack() {
-        return chartdata.getLangpack();
-    }
-
-    /**
-     *
-     * @return
-     */
-    public SensorChartData getChartData() {
+    public ChartData getChartData() {
         return chartdata;
+    }
+
+    @Override
+    public void dataChanged(long sensorID) {
+        updateAxis();
+        if (seriesdata.get(Long.toString(sensorID)) == null) {
+            XYChart.Series series = new XYChart.Series();
+            series.setName(Long.toString(sensorID));
+            seriesdata.put(Long.toString(sensorID), series);
+            Platform.runLater(() -> {
+                lineChart.getData().add(series);
+            });
+        }
+        Platform.runLater(() -> {
+            setPointsToSeries(seriesdata.get(Long.toString(sensorID)), chartdata.getPoints(sensorID));
+        });
     }
 
 }
