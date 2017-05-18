@@ -1,12 +1,8 @@
 package de.hfts.sensormonitor.controller;
 
 import de.hft.ss17.cebarround.BaseSensor;
-import de.hft.ss17.cebarround.CeBarRoundObserver;
-import de.hft.ss17.cebarround.SensorEvent;
-import de.hfts.sensormonitor.exceptions.IllegalSensorAmountException;
 import de.hfts.sensormonitor.exceptions.IllegalTableNameException;
 import de.hfts.sensormonitor.main.SensorMonitor;
-import de.hfts.sensormonitor.misc.ExceptionDialog;
 import de.hfts.sensormonitor.misc.IO;
 import de.hfts.sensormonitor.misc.SensorChart;
 import de.hfts.sensormonitor.model.ChartData;
@@ -14,6 +10,7 @@ import de.hfts.sensormonitor.model.SensorData;
 import de.hfts.sensormonitor.model.SensorData.Data;
 import java.io.IOException;
 import java.net.URL;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Optional;
 import java.util.ResourceBundle;
@@ -46,11 +43,16 @@ public class MainController implements Initializable {
     private TabPane mainTabPane;
     @FXML
     private Menu menuRecordings;
-    @FXML 
+    @FXML
     private SensorChart chartTemperature;
+    @FXML
+    private SensorChart chartPressure;
+    @FXML
+    private SensorChart chartRevolutions;
     private IO io;
     private Stage recordingswindow;
     private Stage settingswindow;
+    private HashMap<Data, ChartData> chartData;
 
     List<BaseSensor> sensors;
 
@@ -188,17 +190,38 @@ public class MainController implements Initializable {
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
+        chartData = new HashMap<>();
     }
 
     public void startDisplay(List<BaseSensor> sensors) {
         SensorData data = new SensorData();
-        for(BaseSensor b : sensors) {
+        ChartData dataTemperature = new ChartData(Data.TEMPERATURE, data);
+        chartData.put(Data.TEMPERATURE, dataTemperature);
+        ChartData dataPressure = new ChartData(Data.PRESSURE, data);
+        chartData.put(Data.PRESSURE, dataPressure);
+        ChartData dataRevolutions = new ChartData(Data.REVOLUTIONS, data);
+        chartData.put(Data.REVOLUTIONS, dataRevolutions);
+        for (ChartData cd : chartData.values()) {
+            cd.setxMin(0 - Double.valueOf(io.getConfigProp("realtime_timeframe")));
+            cd.setxMax(0);
+            cd.setxScaleMin(Double.valueOf(io.getConfigProp("realtime_xscalemin")));
+            cd.setxScaleMax(Double.valueOf(io.getConfigProp("realtime_xscalemax")));
+        }
+        dataTemperature.setyScaleMax(Double.valueOf(io.getConfigProp("temperature_yscalemax")));
+        dataTemperature.setyScaleMin(Double.valueOf(io.getConfigProp("temperature_yscalemin")));
+        dataPressure.setyScaleMax(Double.valueOf(io.getConfigProp("pressure_yscalemax")));
+        dataPressure.setyScaleMin(Double.valueOf(io.getConfigProp("pressure_yscalemin")));
+        dataRevolutions.setyScaleMax(Double.valueOf(io.getConfigProp("revolutions_yscalemax")));
+        dataRevolutions.setyScaleMin(Double.valueOf(io.getConfigProp("revolutions_yscalemin")));
+
+        chartTemperature.setChartData(dataTemperature);
+
+        for (BaseSensor b : sensors) {
             b.addListener(data);
             b.startMeasure();
         }
-        chartTemperature.setChartData(new ChartData(Data.TEMPERATURE, data));
     }
-    
+
     public void handleMenuItemQuit() {
     }
 

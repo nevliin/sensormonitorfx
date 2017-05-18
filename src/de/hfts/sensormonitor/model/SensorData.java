@@ -83,11 +83,11 @@ public class SensorData implements CeBarRoundObserver<SensorEvent> {
     public ArrayList<SensorDataPoint> getPoints(Data type, long sensorID) {
         return graphs.get(type).get(sensorID);
     }
-    
+
     public String getTypeCode(long sensorID) {
         return mapIDTypeCode.get(sensorID);
     }
-    
+
     public Set<Long> getSensorIDs() {
         return mapIDTypeCode.keySet();
     }

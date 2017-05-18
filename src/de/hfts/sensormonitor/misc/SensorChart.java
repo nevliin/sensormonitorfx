@@ -28,8 +28,8 @@ import javafx.stage.Stage;
  *
  * @author Polarix IT Solutions
  */
-public class SensorChart extends LineChart{
-    
+public class SensorChart extends LineChart {
+
     private HashMap<String, XYChart.Series> seriesdata = new HashMap<>();
     private ContextMenu popupmenu;
     private SensorChartData chartdata;
@@ -74,12 +74,12 @@ public class SensorChart extends LineChart{
         });
 
     }*/
-
     public SensorChart() {
         super(new NumberAxis(), new NumberAxis());
         ((NumberAxis) this.getXAxis()).setLabel("sec");
+        this.setAnimated(false);
     }
-    
+
     /**
      * Constructor for a SensorChart, uses the given SensorChartData
      *
@@ -91,7 +91,6 @@ public class SensorChart extends LineChart{
         this.setChartData(chartData);
         chartData.addListener(this);
     }*/
-
 // <--- Window operations --->
     /**
      * Add tooltips displaying detailed information to each XY-point on the
@@ -399,7 +398,10 @@ public class SensorChart extends LineChart{
      * @param data
      */
     public void setChartData(ChartData data) {
-        this.setData(data.toObservableList());
+        this.setData(data.getChartSeries());
+        NumberAxis xAxis = (NumberAxis) this.getXAxis();
+        xAxis.setUpperBound(data.getxMax());
+        xAxis.setLowerBound(data.getxMin());
     }
 
     /**
@@ -439,4 +441,5 @@ public class SensorChart extends LineChart{
     public SensorChartData getChartData() {
         return chartdata;
     }
+
 }

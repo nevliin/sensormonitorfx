@@ -349,9 +349,19 @@ public class IO {
         }
         for (int i = 0; i < Integer.valueOf(sensors.getProperty("sensortyp1")); i++) {
             result.add(new CeBarRoundDataSensor());
+            try {
+                Thread.sleep(1);
+            } catch (InterruptedException ex) {
+                Logger.getLogger(IO.class.getName()).log(Level.SEVERE, null, ex);
+            }
         }
         for (int i = 0; i < Integer.valueOf(sensors.getProperty("sensortyp2")); i++) {
             result.add(new CeBarRoundDataSensorV2());
+            try {
+                Thread.sleep(1);
+            } catch (InterruptedException ex) {
+                Logger.getLogger(IO.class.getName()).log(Level.SEVERE, null, ex);
+            }
         }
         return result;
     }
