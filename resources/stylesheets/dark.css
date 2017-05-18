@@ -26,7 +26,7 @@
     -fx-text-fill: black;
 }
 
-#dataOverview {
+.mainGridPane {
     -fx-background-color: #434343;
     -fx-padding: 10;
     -fx-hgap: 10;

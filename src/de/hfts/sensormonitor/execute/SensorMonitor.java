@@ -6,6 +6,9 @@ import de.hfts.sensormonitor.exceptions.IllegalSensorAmountException;
 import de.hfts.sensormonitor.exceptions.SensorMonitorException;
 import de.hfts.sensormonitor.misc.ExceptionDialog;
 import de.hfts.sensormonitor.misc.IO;
+import java.io.IOException;
+import java.io.OutputStream;
+import java.io.PrintStream;
 import java.net.URL;
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -33,6 +36,7 @@ public class SensorMonitor extends Application {
         List<BaseSensor> sensors = null;
         try {
             sensors = io.loadSensors();
+            disableOutput();
         } catch (IllegalSensorAmountException e) {
             new ExceptionDialog(io.getLangpackString("exception_illegalsensoramount"), null);
             System.exit(0);
@@ -62,5 +66,14 @@ public class SensorMonitor extends Application {
     public static void main(String[] args) {
         // Start the application
         launch(args);
+    }
+    
+    public void disableOutput() {
+        System.setOut(new PrintStream(new OutputStream() {
+            @Override
+            public void write(int b) throws IOException {
+                // NO-OP
+            }
+        }));
     }
 }

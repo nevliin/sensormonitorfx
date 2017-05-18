@@ -35,76 +35,30 @@ public class SensorChart implements ChartDataChangeListener {
 
     private LineChart lineChart;
 
-    private HashMap<String, XYChart.Series> seriesdata = new HashMap<>();
     private ContextMenu popupmenu;
     private ChartData chartdata;
     private Stage editChartWindow;
 
-    /**
-     * Constructor for a SensorChart, creates a new SensorChartData based on the
-     * given arguments
-     *
-     * @param xmin Lower bound of the X-axis
-     * @param xmax Upper bound of the X-axis
-     * @param ymin Lower bound of the Y-axis
-     * @param ymax Upper bound of the Y-axis
-     * @param xunit Unit of the X-axis
-     * @param yunit Unit of the Y-axis
-     * @param langpack ResourceBundle containing the configured language pack
-     * @param chartname Name of the SensorChart
-     */
-    /*public SensorChart(double xmin, double xmax, double ymin, double ymax, String xunit, String yunit, ResourceBundle langpack, String chartname) {
-        super(new NumberAxis(xunit, xmin, xmax, (xmax - xmin) / 10), new NumberAxis(yunit, ymin, ymax, (ymax - ymin) / 10));
-        FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("custom_control.fxml"));
-        fxmlLoader.setRoot(this);
-        fxmlLoader.setController(this);
-
-        try {
-            fxmlLoader.load();
-        } catch (IOException exception) {
-            throw new RuntimeException(exception);
-        }
-        this.setAnimated(false);
-        this.setCreateSymbols(true);
-        this.setTitle(chartname);
-        this.chartdata = new SensorChartData(xmin, xmax, ymin, ymax, xunit, yunit, langpack, chartname);
-        chartdata.addListener(this);
-        popupmenu = initContextMenu();
-        this.addEventHandler(ContextMenuEvent.CONTEXT_MENU_REQUESTED, event -> {
-            popupmenu.show(SensorChart.this, event.getScreenX(), event.getScreenY());
-            event.consume();
-        });
-        this.addEventHandler(MouseEvent.MOUSE_PRESSED, event -> {
-            popupmenu.hide();
-        });
-
-    }*/
     public SensorChart(LineChart lineChart, ChartData chartData) {
         this.chartdata = chartData;
-        chartData.addListener(this);
+        chartData.addListener(this);        
         this.lineChart = lineChart;
+        Platform.runLater(() -> {
+           lineChart.setData(chartdata.getObservableList());
+           updateAxis();
+        });        
         lineChart.setAnimated(false);
         lineChart.setCreateSymbols(false);
-        updateAxis();
     }
 
-    /**
-     * Constructor for a SensorChart, uses the given SensorChartData
-     *
-     * @param chartData SensorChartData defining the content and attributes of
-     * the SensorChart
-     */
-    /*public SensorChart(SensorChartData chartData) {
-        this(chartData.getXMin(), chartData.getXMax(), chartData.getYMin(), chartData.getYMax(), chartData.getXUnit(), chartData.getYUnit(), chartData.getLangpack(), chartData.getChartname());
-        this.setChartData(chartData);
-        chartData.addListener(this);
-    }*/
 // <--- Window operations --->
     /**
      * Add tooltips displaying detailed information to each XY-point on the
      * LineChart. Call this after the nodes have been displayed, only to be used
      * on static data.
      */
+    
+                
     public void installTooltips() {
         /*for (XYChart.Series s : seriesdata.values()) {
             for (Object d : s.getData()) {
@@ -322,12 +276,12 @@ public class SensorChart implements ChartDataChangeListener {
      * @param isVisible Visibility status
      */
     private void setGraphVisible(String graphname, boolean isVisible) {
-        if (isVisible) {
+        /*if (isVisible) {
             setPointsToSeries(seriesdata.get(graphname), chartdata.getPoints(Long.valueOf(graphname)));
         } else {
             seriesdata.get(graphname).getData().clear();
         }
-        installTooltips();
+        installTooltips();*/
     }
 
     /**
@@ -342,10 +296,10 @@ public class SensorChart implements ChartDataChangeListener {
         if (graphname == null) {
             return "NaN";
         }
-        List<SensorDataPoint> points = chartdata.getPoints(Long.valueOf(graphname));
+        XYChart.Series<Double, Double> points = chartdata.getSeries(Long.valueOf(graphname));
         List<Double> values = new ArrayList<>();
-        for (SensorDataPoint p : points) {
-            values.add(p.value);
+        for (XYChart.Data<Double, Double> d : points.getData()) {
+            values.add(d.getYValue());
         }
         double total = 0;
         for (double d : values) {
@@ -448,18 +402,7 @@ public class SensorChart implements ChartDataChangeListener {
 
     @Override
     public void dataChanged(long sensorID) {
-        updateAxis();
-        if (seriesdata.get(Long.toString(sensorID)) == null) {
-            XYChart.Series series = new XYChart.Series();
-            series.setName(Long.toString(sensorID));
-            seriesdata.put(Long.toString(sensorID), series);
-            Platform.runLater(() -> {
-                lineChart.getData().add(series);
-            });
-        }
-        Platform.runLater(() -> {
-            setPointsToSeries(seriesdata.get(Long.toString(sensorID)), chartdata.getPoints(sensorID));
-        });
+            lineChart.setData(chartdata.getObservableList());
     }
 
 }

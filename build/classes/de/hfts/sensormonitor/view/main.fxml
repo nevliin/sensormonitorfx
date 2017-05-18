@@ -31,11 +31,11 @@
         <TabPane fx:id="mainTabPane" tabClosingPolicy="ALL_TABS" >
             <Tab text="%realtime" closable="false" >                
                 <TabPane tabClosingPolicy="UNAVAILABLE" >
-                    <Tab>
-                        <GridPane fx:id="dataOverview">
+                    <Tab text="%overview" closable="false" >
+                        <GridPane fx:id="dataOverview" styleClass="mainGridPane" >
                             <children>
-                                <CheckComboBox 
-                                    GridPane.columnIndex="0" GridPane.rowIndex="0" />
+                                <CheckComboBox fx:id="checkComboBoxSensors"
+                                               GridPane.columnIndex="0" GridPane.rowIndex="0" />
                                 <Label fx:id="labelInfo"
                                        GridPane.columnIndex="1" GridPane.rowIndex="1" />                                           
                                        
@@ -49,7 +49,7 @@
                                         <NumberAxis label="%seconds" autoRanging="false"  />
                                     </xAxis>
                                     <yAxis>
-                                        <NumberAxis label="°C" autoRanging="false"  />
+                                        <NumberAxis label="°C" />
                                     </yAxis>
                                 </LineChart>
                                 <LineChart fx:id="chartPressure"
@@ -59,7 +59,7 @@
                                         <NumberAxis label="%seconds" autoRanging="false"  />
                                     </xAxis>
                                     <yAxis>
-                                        <NumberAxis label="hPa" autoRanging="false"  />
+                                        <NumberAxis label="hPa" />
                                     </yAxis>
                                 </LineChart>
                                 <LineChart fx:id="chartRevolutions"
@@ -69,7 +69,7 @@
                                         <NumberAxis label="%seconds" autoRanging="false" />
                                     </xAxis>
                                     <yAxis>
-                                        <NumberAxis label="RPM" autoRanging="false"  />
+                                        <NumberAxis label="RPM" />
                                     </yAxis>
                                 </LineChart>
                                 <GridPane fx:id="recordingControls" 
@@ -119,6 +119,38 @@
                             </rowConstraints>
                         </GridPane>
                     </Tab>
+                    <Tab text="%temperature" closable="false" >
+                        <GridPane styleClass="mainGridPane" >
+                            <children>
+                                <Label text="%temperature"
+                                       GridPane.columnIndex="0" GridPane.rowIndex="0" />
+                                <Separator 
+                                    GridPane.columnIndex="0" GridPane.rowIndex="1"
+                                    GridPane.columnSpan="2" />       
+                                <LineChart fx:id="chartTemperatureSpecific"
+                                           GridPane.columnIndex="0" GridPane.rowIndex="2"
+                                           title="%temperature">
+                                    <xAxis>
+                                        <NumberAxis label="%seconds" autoRanging="false"  />
+                                    </xAxis>
+                                    <yAxis>
+                                        <NumberAxis label="°C" />
+                                    </yAxis>
+                                </LineChart>
+                                <TableView fx:id="tableViewTemperature" 
+                                    GridPane.columnIndex="1" GridPane.rowIndex="2" />
+                            </children>
+                            <columnConstraints>
+                                <ColumnConstraints hgrow="ALWAYS" percentWidth="50" />
+                                <ColumnConstraints hgrow="ALWAYS" percentWidth="50" />
+                            </columnConstraints>
+                            <rowConstraints>
+                                <RowConstraints vgrow="NEVER" minHeight="25.0"/>
+                                <RowConstraints vgrow="NEVER" minHeight="25.0"/>
+                                <RowConstraints vgrow="ALWAYS" minHeight="25.0"/>
+                            </rowConstraints>
+                        </GridPane>
+                    </Tab>                        
                 </TabPane>
             </Tab>
         </TabPane>

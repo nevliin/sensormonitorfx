@@ -9,13 +9,17 @@ import de.hfts.sensormonitor.model.ChartData;
 import de.hfts.sensormonitor.model.SensorData;
 import de.hfts.sensormonitor.model.SensorData.Data;
 import java.io.IOException;
+import java.io.OutputStream;
+import java.io.PrintStream;
 import java.net.URL;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Optional;
 import java.util.ResourceBundle;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javafx.application.Platform;
 import javafx.collections.ObservableList;
 
 import javafx.fxml.FXML;
@@ -28,9 +32,11 @@ import javafx.scene.control.Label;
 import javafx.scene.control.Menu;
 import javafx.scene.control.Tab;
 import javafx.scene.control.TabPane;
+import javafx.scene.control.TableView;
 import javafx.scene.control.TextInputDialog;
 import javafx.scene.layout.BorderPane;
 import javafx.stage.Stage;
+import org.controlsfx.control.CheckComboBox;
 
 public class MainController implements Initializable {
 
@@ -50,6 +56,12 @@ public class MainController implements Initializable {
     private LineChart chartPressure;
     @FXML
     private LineChart chartRevolutions;
+    @FXML
+    private CheckComboBox checkComboBoxSensors;
+    @FXML
+    private LineChart chartTemperatureSpecific;
+    @FXML
+    private TableView tableViewTemperature;
     private IO io;
     private Stage recordingswindow;
     private Stage settingswindow;
@@ -215,16 +227,19 @@ public class MainController implements Initializable {
         dataRevolutions.setyScaleMax(Double.valueOf(io.getConfigProp("revolutions_yscalemax")));
         dataRevolutions.setyScaleMin(Double.valueOf(io.getConfigProp("revolutions_yscalemin")));
 
-        dataTemperature.setyMin(-25);
-        dataTemperature.setyMax(75);
-        dataPressure.setyMin(90);
-        dataPressure.setyMax(110);
-        dataRevolutions.setyMin(0);
-        dataRevolutions.setyMax(5000);
-
         SensorChart sensorChartTemperature = new SensorChart(chartTemperature, dataTemperature);
         SensorChart sensorChartPressure = new SensorChart(chartPressure, dataPressure);
         SensorChart sensorChartRevolutions = new SensorChart(chartRevolutions, dataRevolutions);
+
+        SensorChart sensorChartTemperatureSpecific = new SensorChart(chartTemperatureSpecific, dataTemperature);
+        
+        ArrayList<String> sensorIDs = new ArrayList<>();
+        for (long l : data.getSensorIDs()) {
+            sensorIDs.add(Long.toString(l));
+        }
+        Platform.runLater(() -> {
+            checkComboBoxSensors.getItems().addAll(sensorIDs);
+        });
 
         for (BaseSensor b : sensors) {
             b.addListener(data);

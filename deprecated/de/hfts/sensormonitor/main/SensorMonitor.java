@@ -872,10 +872,6 @@ public class SensorMonitor extends Scene implements CeBarRoundObserver<CeBarRoun
             Label label_title = new Label(data.getChartname());
             infoBar.getChildren().add(label_title);
 
-            List<String> sensorids = new ArrayList<>();
-            for (BaseSensor s : sensors) {
-                sensorids.add(Integer.toString((int) s.getUniquesensoridentifier()));
-            }
             gridPane.add(infoBar, 0, 0, 2, 1);
 
             Separator separator = new Separator();

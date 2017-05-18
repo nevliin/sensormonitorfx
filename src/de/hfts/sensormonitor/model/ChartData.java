@@ -11,6 +11,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
+import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.collections.ObservableListBase;
@@ -23,7 +24,8 @@ import javafx.scene.chart.XYChart;
 public class ChartData implements DataChangeListener {
 
     private ArrayList<ChartDataChangeListener> listeners;
-    private HashMap<Long, ArrayList<SensorDataPoint>> chartGraphs;
+    private ObservableList<XYChart.Series<Double, Double>> lineChartModel = new ObservableListWrapper<>(new ArrayList<XYChart.Series<Double, Double>>());
+    private HashMap<Long, XYChart.Series<Double, Double>> chartGraphs;
     private SensorData sensorData;
     private Data type;
     private double xScaleMin;
@@ -42,8 +44,8 @@ public class ChartData implements DataChangeListener {
         this.sensorData = sensorData;
         sensorData.addListener(this);
     }
-    
-        // <--- Listener operations --->
+
+    // <--- Listener operations --->
     /**
      * Add listener implementing DataChangeListener to the SensorChartData
      *
@@ -73,18 +75,62 @@ public class ChartData implements DataChangeListener {
         }
     }
 
-    public ArrayList<SensorDataPoint> getPoints(long sensorID) {
+    public XYChart.Series<Double, Double> getSeries(long sensorID) {
         return chartGraphs.get(sensorID);
+    }
+
+    /**
+     * Clear the Series and add the GraphPoint's in the List to it
+     *
+     * @param series
+     * @param points
+     */
+    private void setPointsToSeries(XYChart.Series series, List<SensorDataPoint> points) {
+        try {
+            series.getData().clear();
+        } catch (NullPointerException e) {
+            // Catching NullPointerException if the series doesn't have any data yet
+        }
+        double lastTime = 0;
+        Date lastPoint = null;
+        for (SensorDataPoint p : points) {
+            double time = 0;
+            if (lastPoint != null) {
+                time = lastPoint.getTime() - p.time.getTime();
+                time = lastTime - (time / 1000.0);
+            }
+            if (time > this.getxMin()) {
+                if (!p.isEmpty()) {
+                    try {
+                        series.getData().add(new XYChart.Data(time, p.value));
+                    } catch (NullPointerException e) {
+
+                    }
+                }
+            }
+            lastPoint = p.time;
+            lastTime = time;
+        }
     }
 
     @Override
     public void dataChanged(long sensorID) {
         ArrayList<SensorDataPoint> points = sensorData.getPoints(type, sensorID);
         if (chartGraphs.get(sensorID) == null) {
-            chartGraphs.put(sensorID, new ArrayList<>());
+            XYChart.Series<Double, Double> series = new XYChart.Series<>();
+            series.setName(Long.toString(sensorID));
+            chartGraphs.put(sensorID, series);
+            Platform.runLater(() -> {
+
+                lineChartModel.add(series);
+            });
         }
-        chartGraphs.put(sensorID, points);
+        setPointsToSeries(chartGraphs.get(sensorID), points);
         notifyListenersOfDataChange(sensorID);
+    }
+
+    public ObservableList<XYChart.Series<Double, Double>> getObservableList() {
+        return lineChartModel;
     }
 
     public double getxScaleMin() {
