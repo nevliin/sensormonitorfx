@@ -12,6 +12,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 /**
  *
@@ -19,7 +20,7 @@ import java.util.Map;
  */
 public class SensorData implements CeBarRoundObserver<SensorEvent> {
 
-    enum Data {
+    public enum Data {
         TEMPERATURE, PRESSURE, REVOLUTIONS
     }
 
@@ -43,9 +44,9 @@ public class SensorData implements CeBarRoundObserver<SensorEvent> {
             graphs.get(Data.PRESSURE).put(cbre.getUniqueSensorIdentifier(), new ArrayList<>());
             graphs.get(Data.REVOLUTIONS).put(cbre.getUniqueSensorIdentifier(), new ArrayList<>());
         }
-        graphs.get(Data.TEMPERATURE).get(cbre.getUniqueSensorIdentifier()).add(new SensorDataPoint(cbre.getTemperature(), cbre.getDate()));
-        graphs.get(Data.PRESSURE).get(cbre.getUniqueSensorIdentifier()).add(new SensorDataPoint(cbre.getPressure(), cbre.getDate()));
-        graphs.get(Data.REVOLUTIONS).get(cbre.getUniqueSensorIdentifier()).add(new SensorDataPoint(cbre.getRevolutions(), cbre.getDate()));
+        graphs.get(Data.TEMPERATURE).get(cbre.getUniqueSensorIdentifier()).add(0, new SensorDataPoint(cbre.getTemperature(), cbre.getDate()));
+        graphs.get(Data.PRESSURE).get(cbre.getUniqueSensorIdentifier()).add(0, new SensorDataPoint(cbre.getPressure(), cbre.getDate()));
+        graphs.get(Data.REVOLUTIONS).get(cbre.getUniqueSensorIdentifier()).add(0, new SensorDataPoint(cbre.getRevolutions(), cbre.getDate()));
         notifyListenersOfDataChange(cbre.getUniqueSensorIdentifier());
     }
 
@@ -81,6 +82,14 @@ public class SensorData implements CeBarRoundObserver<SensorEvent> {
 
     public ArrayList<SensorDataPoint> getPoints(Data type, long sensorID) {
         return graphs.get(type).get(sensorID);
+    }
+    
+    public String getTypeCode(long sensorID) {
+        return mapIDTypeCode.get(sensorID);
+    }
+    
+    public Set<Long> getSensorIDs() {
+        return mapIDTypeCode.keySet();
     }
 
 }

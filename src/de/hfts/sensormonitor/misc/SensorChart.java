@@ -1,6 +1,7 @@
 package de.hfts.sensormonitor.misc;
 
 import de.hfts.sensormonitor.chart.*;
+import de.hfts.sensormonitor.model.ChartData;
 import java.io.IOException;
 import java.util.*;
 import javafx.beans.NamedArg;
@@ -397,8 +398,8 @@ public class SensorChart extends LineChart{
      *
      * @param data
      */
-    public void setChartData(SensorChartData data) {
-        this.chartdata = data;
+    public void setChartData(ChartData data) {
+        this.setData(data.toObservableList());
     }
 
     /**

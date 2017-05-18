@@ -8,7 +8,10 @@ import de.hfts.sensormonitor.exceptions.IllegalTableNameException;
 import de.hfts.sensormonitor.main.SensorMonitor;
 import de.hfts.sensormonitor.misc.ExceptionDialog;
 import de.hfts.sensormonitor.misc.IO;
+import de.hfts.sensormonitor.misc.SensorChart;
+import de.hfts.sensormonitor.model.ChartData;
 import de.hfts.sensormonitor.model.SensorData;
+import de.hfts.sensormonitor.model.SensorData.Data;
 import java.io.IOException;
 import java.net.URL;
 import java.util.List;
@@ -43,6 +46,8 @@ public class MainController implements Initializable {
     private TabPane mainTabPane;
     @FXML
     private Menu menuRecordings;
+    @FXML 
+    private SensorChart chartTemperature;
     private IO io;
     private Stage recordingswindow;
     private Stage settingswindow;
@@ -191,6 +196,7 @@ public class MainController implements Initializable {
             b.addListener(data);
             b.startMeasure();
         }
+        chartTemperature.setChartData(new ChartData(Data.TEMPERATURE, data));
     }
     
     public void handleMenuItemQuit() {
