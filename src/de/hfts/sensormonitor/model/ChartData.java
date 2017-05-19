@@ -23,7 +23,7 @@ import javafx.scene.chart.XYChart;
  */
 public class ChartData implements DataChangeListener {
 
-    private ArrayList<ChartDataChangeListener> listeners;
+    private List<ChartDataChangeListener> listeners;
     private ObservableList<XYChart.Series<Double, Double>> lineChartModel = new ObservableListWrapper<>(new ArrayList<XYChart.Series<Double, Double>>());
     private HashMap<Long, XYChart.Series<Double, Double>> chartGraphs;
     private SensorData sensorData;
@@ -131,6 +131,20 @@ public class ChartData implements DataChangeListener {
 
     public ObservableList<XYChart.Series<Double, Double>> getObservableList() {
         return lineChartModel;
+    }
+    
+    public ChartData clone() {
+        ChartData result = new ChartData(this.type, this.sensorData);
+        sensorData.addListener(this);
+        result.setxMax(xMax);
+        result.setxMin(xMin);
+        result.setyMax(yMax);
+        result.setyMin(yMin);
+        result.setxScaleMax(xScaleMax);
+        result.setxScaleMin(yScaleMin);
+        result.setyScaleMax(yScaleMax);
+        result.setyScaleMin(yScaleMin);
+        return result;
     }
 
     public double getxScaleMin() {

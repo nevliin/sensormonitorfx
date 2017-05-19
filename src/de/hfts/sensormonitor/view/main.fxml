@@ -150,6 +150,70 @@
                                 <RowConstraints vgrow="ALWAYS" minHeight="25.0"/>
                             </rowConstraints>
                         </GridPane>
+                    </Tab>  
+                    <Tab text="%pressure" closable="false" >
+                        <GridPane styleClass="mainGridPane" >
+                            <children>
+                                <Label text="%temperature"
+                                       GridPane.columnIndex="0" GridPane.rowIndex="0" />
+                                <Separator 
+                                    GridPane.columnIndex="0" GridPane.rowIndex="1"
+                                    GridPane.columnSpan="2" />       
+                                <LineChart fx:id="chartPressureSpecific"
+                                           GridPane.columnIndex="0" GridPane.rowIndex="2"
+                                           title="%temperature">
+                                    <xAxis>
+                                        <NumberAxis label="%seconds" autoRanging="false"  />
+                                    </xAxis>
+                                    <yAxis>
+                                        <NumberAxis label="°C" />
+                                    </yAxis>
+                                </LineChart>
+                                <TableView fx:id="tableViewPressure" 
+                                    GridPane.columnIndex="1" GridPane.rowIndex="2" />
+                            </children>
+                            <columnConstraints>
+                                <ColumnConstraints hgrow="ALWAYS" percentWidth="50" />
+                                <ColumnConstraints hgrow="ALWAYS" percentWidth="50" />
+                            </columnConstraints>
+                            <rowConstraints>
+                                <RowConstraints vgrow="NEVER" minHeight="25.0"/>
+                                <RowConstraints vgrow="NEVER" minHeight="25.0"/>
+                                <RowConstraints vgrow="ALWAYS" minHeight="25.0"/>
+                            </rowConstraints>
+                        </GridPane>
+                    </Tab>  
+                    <Tab text="%revolutions" closable="false" >
+                        <GridPane styleClass="mainGridPane" >
+                            <children>
+                                <Label text="%temperature"
+                                       GridPane.columnIndex="0" GridPane.rowIndex="0" />
+                                <Separator 
+                                    GridPane.columnIndex="0" GridPane.rowIndex="1"
+                                    GridPane.columnSpan="2" />       
+                                <LineChart fx:id="chartRevolutionsSpecific"
+                                           GridPane.columnIndex="0" GridPane.rowIndex="2"
+                                           title="%temperature">
+                                    <xAxis>
+                                        <NumberAxis label="%seconds" autoRanging="false"  />
+                                    </xAxis>
+                                    <yAxis>
+                                        <NumberAxis label="°C" />
+                                    </yAxis>
+                                </LineChart>
+                                <TableView fx:id="tableViewRevolutions" 
+                                    GridPane.columnIndex="1" GridPane.rowIndex="2" />
+                            </children>
+                            <columnConstraints>
+                                <ColumnConstraints hgrow="ALWAYS" percentWidth="50" />
+                                <ColumnConstraints hgrow="ALWAYS" percentWidth="50" />
+                            </columnConstraints>
+                            <rowConstraints>
+                                <RowConstraints vgrow="NEVER" minHeight="25.0"/>
+                                <RowConstraints vgrow="NEVER" minHeight="25.0"/>
+                                <RowConstraints vgrow="ALWAYS" minHeight="25.0"/>
+                            </rowConstraints>
+                        </GridPane>
                     </Tab>                        
                 </TabPane>
             </Tab>

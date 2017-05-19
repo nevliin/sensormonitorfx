@@ -62,6 +62,14 @@ public class MainController implements Initializable {
     private LineChart chartTemperatureSpecific;
     @FXML
     private TableView tableViewTemperature;
+    @FXML
+    private LineChart chartPressureSpecific;
+    @FXML
+    private TableView tableViewPressure;
+    @FXML
+    private LineChart chartRevolutionsSpecific;
+    @FXML
+    private TableView tableViewRevolutions;
     private IO io;
     private Stage recordingswindow;
     private Stage settingswindow;
@@ -231,14 +239,13 @@ public class MainController implements Initializable {
         SensorChart sensorChartPressure = new SensorChart(chartPressure, dataPressure);
         SensorChart sensorChartRevolutions = new SensorChart(chartRevolutions, dataRevolutions);
 
-        SensorChart sensorChartTemperatureSpecific = new SensorChart(chartTemperatureSpecific, dataTemperature);
-        
-        ArrayList<String> sensorIDs = new ArrayList<>();
-        for (long l : data.getSensorIDs()) {
-            sensorIDs.add(Long.toString(l));
-        }
+        SensorChart sensorChartTemperatureSpecific = new SensorChart(chartTemperatureSpecific, dataTemperature.clone());
+        SensorChart sensorChartPressureSpecific = new SensorChart(chartPressureSpecific, dataPressure.clone());
+        SensorChart sensorChartRevolutionsSpecific = new SensorChart(chartRevolutionsSpecific, dataRevolutions.clone());
         Platform.runLater(() -> {
-            checkComboBoxSensors.getItems().addAll(sensorIDs);
+            for (long l : data.getSensorIDs()) {
+                checkComboBoxSensors.getItems().add(Long.toString(l));
+            }
         });
 
         for (BaseSensor b : sensors) {
@@ -247,6 +254,11 @@ public class MainController implements Initializable {
         }
         for (BaseSensor b : sensors) {
             b.startMeasure();
+            try {
+                Thread.sleep(300);
+            } catch (InterruptedException ex) {
+                Logger.getLogger(MainController.class.getName()).log(Level.SEVERE, null, ex);
+            }
         }
     }
 
@@ -260,7 +272,7 @@ public class MainController implements Initializable {
     public void handleMenuItemShowAll() {
         if (recordingswindow == null) {
             try {
-                FXMLLoader loader = new FXMLLoader(this.getClass().getClassLoader().getResource("de/hfts/sensormonitor/fxml/recordingslist.fxml"), io.getLangpack());
+                FXMLLoader loader = new FXMLLoader(this.getClass().getClassLoader().getResource("de/hfts/sensormonitor/view/recordingslist.fxml"), io.getLangpack());
                 BorderPane root = (BorderPane) loader.load();
                 ((RecordingsListController) loader.getController()).setListItems(io.getTables());
                 recordingswindow = new Stage();
