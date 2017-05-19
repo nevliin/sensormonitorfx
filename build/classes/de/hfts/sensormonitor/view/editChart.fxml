@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.lang.*?>
+<?import java.util.*?>
+<?import javafx.scene.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<GridPane styleClass="editChartGrid" xmlns:fx="http://javafx.com/fxml/1" fx:controller="de.hfts.sensormonitor.controller.EditChartController">
+    <children>
+        <Label text="%edit_graph"
+               GridPane.columnIndex="0" GridPane.rowIndex="0"
+               GridPane.columnSpan="4" />
+        <Separator orientation="HORIZONTAL" 
+                   GridPane.columnIndex="0" GridPane.rowIndex="1" 
+                   GridPane.columnSpan="4" />
+        <Label text="%x_minimum"
+               GridPane.columnIndex="0" GridPane.rowIndex="2" />
+        <TextField fx:id="textFieldXMin"
+                   GridPane.columnIndex="1" GridPane.rowIndex="2" />
+        <Label text="%x_maximum"
+                       GridPane.columnIndex="2" GridPane.rowIndex="2" />
+        <TextField fx:id="textFieldXMax"
+                   GridPane.columnIndex="3" GridPane.rowIndex="2" />
+        <Label text="%y_minimum"
+                       GridPane.columnIndex="0" GridPane.rowIndex="3" />
+        <TextField fx:id="textFieldYMin"
+                   GridPane.columnIndex="1" GridPane.rowIndex="3" />
+        <Label text="%y_maximum"
+                       GridPane.columnIndex="2" GridPane.rowIndex="3" />
+        <TextField fx:id="textFieldYMax"
+                   GridPane.columnIndex="3" GridPane.rowIndex="3" />
+    </children>
+    <columnConstraints>
+        <ColumnConstraints hgrow="ALWAYS" />
+        <ColumnConstraints hgrow="SOMETIMES" />
+        <ColumnConstraints hgrow="ALWAYS" />
+        <ColumnConstraints hgrow="SOMETIMES" />
+    </columnConstraints>
+</GridPane>

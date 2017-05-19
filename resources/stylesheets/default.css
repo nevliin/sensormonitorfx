@@ -168,7 +168,7 @@
     -fx-text-fill: black;
 }
 
-#edit-graph-grid {
+.editChartGrid {
     -fx-background-color: white;
 }
 

@@ -235,18 +235,24 @@ public class MainController implements Initializable {
         dataRevolutions.setyScaleMax(Double.valueOf(io.getConfigProp("revolutions_yscalemax")));
         dataRevolutions.setyScaleMin(Double.valueOf(io.getConfigProp("revolutions_yscalemin")));
 
-        SensorChart sensorChartTemperature = new SensorChart(chartTemperature, dataTemperature);
-        SensorChart sensorChartPressure = new SensorChart(chartPressure, dataPressure);
-        SensorChart sensorChartRevolutions = new SensorChart(chartRevolutions, dataRevolutions);
+        SensorChart sensorChartTemperature = new SensorChart(chartTemperature, dataTemperature, io.getLangpack());
+        SensorChart sensorChartPressure = new SensorChart(chartPressure, dataPressure, io.getLangpack());
+        SensorChart sensorChartRevolutions = new SensorChart(chartRevolutions, dataRevolutions, io.getLangpack());
 
-        SensorChart sensorChartTemperatureSpecific = new SensorChart(chartTemperatureSpecific, dataTemperature.clone());
-        SensorChart sensorChartPressureSpecific = new SensorChart(chartPressureSpecific, dataPressure.clone());
-        SensorChart sensorChartRevolutionsSpecific = new SensorChart(chartRevolutionsSpecific, dataRevolutions.clone());
-        Platform.runLater(() -> {
-            for (long l : data.getSensorIDs()) {
-                checkComboBoxSensors.getItems().add(Long.toString(l));
-            }
-        });
+        ChartData dataTemperatureSpecific = dataTemperature.clone();
+        chartData.put(Data.TEMPERATURE, dataTemperatureSpecific);
+        ChartData dataPressureSpecific = dataPressure.clone();
+        chartData.put(Data.PRESSURE, dataPressureSpecific);
+        ChartData dataRevolutionsSpecific = dataRevolutions.clone();
+        chartData.put(Data.REVOLUTIONS, dataRevolutionsSpecific);
+
+        SensorChart sensorChartTemperatureSpecific = new SensorChart(chartTemperatureSpecific, dataTemperatureSpecific, io.getLangpack());
+        SensorChart sensorChartPressureSpecific = new SensorChart(chartPressureSpecific, dataPressureSpecific, io.getLangpack());
+        SensorChart sensorChartRevolutionsSpecific = new SensorChart(chartRevolutionsSpecific, dataRevolutionsSpecific, io.getLangpack());
+
+        for (long l : data.getSensorIDs()) {
+            checkComboBoxSensors.getItems().add(Long.toString(l));
+        }
 
         for (BaseSensor b : sensors) {
             b.addListener(data);
@@ -254,11 +260,6 @@ public class MainController implements Initializable {
         }
         for (BaseSensor b : sensors) {
             b.startMeasure();
-            try {
-                Thread.sleep(300);
-            } catch (InterruptedException ex) {
-                Logger.getLogger(MainController.class.getName()).log(Level.SEVERE, null, ex);
-            }
         }
     }
 
