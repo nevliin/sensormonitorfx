@@ -45,6 +45,11 @@ public class ChartData implements DataChangeListener {
         sensorData.addListener(this);
     }
 
+    public ChartData() {
+        listeners = new ArrayList<>();
+        this.chartGraphs = new HashMap<>();
+    }
+
     // <--- Listener operations --->
     /**
      * Add listener implementing DataChangeListener to the SensorChartData
@@ -90,6 +95,19 @@ public class ChartData implements DataChangeListener {
         return chartGraphs.get(sensorID);
     }
 
+    public void addGraphToChart(long sensorID, List<SensorDataPoint> points) {
+        if (chartGraphs.get(sensorID) == null) {
+            XYChart.Series<Double, Double> series = new XYChart.Series<>();
+            series.setName(Long.toString(sensorID));
+            chartGraphs.put(sensorID, series);
+            Platform.runLater(() -> {
+                lineChartModel.add(series);
+            });
+        }
+        setPointsToSeries(chartGraphs.get(sensorID), points);
+        notifyListenersOfDataChange(sensorID);
+    }
+
     /**
      * Clear the Series and add the GraphPoint's in the List to it
      *
@@ -110,7 +128,7 @@ public class ChartData implements DataChangeListener {
                 time = lastPoint.getTime() - p.time.getTime();
                 time = lastTime - (time / 1000.0);
             }
-            if (time > this.getxMin()) {
+            if (time >= this.getxMin()-1) {
                 if (!p.isEmpty()) {
                     try {
                         series.getData().add(new XYChart.Data(time, p.value));
@@ -132,7 +150,6 @@ public class ChartData implements DataChangeListener {
             series.setName(Long.toString(sensorID));
             chartGraphs.put(sensorID, series);
             Platform.runLater(() -> {
-
                 lineChartModel.add(series);
             });
         }

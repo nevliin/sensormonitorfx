@@ -6,6 +6,7 @@ import de.hfts.sensormonitor.exceptions.IllegalTableNameException;
 import de.hfts.sensormonitor.main.SensorMonitor;
 import de.hfts.sensormonitor.misc.IO;
 import de.hfts.sensormonitor.misc.Recorder;
+import de.hfts.sensormonitor.misc.Recording;
 import de.hfts.sensormonitor.misc.SensorChart;
 import de.hfts.sensormonitor.model.ChartData;
 import de.hfts.sensormonitor.model.SensorData;
@@ -39,6 +40,7 @@ import javafx.scene.control.TabPane;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextInputDialog;
 import javafx.scene.layout.BorderPane;
+import javafx.scene.layout.GridPane;
 import javafx.stage.Stage;
 import org.controlsfx.control.CheckComboBox;
 
@@ -174,6 +176,7 @@ public class MainController implements Initializable {
                 FXMLLoader loader = new FXMLLoader(this.getClass().getClassLoader().getResource("de/hfts/sensormonitor/view/recordingslist.fxml"), io.getLangpack());
                 BorderPane root = (BorderPane) loader.load();
                 ((RecordingsListController) loader.getController()).setListItems(io.getTables());
+                ((RecordingsListController) loader.getController()).setParentController(this);
                 recordingswindow = new Stage();
                 Scene scene = new Scene(root);
                 scene.getStylesheets().addAll(labelInfo.getScene().getStylesheets());
@@ -276,7 +279,17 @@ public class MainController implements Initializable {
     }
 
     public void displayRecording(String recordingName) {
-
+        try {
+            FXMLLoader loader = new FXMLLoader(this.getClass().getClassLoader().getResource("de/hfts/sensormonitor/view/recordingDisplay.fxml"), io.getLangpack());
+            GridPane root = (GridPane) loader.load();
+            ((RecordingDisplayController) loader.getController()).setIO(io);
+            ((RecordingDisplayController) loader.getController()).setRecording(new Recording(io.loadRecording(recordingName)));
+            Tab tab = new Tab(recordingName, root);
+            tab.setClosable(true);
+            mainTabPane.getTabs().add(tab);
+        } catch (IOException ex) {
+            Logger.getLogger(MainController.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
 
 }

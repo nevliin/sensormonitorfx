@@ -70,4 +70,8 @@ public class RecordingsListController implements Initializable {
         recordingsList.setItems(FXCollections.observableArrayList(tables));
     }
     
+    public void setParentController(MainController mc) {
+        this.parentController = mc;
+    }
+    
 }

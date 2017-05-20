@@ -10,7 +10,7 @@
 <?import org.controlsfx.control.CheckComboBox?>
 
 
-<GridPane fx:id="RecordingDisplay" xmlns:fx="http://javafx.com/fxml/1" fx:controller="de.hfts.sensormonitor.controller.RecordingDisplayController">
+<GridPane styleClass="mainGridPane" fx:id="RecordingDisplay" xmlns:fx="http://javafx.com/fxml/1" fx:controller="de.hfts.sensormonitor.controller.RecordingDisplayController">
     <children>
         <CheckComboBox 
             GridPane.columnIndex="0" GridPane.rowIndex="0" />
@@ -23,7 +23,7 @@
                    GridPane.columnIndex="0" GridPane.rowIndex="2"
                    title="%temperature">
             <xAxis>
-                <NumberAxis label="sec" />
+                <NumberAxis label="sec" autoRanging="false" />
             </xAxis>
             <yAxis>
                 <NumberAxis label="°C" />
@@ -33,7 +33,7 @@
                    GridPane.columnIndex="1" GridPane.rowIndex="2"
                    title="%pressure" >
             <xAxis>
-                <NumberAxis label="sec" />
+                <NumberAxis label="sec" autoRanging="false" />
             </xAxis>
             <yAxis>
                 <NumberAxis label="hPa" />
@@ -43,7 +43,7 @@
                    GridPane.columnIndex="2" GridPane.rowIndex="2"
                    title="%revolutions" >
             <xAxis>
-                <NumberAxis label="sec" />
+                <NumberAxis label="sec" autoRanging="false" />
             </xAxis>
             <yAxis>
                 <NumberAxis label="RPM" />
