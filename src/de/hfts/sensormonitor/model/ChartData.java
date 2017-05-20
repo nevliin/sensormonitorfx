@@ -34,8 +34,8 @@ public class ChartData implements DataChangeListener {
     private double yScaleMax;
     private double xMin;
     private double xMax;
-    private double yMin;
-    private double yMax;
+    private double yMin = Double.MAX_VALUE;
+    private double yMax = Double.MAX_VALUE;
 
     public ChartData(Data type, SensorData sensorData) {
         listeners = new ArrayList<>();
@@ -67,11 +67,22 @@ public class ChartData implements DataChangeListener {
     /**
      * Notifies all listeners of a change in the graph data
      *
-     * @param graphname Sensor ID (name) of the graph that was changed
+     * @param sensorID Sensor ID (name) of the graph that was changed
      */
     public void notifyListenersOfDataChange(long sensorID) {
         for (ChartDataChangeListener dcl : listeners) {
             dcl.dataChanged(sensorID);
+        }
+    }
+
+    /**
+     * Notifies all listeners of a change in the graph axis
+     *
+     *
+     */
+    public void notifyListenersOfAxisChange() {
+        for (ChartDataChangeListener dcl : listeners) {
+            dcl.axisChanged();
         }
     }
 
@@ -132,7 +143,7 @@ public class ChartData implements DataChangeListener {
     public ObservableList<XYChart.Series<Double, Double>> getObservableList() {
         return lineChartModel;
     }
-    
+
     public ChartData clone() {
         ChartData result = new ChartData(this.type, this.sensorData);
         sensorData.addListener(this);

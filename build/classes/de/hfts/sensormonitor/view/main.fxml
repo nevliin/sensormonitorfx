@@ -86,15 +86,18 @@
                                         <Label
                                             text="%recording_selection"
                                             GridPane.columnIndex="2" GridPane.rowIndex="0" />
-                                        <CheckBox
+                                        <CheckBox fx:id="checkBoxTemperature"
                                             text="%temperature" onAction="#handleCheckBoxTemperature" 
-                                            GridPane.columnIndex="3" GridPane.rowIndex="0" />
-                                        <CheckBox
+                                            GridPane.columnIndex="3" GridPane.rowIndex="0" 
+                                            selected="true" />
+                                        <CheckBox fx:id="checkBoxPressure"
                                             text="%pressure" onAction="#handleCheckBoxPressure" 
-                                            GridPane.columnIndex="4" GridPane.rowIndex="0" />
-                                        <CheckBox
+                                            GridPane.columnIndex="4" GridPane.rowIndex="0" 
+                                            selected="true" />
+                                        <CheckBox fx:id="checkBoxRevolutions"
                                             text="%revolutions" onAction="#handleCheckBoxRevolutions" 
-                                            GridPane.columnIndex="5" GridPane.rowIndex="0" />
+                                            GridPane.columnIndex="5" GridPane.rowIndex="0" 
+                                            selected="true" />
                                     </children>
                                     <columnConstraints>
                                         <ColumnConstraints hgrow="ALWAYS"/> 

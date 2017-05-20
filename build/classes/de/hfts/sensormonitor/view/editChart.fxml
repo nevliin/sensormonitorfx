@@ -19,17 +19,28 @@
         <TextField fx:id="textFieldXMin"
                    GridPane.columnIndex="1" GridPane.rowIndex="2" />
         <Label text="%x_maximum"
-                       GridPane.columnIndex="2" GridPane.rowIndex="2" />
+               GridPane.columnIndex="2" GridPane.rowIndex="2" />
         <TextField fx:id="textFieldXMax"
                    GridPane.columnIndex="3" GridPane.rowIndex="2" />
         <Label text="%y_minimum"
-                       GridPane.columnIndex="0" GridPane.rowIndex="3" />
+               GridPane.columnIndex="0" GridPane.rowIndex="3" />
         <TextField fx:id="textFieldYMin"
                    GridPane.columnIndex="1" GridPane.rowIndex="3" />
         <Label text="%y_maximum"
-                       GridPane.columnIndex="2" GridPane.rowIndex="3" />
+               GridPane.columnIndex="2" GridPane.rowIndex="3" />
         <TextField fx:id="textFieldYMax"
                    GridPane.columnIndex="3" GridPane.rowIndex="3" />
+        <Separator orientation="HORIZONTAL" 
+                   GridPane.columnIndex="0" GridPane.rowIndex="4" 
+                   GridPane.columnSpan="4" />
+        <Button text="%cancel" onAction="#handleCancelButton" 
+                GridPane.columnIndex="0" GridPane.rowIndex="5"
+                GridPane.columnSpan="2" >                       
+        </Button>
+        <Button text="%save" onAction="#handleSaveButton" 
+                GridPane.columnIndex="2" GridPane.rowIndex="5"
+                GridPane.columnSpan="2" >                       
+        </Button>
     </children>
     <columnConstraints>
         <ColumnConstraints hgrow="ALWAYS" />

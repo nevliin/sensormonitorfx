@@ -17,5 +17,7 @@ public interface ChartDataChangeListener {
      * @param graphname Sensor ID (name) of the graph which was changed
      */
     void dataChanged(long sensorID);
+    
+    void axisChanged();
 
 }

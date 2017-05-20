@@ -27,6 +27,7 @@ public class SensorMonitor extends Application {
     public void start(Stage stage) throws Exception {
         boolean isDBConnected = true;
         IO io = new IO();
+        SensorMonitorException.langpack = io.getLangpack();
         try {
             io.connectDB();
         } catch (ClassNotFoundException | SQLException e) {

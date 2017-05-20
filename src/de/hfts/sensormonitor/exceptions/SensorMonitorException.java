@@ -8,8 +8,11 @@ import javafx.scene.control.Alert;
  * @author Polarix IT Solutions
  */
 public class SensorMonitorException extends Exception {
+    
+    public static ResourceBundle langpack;
 
     public SensorMonitorException(String exceptionMessage) {
+        super(langpack.getString(exceptionMessage));
     }
     
     public SensorMonitorException() {

@@ -133,6 +133,7 @@ public class SensorChart implements ChartDataChangeListener {
             if (editChartWindow == null) {
                 initEditChartWindow();
             } else {
+                editChartWindow.show();
                 editChartWindow.toFront();
             }
         });
@@ -151,14 +152,14 @@ public class SensorChart implements ChartDataChangeListener {
             loader.setLocation(url);
             loader.setResources(langpack);
             GridPane root = (GridPane) loader.load();
-            
+
             editChartWindow = new Stage();
             editChartWindow.setOnCloseRequest(eh -> {
                 editChartWindow = null;
             });
-            
+
             ((EditChartController) loader.getController()).setChartData(chartdata);
-            
+
             Scene editChartScene = new Scene(root);
             editChartScene.getStylesheets().addAll(lineChart.getScene().getStylesheets());
 
@@ -166,8 +167,7 @@ public class SensorChart implements ChartDataChangeListener {
             editChartWindow.sizeToScene();
 
             editChartWindow.show();
-            
-            
+
             // Add button actions
             /*buttonCancel.setOnAction(eh -> {
             editChartWindow.hide();
@@ -298,9 +298,14 @@ public class SensorChart implements ChartDataChangeListener {
             ((NumberAxis) lineChart.getXAxis()).setUpperBound(chartdata.getxMax());
             ((NumberAxis) lineChart.getXAxis()).setTickUnit((chartdata.getxMax() - chartdata.getxMin()) / 10);
 
-            ((NumberAxis) lineChart.getYAxis()).setLowerBound(chartdata.getyMin());
-            ((NumberAxis) lineChart.getYAxis()).setUpperBound(chartdata.getyMax());
-            ((NumberAxis) lineChart.getYAxis()).setTickUnit((chartdata.getyMax() - chartdata.getyMin()) / 10);
+            if (chartdata.getyMin() == Double.MAX_VALUE && chartdata.getyMax() == Double.MAX_VALUE) {
+                lineChart.getYAxis().setAutoRanging(true);
+            } else {
+                lineChart.getYAxis().setAutoRanging(false);
+                ((NumberAxis) lineChart.getYAxis()).setLowerBound(chartdata.getyMin());
+                ((NumberAxis) lineChart.getYAxis()).setUpperBound(chartdata.getyMax());
+                ((NumberAxis) lineChart.getYAxis()).setTickUnit((chartdata.getyMax() - chartdata.getyMin()) / 10);
+            }
         });
     }
 
@@ -383,6 +388,11 @@ public class SensorChart implements ChartDataChangeListener {
     @Override
     public void dataChanged(long sensorID) {
         lineChart.setData(chartdata.getObservableList());
+    }
+
+    @Override
+    public void axisChanged() {
+        updateAxis();
     }
 
 }

@@ -1,9 +1,11 @@
 package de.hfts.sensormonitor.controller;
 
 import de.hft.ss17.cebarround.BaseSensor;
+import de.hft.ss17.cebarround.SensorEvent;
 import de.hfts.sensormonitor.exceptions.IllegalTableNameException;
 import de.hfts.sensormonitor.main.SensorMonitor;
 import de.hfts.sensormonitor.misc.IO;
+import de.hfts.sensormonitor.misc.Recorder;
 import de.hfts.sensormonitor.misc.SensorChart;
 import de.hfts.sensormonitor.model.ChartData;
 import de.hfts.sensormonitor.model.SensorData;
@@ -12,6 +14,7 @@ import java.io.IOException;
 import java.io.OutputStream;
 import java.io.PrintStream;
 import java.net.URL;
+import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -28,6 +31,7 @@ import javafx.fxml.Initializable;
 import javafx.scene.Scene;
 import javafx.scene.chart.LineChart;
 import javafx.scene.control.Button;
+import javafx.scene.control.CheckBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.Menu;
 import javafx.scene.control.Tab;
@@ -70,18 +74,21 @@ public class MainController implements Initializable {
     private LineChart chartRevolutionsSpecific;
     @FXML
     private TableView tableViewRevolutions;
+    @FXML
+    private CheckBox checkBoxTemperature;
+    @FXML
+    private CheckBox checkBoxPressure;
+    @FXML
+    private CheckBox checkBoxRevolutions;
     private IO io;
     private Stage recordingswindow;
     private Stage settingswindow;
     private HashMap<Data, ChartData> chartData;
 
+    Recorder recorder;
+
     List<BaseSensor> sensors;
 
-    LiveRecording recording;
-
-    boolean recordTemperature = true;
-    boolean recordPressure = true;
-    boolean recordRevolutions = true;
     boolean isDBConnected;
 
     public boolean isDBConnected() {
@@ -97,116 +104,6 @@ public class MainController implements Initializable {
             menuRecordings.setDisable(true);
             buttonStartRecording.setDisable(true);
         }
-    }
-
-    public class LiveRecording {
-
-        private int rowid;
-        private String genericName;
-        private IO io;
-
-        /**
-         *
-         * @param sensor
-         * @param io
-         */
-        public LiveRecording(IO io) {
-            genericName = io.createGenericTable();
-            this.io = io;
-            this.rowid = 0;
-        }
-
-        /**
-         *
-         * @param name
-         * @throws de.hfts.sensormonitor.exceptions.IllegalTableNameException
-         */
-        public void finalizeName(String name) throws IllegalTableNameException {
-            io.renameTable(genericName, name);
-        }
-
-        /**
-         *
-         * @param data
-         * @param sensor
-         */
-        public void recordData(BaseSensor sensor) {
-            /*String insertstmt = rowid + ", " + Integer.toString((int) sensor.getUniquesensoridentifier()) + ", " + Integer.toString((int) sensor.getSensortypecode());
-            if (recordTemperature) {
-                insertstmt += ", " + Integer.toString((int) (double) sensor.getData().getData().get("Temperature"));
-            } else {
-                insertstmt += ", null";
-            }
-            if (recordPressure) {
-                insertstmt += ", " + Integer.toString((int) (double) sensor.getData().getData().get("Pressure"));
-            } else {
-                insertstmt += ", null";
-            }
-            if (recordRevolutions) {
-                insertstmt += ", " + Integer.toString((int) (double) sensor.getData().getData().get("Revolutions"));
-            } else {
-                insertstmt += ", null";
-            }
-
-            io.saveData(genericName, insertstmt, data.getTime());
-            rowid++;*/
-        }
-
-        public void saveRecording() {
-            if (recording.getRowid() == 0) {
-                io.dropTable(recording.getGenericName());
-            } else {
-                boolean deleteRecording = false;
-                boolean isNameInvalid = true;
-                Optional<String> newname = null;
-                boolean secondtry = false;
-                do {
-                    TextInputDialog dialog = new TextInputDialog();
-                    dialog.setTitle(io.getLangpack().getString("save_recording_title"));
-                    dialog.setContentText(io.getLangpack().getString("save_recording"));
-                    if (secondtry) {
-                        dialog.setHeaderText(io.getLangpack().getString("exception_tablenameexception"));
-                    } else {
-                        dialog.setHeaderText(io.getLangpack().getString("save_recording_title"));
-                    }
-                    newname = dialog.showAndWait();
-
-                    if (!newname.isPresent()) {
-                        isNameInvalid = false;
-                        deleteRecording = true;
-                    } else if (newname.get().length() != 0) {
-                        try {
-                            recording.finalizeName(newname.get());
-                            isNameInvalid = false;
-                        } catch (IllegalTableNameException ex) {
-                            Logger.getLogger(SensorMonitor.class.getName()).log(Level.SEVERE, null, ex);
-                        }
-                    }
-                    secondtry = true;
-                } while (isNameInvalid);
-                if (deleteRecording) {
-                    io.dropTable(recording.getGenericName());
-                }
-            }
-            recording = null;
-        }
-
-        /**
-         *
-         * @return
-         */
-        public String getGenericName() {
-            return genericName;
-        }
-
-        /**
-         *
-         * @return
-         */
-        public int getRowid() {
-            return rowid;
-        }
-
     }
 
     @Override
@@ -256,6 +153,7 @@ public class MainController implements Initializable {
 
         for (BaseSensor b : sensors) {
             b.addListener(data);
+            b.addListener(recorder);
             b.stopMeasure();
         }
         for (BaseSensor b : sensors) {
@@ -302,31 +200,44 @@ public class MainController implements Initializable {
     }
 
     public void handleButtonStartRecording() {
-        recording = new LiveRecording(io);
+        recorder.startRecording();
         buttonStopRecording.setDisable(false);
         buttonStartRecording.setDisable(true);
     }
 
     public void handleButtonStopRecording() {
-        recording.saveRecording();
+        recorder.stopRecording();
         buttonStopRecording.setDisable(true);
         buttonStartRecording.setDisable(false);
     }
 
     public void handleCheckBoxTemperature() {
-
+        if (checkBoxTemperature.isSelected()) {
+            recorder.setRecordTemperature(true);
+        } else {
+            recorder.setRecordTemperature(false);
+        }
     }
 
     public void handleCheckBoxPressure() {
-
+        if (checkBoxPressure.isSelected()) {
+            recorder.setRecordPressure(true);
+        } else {
+            recorder.setRecordPressure(false);
+        }
     }
 
     public void handleCheckBoxRevolutions() {
-
+        if (checkBoxRevolutions.isSelected()) {
+            recorder.setRecordRevolutions(true);
+        } else {
+            recorder.setRecordRevolutions(false);
+        }
     }
 
     public void setIo(IO io) {
         this.io = io;
+        recorder = new Recorder(io);
     }
 
     public IO getIo() {
