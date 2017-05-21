@@ -8,7 +8,7 @@
 
 <BorderPane xmlns:fx="http://javafx.com/fxml/1" fx:controller="de.hfts.sensormonitor.controller.RecordingsListController">
     <center>
-        <ListView fx:id="recordingsList" />
+        <ListView fx:id="recordingsList"/>
     </center>
     <bottom>
         <GridPane>

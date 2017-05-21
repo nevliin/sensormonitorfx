@@ -31,7 +31,7 @@ public class IO {
     private List<String> languages = new ArrayList<>();
     private List<String> styles = new ArrayList<String>();
     private List<String> tables = new ArrayList<>(); // List of all tables in the database
-    private String columns = "(TIME TIMESTAMP NOT NULL, ROWID INT, SENSORID LONG NOT NULL, SENSORTYPE CHARACTER(30) NOT NULL, TEMPERATURE INT, PRESSURE INT, REVOLUTIONS INT);";
+    private String columns = "(TIME TIMESTAMP NOT NULL, ROWID INT, SENSORID BIGINT NOT NULL, SENSORTYPE CHARACTER(30) NOT NULL, TEMPERATURE INT, PRESSURE INT, REVOLUTIONS INT);";
     private Connection conn; // Connection to the H2 embedded database
     private Properties prop; // Properties file loaded from the home.dir/.sensormonitor
     private Statement stat; // Statement to execute queries and commands

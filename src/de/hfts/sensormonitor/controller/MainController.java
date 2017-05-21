@@ -283,7 +283,7 @@ public class MainController implements Initializable {
             FXMLLoader loader = new FXMLLoader(this.getClass().getClassLoader().getResource("de/hfts/sensormonitor/view/recordingDisplay.fxml"), io.getLangpack());
             GridPane root = (GridPane) loader.load();
             ((RecordingDisplayController) loader.getController()).setIO(io);
-            ((RecordingDisplayController) loader.getController()).setRecording(new Recording(io.loadRecording(recordingName)));
+            ((RecordingDisplayController) loader.getController()).setRecording(new Recording(io.loadRecording(recordingName), io));
             Tab tab = new Tab(recordingName, root);
             tab.setClosable(true);
             mainTabPane.getTabs().add(tab);
@@ -291,5 +291,4 @@ public class MainController implements Initializable {
             Logger.getLogger(MainController.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
-
 }

@@ -10,6 +10,9 @@ import de.hfts.sensormonitor.main.SensorMonitor;
 import de.hfts.sensormonitor.model.ChartData;
 import de.hfts.sensormonitor.model.SensorData.Data;
 import de.hfts.sensormonitor.model.SensorDataPoint;
+import java.io.BufferedWriter;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Timestamp;
@@ -35,7 +38,7 @@ public class Recording {
      *
      * @param name
      */
-    public Recording(ResultSet recording) {
+    public Recording(ResultSet recording, IO io) {
         HashMap<Long, List<SensorDataPoint>> temperature_points = new HashMap<>();
         HashMap<Long, List<SensorDataPoint>> pressure_points = new HashMap<>();
         HashMap<Long, List<SensorDataPoint>> revolutions_points = new HashMap<>();
@@ -84,19 +87,28 @@ public class Recording {
         } catch (SQLException ex) {
             Logger.getLogger(SensorMonitor.class.getName()).log(Level.SEVERE, null, ex);
         }
-        
+
         chartDatas.put(Data.TEMPERATURE, new ChartData());
         chartDatas.put(Data.PRESSURE, new ChartData());
         chartDatas.put(Data.REVOLUTIONS, new ChartData());
-        
-        for(Data d : chartDatas.keySet()) {
+
+        for (Data d : chartDatas.keySet()) {
             chartDatas.get(d).setxMin(0);
-            chartDatas.get(d).setxMax((lasttimestamp.getTime() - firsttimestamp.getTime())/1000);
+            chartDatas.get(d).setxMax((lasttimestamp.getTime() - firsttimestamp.getTime()) / 1000);
+            chartDatas.get(d).setxScaleMin(0);
+            chartDatas.get(d).setxScaleMax((lasttimestamp.getTime() - firsttimestamp.getTime()) / 1000);
         }
-        
+
+        chartDatas.get(Data.TEMPERATURE).setyScaleMax(Double.valueOf(io.getConfigProp("temperature_yscalemax")));
+        chartDatas.get(Data.TEMPERATURE).setyScaleMin(Double.valueOf(io.getConfigProp("temperature_yscalemin")));
+        chartDatas.get(Data.PRESSURE).setyScaleMax(Double.valueOf(io.getConfigProp("pressure_yscalemax")));
+        chartDatas.get(Data.PRESSURE).setyScaleMin(Double.valueOf(io.getConfigProp("pressure_yscalemin")));
+        chartDatas.get(Data.REVOLUTIONS).setyScaleMax(Double.valueOf(io.getConfigProp("revolutions_yscalemax")));
+        chartDatas.get(Data.REVOLUTIONS).setyScaleMin(Double.valueOf(io.getConfigProp("revolutions_yscalemin")));
+
         for (long l : temperature_points.keySet()) {
             chartDatas.get(Data.TEMPERATURE).addGraphToChart(l, temperature_points.get(l));
-        }        
+        }
         for (long l : pressure_points.keySet()) {
             chartDatas.get(Data.PRESSURE).addGraphToChart(l, pressure_points.get(l));
         }
@@ -129,7 +141,7 @@ public class Recording {
     public HashMap<Long, String> getSensors() {
         return sensors;
     }
-    
+
     public ChartData getChartData(Data d) {
         return chartDatas.get(d);
     }
