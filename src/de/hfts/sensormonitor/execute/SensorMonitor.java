@@ -21,6 +21,10 @@ import javafx.scene.Scene;
 import javafx.scene.layout.BorderPane;
 import javafx.stage.Stage;
 
+/**
+ *
+ * @author Lord_Roke
+ */
 public class SensorMonitor extends Application {
 
     @Override
@@ -64,11 +68,18 @@ public class SensorMonitor extends Application {
 
     }
 
+    /**
+     *
+     * @param args
+     */
     public static void main(String[] args) {
         // Start the application
         launch(args);
     }
     
+    /**
+     *
+     */
     public void disableOutput() {
         System.setOut(new PrintStream(new OutputStream() {
             @Override

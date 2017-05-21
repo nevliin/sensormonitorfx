@@ -7,6 +7,9 @@ import de.hfts.sensormonitor.main.*;
 import de.hft.ss17.cebarround.CeBarRoundObserver;
 import de.hfts.sensormonitor.exceptions.IllegalSensorAmountException;
 import de.hfts.sensormonitor.exceptions.IllegalTableNameException;
+import de.hfts.sensormonitor.exceptions.ImportRecordingException;
+import de.hfts.sensormonitor.model.SensorData;
+import de.hfts.sensormonitor.model.SensorData.Data;
 import java.io.*;
 import java.net.*;
 import java.nio.file.FileSystem;
@@ -120,19 +123,20 @@ public class IO {
      * Connect to the H2 database located in the folder specified in the
      * properties and get a list of all tables
      *
-     * @throws DatabaseConnectException
+     * @throws java.lang.ClassNotFoundException
+     * @throws java.sql.SQLException
      */
     public void connectDB() throws ClassNotFoundException, SQLException {
-            Class.forName("org.h2.Driver");
-            conn = DriverManager.getConnection("jdbc:h2:" + getConfigProp("savepath") + "/recordings", "root", "root");
-            DatabaseMetaData meta = conn.getMetaData();
-            ResultSet res = meta.getTables(null, null, null,
-                    new String[]{"TABLE"});
-            while (res.next()) {
-                tables.add(res.getString("TABLE_NAME"));
-            }
-            res.close();
-            stat = conn.createStatement();
+        Class.forName("org.h2.Driver");
+        conn = DriverManager.getConnection("jdbc:h2:" + getConfigProp("savepath") + "/recordings", "root", "root");
+        DatabaseMetaData meta = conn.getMetaData();
+        ResultSet res = meta.getTables(null, null, null,
+                new String[]{"TABLE"});
+        while (res.next()) {
+            tables.add(res.getString("TABLE_NAME"));
+        }
+        res.close();
+        stat = conn.createStatement();
 
     }
 
@@ -300,6 +304,7 @@ public class IO {
      * Get a config property
      *
      * @param key
+     * @return 
      */
     public String getConfigProp(String key) {
         return prop.getProperty(key);
@@ -335,7 +340,7 @@ public class IO {
      * @return
      * @throws IllegalSensorAmountException
      */
-    public List<BaseSensor> loadSensors() throws IllegalSensorAmountException {        
+    public List<BaseSensor> loadSensors() throws IllegalSensorAmountException {
         List<BaseSensor> result = new ArrayList<>();
         Properties sensors = new Properties();
         InputStream stream = this.getClass().getClassLoader().getResourceAsStream("defaultconfig/sensors.properties");
@@ -470,8 +475,13 @@ public class IO {
             ResultSet rs = loadRecording(recordingname);
             while (rs.next()) {
                 for (int i = 1; i <= rs.getMetaData().getColumnCount(); i++) {
-                    sb.append(rs.getString(i));
-                    sb.append(';');
+                    if (rs.getMetaData().getColumnName(i).equalsIgnoreCase("SENSORTYPE")) {
+                        sb.append("'" + rs.getString(i) + "'");
+                        sb.append(';');
+                    } else {
+                        sb.append(rs.getString(i));
+                        sb.append(';');
+                    }
                 }
                 sb.append('\n');
             }
@@ -491,8 +501,9 @@ public class IO {
      * @throws IllegalTableNameException
      * @throws IOException
      * @throws ParseException
+     * @throws de.hfts.sensormonitor.exceptions.ImportRecordingException
      */
-    public void importRecording(File file) throws IllegalTableNameException, IOException, ParseException {
+    public void importRecording(File file) throws IllegalTableNameException, IOException, ParseException, ImportRecordingException {
         String name = file.getName();
         String[] namesplit = name.split("\\.");
         if (!namesplit[0].toUpperCase().matches("[a-zA-Z][a-zA-Z0-9_]{1,30}") || isTableExistant(namesplit[0].toUpperCase())) {
@@ -504,6 +515,11 @@ public class IO {
         String line = "";
         while ((line = in.readLine()) != null) {
             String[] linesplit = line.split(";");
+            if (linesplit.length != 4 + Data.values().length) {
+                dropTable(namesplit[0]);
+                in.close();
+                throw new ImportRecordingException();
+            }
             Timestamp timestamp = null;
             String insertstmt = "";
             for (int i = 0; i < linesplit.length; i++) {
@@ -516,21 +532,33 @@ public class IO {
                 }
             }
             this.saveData(namesplit[0], insertstmt, timestamp);
+            in.close();
         }
     }
 
+    /**
+     *
+     * @return
+     */
     public ResourceBundle getLangpack() {
         return langpack;
     }
 
+    /**
+     *
+     * @param langpack
+     */
     public void setLangpack(ResourceBundle langpack) {
         this.langpack = langpack;
     }
-    
+
+    /**
+     *
+     * @param key
+     * @return
+     */
     public String getLangpackString(String key) {
         return langpack.getString(key);
     }
-    
+
 }
-
-

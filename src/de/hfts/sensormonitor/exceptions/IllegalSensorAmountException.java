@@ -6,6 +6,9 @@ package de.hfts.sensormonitor.exceptions;
  */
 public class IllegalSensorAmountException extends SensorMonitorException {
     
+    /**
+     *
+     */
     public IllegalSensorAmountException() {
         super("exception_illegalsensoramount");
     }

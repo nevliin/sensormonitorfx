@@ -15,6 +15,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 
 /**
@@ -26,6 +27,8 @@ public class EditChartController implements Initializable {
 
     ChartData chartData;
     @FXML
+    private Label labelTitle;
+    @FXML
     private TextField textFieldXMin;
     @FXML
     private TextField textFieldXMax;
@@ -36,14 +39,22 @@ public class EditChartController implements Initializable {
 
     /**
      * Initializes the controller class.
+     *
+     * @param url
+     * @param rb
      */
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         // NO-OP
     }
 
+    /**
+     *
+     * @param chartData
+     */
     public void setChartData(ChartData chartData) {
         this.chartData = chartData;
+        this.labelTitle.setText(labelTitle.getText() + ": " + chartData.getType().toString());
         String xMin = Double.toString(chartData.getxMin());
         String xMax = Double.toString(chartData.getxMax());
         String yMin = Double.toString(chartData.getyMin());
@@ -60,10 +71,16 @@ public class EditChartController implements Initializable {
         textFieldYMax.setText(yMax);
     }
 
+    /**
+     *
+     */
     public void handleCancelButton() {
         textFieldXMax.getScene().getWindow().hide();
     }
 
+    /**
+     *
+     */
     public void handleSaveButton() {
         try {
             updateBounds(textFieldXMin.getText(), textFieldXMax.getText(), textFieldYMin.getText(), textFieldYMax.getText());
@@ -72,7 +89,7 @@ public class EditChartController implements Initializable {
             new ExceptionDialog(ex.getMessage(), null);
         } catch (IllegalYScaleException ex) {
             Logger.getLogger(EditChartController.class.getName()).log(Level.SEVERE, null, ex);
-            
+
         }
     }
 
@@ -121,8 +138,8 @@ public class EditChartController implements Initializable {
         } else {
             throw new IllegalYScaleException();
         }
-        
-        if(isXScaleValid && isYScaleValid) {
+
+        if (isXScaleValid && isYScaleValid) {
             textFieldXMax.getScene().getWindow().hide();
         }
     }

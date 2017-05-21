@@ -3,24 +3,19 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package de.hfts.sensormonitor.model;
+package de.hfts.sensormonitor.exceptions;
 
 /**
  *
  * @author Polarix IT Solutions
  */
-public interface ChartDataChangeListener {
-
-    /**
-     * Triggered when the data in a SensorChartData changes
-     *
-     * @param sensorID
-     */
-    void dataChanged(long sensorID);
+public class ImportRecordingException extends SensorMonitorException {
     
     /**
      *
      */
-    void axisChanged();
-
+    public ImportRecordingException() {
+        super("exception_importrecording");
+    }
+    
 }

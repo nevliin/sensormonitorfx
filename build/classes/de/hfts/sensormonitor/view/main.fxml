@@ -19,6 +19,7 @@
                 <MenuItem text="%reboot" onAction="#handleMenuItemReboot"></MenuItem>  
             </Menu> 
             <Menu fx:id="menuRecordings" text="%recordings">
+                <MenuItem text="%import_recording" onAction="#handleMenuItemImportRecording"></MenuItem>
                 <MenuItem text="%show_all" onAction="#handleMenuItemShowAll"></MenuItem>
                 <MenuItem text="%delete_all" onAction="#handleMenuItemDeleteAll"></MenuItem>  
             </Menu> 
@@ -157,7 +158,7 @@
                     <Tab text="%pressure" closable="false" >
                         <GridPane styleClass="mainGridPane" >
                             <children>
-                                <Label text="%temperature"
+                                <Label text="%pressure"
                                        GridPane.columnIndex="0" GridPane.rowIndex="0" />
                                 <Separator 
                                     GridPane.columnIndex="0" GridPane.rowIndex="1"
@@ -189,7 +190,7 @@
                     <Tab text="%revolutions" closable="false" >
                         <GridPane styleClass="mainGridPane" >
                             <children>
-                                <Label text="%temperature"
+                                <Label text="%revolutions"
                                        GridPane.columnIndex="0" GridPane.rowIndex="0" />
                                 <Separator 
                                     GridPane.columnIndex="0" GridPane.rowIndex="1"

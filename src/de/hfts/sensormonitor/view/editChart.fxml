@@ -8,7 +8,7 @@
 
 <GridPane styleClass="editChartGrid" xmlns:fx="http://javafx.com/fxml/1" fx:controller="de.hfts.sensormonitor.controller.EditChartController">
     <children>
-        <Label text="%edit_graph"
+        <Label fx:id="labelTitle" text="%edit_graph"
                GridPane.columnIndex="0" GridPane.rowIndex="0"
                GridPane.columnSpan="4" />
         <Separator orientation="HORIZONTAL" 

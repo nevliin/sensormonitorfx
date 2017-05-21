@@ -29,6 +29,10 @@ public class Recorder implements CeBarRoundObserver<SensorEvent>{
     boolean recordPressure = true;
     boolean recordRevolutions = true;
 
+    /**
+     *
+     * @param cbre
+     */
     @Override
     public void sensorDataEventListener(SensorEvent cbre) {
         if(recording != null) {
@@ -36,6 +40,9 @@ public class Recorder implements CeBarRoundObserver<SensorEvent>{
         }
     }
     
+    /**
+     *
+     */
     public class LiveRecording {
 
         private int rowid;
@@ -91,6 +98,9 @@ public class Recorder implements CeBarRoundObserver<SensorEvent>{
             rowid++;
         }
 
+        /**
+         *
+         */
         public void saveRecording() {
             if (recording.getRowid() == 0) {
                 io.dropTable(recording.getGenericName());
@@ -148,46 +158,88 @@ public class Recorder implements CeBarRoundObserver<SensorEvent>{
 
     }
     
+    /**
+     *
+     * @param io
+     */
     public Recorder(IO io) {
         this.io = io;
     }
     
+    /**
+     *
+     */
     public void startRecording() {
         recording = new LiveRecording(io);
     }
     
+    /**
+     *
+     */
     public void stopRecording() {
         recording.saveRecording();
     }
 
+    /**
+     *
+     * @return
+     */
     public LiveRecording getRecording() {
         return recording;
     }
 
+    /**
+     *
+     * @param recording
+     */
     public void setRecording(LiveRecording recording) {
         this.recording = recording;
     }
 
+    /**
+     *
+     * @return
+     */
     public boolean isRecordTemperature() {
         return recordTemperature;
     }
 
+    /**
+     *
+     * @param recordTemperature
+     */
     public void setRecordTemperature(boolean recordTemperature) {
         this.recordTemperature = recordTemperature;
     }
 
+    /**
+     *
+     * @return
+     */
     public boolean isRecordPressure() {
         return recordPressure;
     }
 
+    /**
+     *
+     * @param recordPressure
+     */
     public void setRecordPressure(boolean recordPressure) {
         this.recordPressure = recordPressure;
     }
 
+    /**
+     *
+     * @return
+     */
     public boolean isRecordRevolutions() {
         return recordRevolutions;
     }
 
+    /**
+     *
+     * @param recordRevolutions
+     */
     public void setRecordRevolutions(boolean recordRevolutions) {
         this.recordRevolutions = recordRevolutions;
     }

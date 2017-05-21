@@ -15,6 +15,9 @@ import javafx.fxml.Initializable;
  */
 public class SettingsController implements Initializable {
     
+    /**
+     *
+     */
     public class SettingsLanguageController implements Initializable {
 
         @Override

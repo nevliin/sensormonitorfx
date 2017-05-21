@@ -16,6 +16,7 @@
             <file>file:/I:/WiInfProjekt/sensormonitorfx/src/de/hfts/sensormonitor/misc/SensorChart.java</file>
             <file>file:/I:/WiInfProjekt/sensormonitorfx/src/de/hfts/sensormonitor/controller/EditChartController.java</file>
             <file>file:/I:/WiInfProjekt/sensormonitorfx/src/de/hfts/sensormonitor/misc/IO.java</file>
+            <file>file:/I:/WiInfProjekt/sensormonitorfx/src/de/hfts/sensormonitor/view/recordingslist.fxml</file>
             <file>file:/I:/WiInfProjekt/sensormonitorfx/src/de/hfts/sensormonitor/model/ChartDataChangeListener.java</file>
             <file>file:/I:/WiInfProjekt/sensormonitorfx/resources/stylesheets/default.css</file>
             <file>file:/I:/WiInfProjekt/sensormonitorfx/resources/lang/lang_en.properties</file>
@@ -25,6 +26,7 @@
             <file>file:/I:/WiInfProjekt/sensormonitorfx/src/de/hfts/sensormonitor/controller/RecordingsListController.java</file>
             <file>file:/I:/WiInfProjekt/sensormonitorfx/resources/stylesheets/dark.css</file>
             <file>file:/I:/WiInfProjekt/sensormonitorfx/src/de/hfts/sensormonitor/view/main.fxml</file>
+            <file>file:/I:/WiInfProjekt/sensormonitorfx/src/de/hfts/sensormonitor/exceptions/ImportRecordingException.java</file>
             <file>file:/I:/WiInfProjekt/sensormonitorfx/src/de/hfts/sensormonitor/misc/Recording.java</file>
             <file>file:/I:/WiInfProjekt/sensormonitorfx/src/de/hfts/sensormonitor/model/ChartData.java</file>
             <file>file:/I:/WiInfProjekt/sensormonitorfx/deprecated/de/hfts/sensormonitor/main/SensorMonitor.java</file>

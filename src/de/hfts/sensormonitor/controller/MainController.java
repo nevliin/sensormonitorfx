@@ -3,7 +3,9 @@ package de.hfts.sensormonitor.controller;
 import de.hft.ss17.cebarround.BaseSensor;
 import de.hft.ss17.cebarround.SensorEvent;
 import de.hfts.sensormonitor.exceptions.IllegalTableNameException;
+import de.hfts.sensormonitor.exceptions.ImportRecordingException;
 import de.hfts.sensormonitor.main.SensorMonitor;
+import de.hfts.sensormonitor.misc.ExceptionDialog;
 import de.hfts.sensormonitor.misc.IO;
 import de.hfts.sensormonitor.misc.Recorder;
 import de.hfts.sensormonitor.misc.Recording;
@@ -11,11 +13,13 @@ import de.hfts.sensormonitor.misc.SensorChart;
 import de.hfts.sensormonitor.model.ChartData;
 import de.hfts.sensormonitor.model.SensorData;
 import de.hfts.sensormonitor.model.SensorData.Data;
+import java.io.File;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.io.PrintStream;
 import java.net.URL;
 import java.sql.Timestamp;
+import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -31,6 +35,7 @@ import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Scene;
 import javafx.scene.chart.LineChart;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.CheckBox;
 import javafx.scene.control.Label;
@@ -41,9 +46,14 @@ import javafx.scene.control.TableView;
 import javafx.scene.control.TextInputDialog;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
+import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 import org.controlsfx.control.CheckComboBox;
 
+/**
+ *
+ * @author Lord_Roke
+ */
 public class MainController implements Initializable {
 
     @FXML
@@ -93,10 +103,18 @@ public class MainController implements Initializable {
 
     boolean isDBConnected;
 
+    /**
+     *
+     * @return
+     */
     public boolean isDBConnected() {
         return isDBConnected;
     }
 
+    /**
+     *
+     * @param isDBConnected
+     */
     public void setIsDBConnected(boolean isDBConnected) {
         this.isDBConnected = isDBConnected;
         if (isDBConnected) {
@@ -113,6 +131,10 @@ public class MainController implements Initializable {
         chartData = new HashMap<>();
     }
 
+    /**
+     *
+     * @param sensors
+     */
     public void startDisplay(List<BaseSensor> sensors) {
         SensorData data = new SensorData();
         ChartData dataTemperature = new ChartData(Data.TEMPERATURE, data);
@@ -163,13 +185,40 @@ public class MainController implements Initializable {
         }
     }
 
+    /**
+     *
+     */
     public void handleMenuItemQuit() {
     }
 
+    /**
+     *
+     */
     public void handleMenuItemReboot() {
 
     }
 
+    /**
+     *
+     */
+    public void handleMenuItemImportRecording() {
+        FileChooser fs = new FileChooser();
+        fs.setTitle(io.getLangpackString("select_csv_file"));
+        fs.setInitialDirectory(new File(System.getProperty("user.home")));
+        File file = fs.showOpenDialog(null);
+        if (file != null) {
+            try {
+                io.importRecording(file);
+                displayRecording(file.getName().split("\\.")[0].toUpperCase());
+            } catch (IOException | ParseException | ImportRecordingException | IllegalTableNameException ex) {
+                new ExceptionDialog(ex.getMessage(), null);
+            }
+        }
+    }
+
+    /**
+     *
+     */
     public void handleMenuItemShowAll() {
         if (recordingswindow == null) {
             try {
@@ -194,26 +243,41 @@ public class MainController implements Initializable {
         }
     }
 
+    /**
+     *
+     */
     public void handleMenuItemDeleteAll() {
 
     }
 
+    /**
+     *
+     */
     public void handleMenuItemSettings() {
 
     }
 
+    /**
+     *
+     */
     public void handleButtonStartRecording() {
         recorder.startRecording();
         buttonStopRecording.setDisable(false);
         buttonStartRecording.setDisable(true);
     }
 
+    /**
+     *
+     */
     public void handleButtonStopRecording() {
         recorder.stopRecording();
         buttonStopRecording.setDisable(true);
         buttonStartRecording.setDisable(false);
     }
 
+    /**
+     *
+     */
     public void handleCheckBoxTemperature() {
         if (checkBoxTemperature.isSelected()) {
             recorder.setRecordTemperature(true);
@@ -222,6 +286,9 @@ public class MainController implements Initializable {
         }
     }
 
+    /**
+     *
+     */
     public void handleCheckBoxPressure() {
         if (checkBoxPressure.isSelected()) {
             recorder.setRecordPressure(true);
@@ -230,6 +297,9 @@ public class MainController implements Initializable {
         }
     }
 
+    /**
+     *
+     */
     public void handleCheckBoxRevolutions() {
         if (checkBoxRevolutions.isSelected()) {
             recorder.setRecordRevolutions(true);
@@ -238,11 +308,19 @@ public class MainController implements Initializable {
         }
     }
 
+    /**
+     *
+     * @param io
+     */
     public void setIo(IO io) {
         this.io = io;
         recorder = new Recorder(io);
     }
 
+    /**
+     *
+     * @return
+     */
     public IO getIo() {
         return this.io;
     }
@@ -260,6 +338,10 @@ public class MainController implements Initializable {
         System.exit(0);
     }
 
+    /**
+     *
+     * @param name
+     */
     public void closeTab(String name) {
         ObservableList<Tab> tabs = mainTabPane.getTabs();
         for (Tab t : tabs) {
@@ -269,6 +351,10 @@ public class MainController implements Initializable {
         }
     }
 
+    /**
+     *
+     * @param names
+     */
     public void closeTab(List<String> names) {
         ObservableList<Tab> tabs = mainTabPane.getTabs();
         for (Tab t : tabs) {
@@ -278,6 +364,10 @@ public class MainController implements Initializable {
         }
     }
 
+    /**
+     *
+     * @param recordingName
+     */
     public void displayRecording(String recordingName) {
         try {
             FXMLLoader loader = new FXMLLoader(this.getClass().getClassLoader().getResource("de/hfts/sensormonitor/view/recordingDisplay.fxml"), io.getLangpack());

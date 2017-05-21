@@ -37,10 +37,18 @@ public class RecordingDisplayController implements Initializable {
 
     }
 
+    /**
+     *
+     * @param io
+     */
     public void setIO(IO io) {
         this.io = io;
     }
 
+    /**
+     *
+     * @param recording
+     */
     public void setRecording(Recording recording) {
         SensorChart sensorChartTemperature = new SensorChart(chartTemperature, recording.getChartData(Data.TEMPERATURE), io.getLangpack());
         SensorChart sensorChartPressure = new SensorChart(chartPressure, recording.getChartData(Data.PRESSURE), io.getLangpack());

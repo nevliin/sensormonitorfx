@@ -13,6 +13,11 @@ import javafx.scene.control.Alert;
  */
 public class ExceptionDialog {
 
+    /**
+     *
+     * @param text
+     * @param subtext
+     */
     public ExceptionDialog(String text, String subtext) {
         Alert alert = new Alert(Alert.AlertType.ERROR);
         alert.setTitle("Exception");

@@ -6,8 +6,11 @@ package de.hfts.sensormonitor.exceptions;
  */
 public class IllegalTableNameException extends SensorMonitorException {
     
+    /**
+     *
+     */
     public IllegalTableNameException() {
-        super("exception_tablenameexception");
+        super("exception_illegaltablename");
     }
     
 }

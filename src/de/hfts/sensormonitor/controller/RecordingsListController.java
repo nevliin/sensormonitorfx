@@ -30,12 +30,17 @@ public class RecordingsListController implements Initializable {
 
     /**
      * Initializes the controller class.
+     * @param url
+     * @param rb
      */
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         recordingsList.getSelectionModel().setSelectionMode(SelectionMode.MULTIPLE);
     }
     
+    /**
+     *
+     */
     public void handleButtonDisplayRecording() {
         List<String> selectedrecordings = recordingsList.getSelectionModel().getSelectedItems();
         for (String recording : selectedrecordings) {
@@ -43,6 +48,9 @@ public class RecordingsListController implements Initializable {
         }        
     }
     
+    /**
+     *
+     */
     public void handleButtonDeleteRecording() {
         List<String> selectedrecordings = recordingsList.getSelectionModel().getSelectedItems();
         for (String recording : selectedrecordings) {
@@ -52,6 +60,9 @@ public class RecordingsListController implements Initializable {
         recordingsList.setItems(FXCollections.observableArrayList(parentController.getIo().getTables()));
     }
     
+    /**
+     *
+     */
     public void handleButtonExportRecording() {
         DirectoryChooser directoryChooser = new DirectoryChooser();
         directoryChooser.setTitle(parentController.getIo().getLangpack().getString("select_export_directory"));
@@ -67,10 +78,18 @@ public class RecordingsListController implements Initializable {
         }
     }
     
+    /**
+     *
+     * @param tables
+     */
     public void setListItems(List<String> tables) {
         recordingsList.setItems(FXCollections.observableArrayList(tables));
     }
     
+    /**
+     *
+     * @param mc
+     */
     public void setParentController(MainController mc) {
         this.parentController = mc;
     }

@@ -36,7 +36,8 @@ public class Recording {
 
     /**
      *
-     * @param name
+     * @param recording
+     * @param io
      */
     public Recording(ResultSet recording, IO io) {
         HashMap<Long, List<SensorDataPoint>> temperature_points = new HashMap<>();
@@ -142,6 +143,11 @@ public class Recording {
         return sensors;
     }
 
+    /**
+     *
+     * @param d
+     * @return
+     */
     public ChartData getChartData(Data d) {
         return chartDatas.get(d);
     }

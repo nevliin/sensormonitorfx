@@ -45,6 +45,12 @@ public class SensorChart implements ChartDataChangeListener {
 
     private ResourceBundle langpack;
 
+    /**
+     *
+     * @param lineChart
+     * @param chartData
+     * @param langpack
+     */
     public SensorChart(LineChart lineChart, ChartData chartData, ResourceBundle langpack) {
         this.chartdata = chartData;
         this.langpack = langpack;
@@ -390,6 +396,9 @@ public class SensorChart implements ChartDataChangeListener {
         lineChart.setData(chartdata.getObservableList());
     }
 
+    /**
+     *
+     */
     @Override
     public void axisChanged() {
         updateAxis();

@@ -37,6 +37,11 @@ public class ChartData implements DataChangeListener {
     private double yMin = Double.MAX_VALUE;
     private double yMax = Double.MAX_VALUE;
 
+    /**
+     *
+     * @param type
+     * @param sensorData
+     */
     public ChartData(Data type, SensorData sensorData) {
         listeners = new ArrayList<>();
         this.chartGraphs = new HashMap<>();
@@ -45,6 +50,9 @@ public class ChartData implements DataChangeListener {
         sensorData.addListener(this);
     }
 
+    /**
+     *
+     */
     public ChartData() {
         listeners = new ArrayList<>();
         this.chartGraphs = new HashMap<>();
@@ -91,10 +99,20 @@ public class ChartData implements DataChangeListener {
         }
     }
 
+    /**
+     *
+     * @param sensorID
+     * @return
+     */
     public XYChart.Series<Double, Double> getSeries(long sensorID) {
         return chartGraphs.get(sensorID);
     }
 
+    /**
+     *
+     * @param sensorID
+     * @param points
+     */
     public void addGraphToChart(long sensorID, List<SensorDataPoint> points) {
         if (chartGraphs.get(sensorID) == null) {
             XYChart.Series<Double, Double> series = new XYChart.Series<>();
@@ -157,6 +175,10 @@ public class ChartData implements DataChangeListener {
         notifyListenersOfDataChange(sensorID);
     }
 
+    /**
+     *
+     * @return
+     */
     public ObservableList<XYChart.Series<Double, Double>> getObservableList() {
         return lineChartModel;
     }
@@ -175,68 +197,150 @@ public class ChartData implements DataChangeListener {
         return result;
     }
 
+    /**
+     *
+     * @return
+     */
     public double getxScaleMin() {
         return xScaleMin;
     }
 
+    /**
+     *
+     * @param xScaleMin
+     */
     public void setxScaleMin(double xScaleMin) {
         this.xScaleMin = xScaleMin;
     }
 
+    /**
+     *
+     * @return
+     */
     public double getxScaleMax() {
         return xScaleMax;
     }
 
+    /**
+     *
+     * @param xScaleMax
+     */
     public void setxScaleMax(double xScaleMax) {
         this.xScaleMax = xScaleMax;
     }
 
+    /**
+     *
+     * @return
+     */
     public double getyScaleMin() {
         return yScaleMin;
     }
 
+    /**
+     *
+     * @param yScaleMin
+     */
     public void setyScaleMin(double yScaleMin) {
         this.yScaleMin = yScaleMin;
     }
 
+    /**
+     *
+     * @return
+     */
     public double getyScaleMax() {
         return yScaleMax;
     }
 
+    /**
+     *
+     * @param yScaleMax
+     */
     public void setyScaleMax(double yScaleMax) {
         this.yScaleMax = yScaleMax;
     }
 
+    /**
+     *
+     * @return
+     */
     public double getxMin() {
         return xMin;
     }
 
+    /**
+     *
+     * @param xMin
+     */
     public void setxMin(double xMin) {
         this.xMin = xMin;
     }
 
+    /**
+     *
+     * @return
+     */
     public double getxMax() {
         return xMax;
     }
 
+    /**
+     *
+     * @param xMax
+     */
     public void setxMax(double xMax) {
         this.xMax = xMax;
     }
 
+    /**
+     *
+     * @return
+     */
     public double getyMin() {
         return yMin;
     }
 
+    /**
+     *
+     * @param yMin
+     */
     public void setyMin(double yMin) {
         this.yMin = yMin;
     }
 
+    /**
+     *
+     * @return
+     */
     public double getyMax() {
         return yMax;
     }
 
+    /**
+     *
+     * @param yMax
+     */
     public void setyMax(double yMax) {
         this.yMax = yMax;
     }
+
+    /**
+     *
+     * @return
+     */
+    public Data getType() {
+        return type;
+    }
+
+    /**
+     *
+     * @param type
+     */
+    public void setType(Data type) {
+        this.type = type;
+    }
+    
+    
 
 }

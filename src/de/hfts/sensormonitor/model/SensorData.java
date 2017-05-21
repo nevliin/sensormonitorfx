@@ -21,14 +21,34 @@ import javafx.application.Platform;
  */
 public class SensorData implements CeBarRoundObserver<SensorEvent> {
 
+    /**
+     *
+     */
     public enum Data {
-        TEMPERATURE, PRESSURE, REVOLUTIONS
+
+        /**
+         *
+         */
+        TEMPERATURE,
+
+        /**
+         *
+         */
+        PRESSURE,
+
+        /**
+         *
+         */
+        REVOLUTIONS
     }
 
     private List<DataChangeListener> listeners = new ArrayList<>();
     Map<Long, String> mapIDTypeCode;
     Map<Data, Map<Long, ArrayList<SensorDataPoint>>> graphs;
 
+    /**
+     *
+     */
     public SensorData() {
         graphs = new HashMap<>();
         mapIDTypeCode = new HashMap<>();
@@ -37,6 +57,10 @@ public class SensorData implements CeBarRoundObserver<SensorEvent> {
         }
     }
 
+    /**
+     *
+     * @param cbre
+     */
     @Override
     public void sensorDataEventListener(SensorEvent cbre) {
         Platform.runLater(() -> {
@@ -75,6 +99,7 @@ public class SensorData implements CeBarRoundObserver<SensorEvent> {
     /**
      * Notifies all listeners of a change in the graph data
      *
+     * @param sensorID
      * @param graphname Sensor ID (name) of the graph that was changed
      */
     public void notifyListenersOfDataChange(long sensorID) {
@@ -83,14 +108,29 @@ public class SensorData implements CeBarRoundObserver<SensorEvent> {
         }
     }
 
+    /**
+     *
+     * @param type
+     * @param sensorID
+     * @return
+     */
     public ArrayList<SensorDataPoint> getPoints(Data type, long sensorID) {
         return graphs.get(type).get(sensorID);
     }
 
+    /**
+     *
+     * @param sensorID
+     * @return
+     */
     public String getTypeCode(long sensorID) {
         return mapIDTypeCode.get(sensorID);
     }
 
+    /**
+     *
+     * @return
+     */
     public Set<Long> getSensorIDs() {
         return mapIDTypeCode.keySet();
     }
