@@ -1,6 +1,5 @@
 package de.hfts.sensormonitor.model;
 
-import de.hfts.sensormonitor.chart.*;
 
 /**
  * Interface to be implemented by objects who want to be informed about changes

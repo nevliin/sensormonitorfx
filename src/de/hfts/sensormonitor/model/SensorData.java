@@ -5,14 +5,8 @@
  */
 package de.hfts.sensormonitor.model;
 
-import de.hft.ss17.cebarround.CeBarRoundEvent;
-import de.hft.ss17.cebarround.CeBarRoundObserver;
-import de.hft.ss17.cebarround.SensorEvent;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
+import de.hft.ss17.cebarround.*;
+import java.util.*;
 import javafx.application.Platform;
 
 /**

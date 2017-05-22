@@ -7,14 +7,9 @@ package de.hfts.sensormonitor.model;
 
 import com.sun.javafx.collections.ObservableListWrapper;
 import de.hfts.sensormonitor.model.SensorData.Data;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.List;
+import java.util.*;
 import javafx.application.Platform;
-import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
-import javafx.collections.ObservableListBase;
 import javafx.scene.chart.XYChart;
 
 /**

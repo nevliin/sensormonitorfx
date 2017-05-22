@@ -5,7 +5,6 @@
  */
 package de.hfts.sensormonitor.model;
 
-import java.sql.Timestamp;
 import java.util.Date;
 
 /**

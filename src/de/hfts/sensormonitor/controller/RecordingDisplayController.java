@@ -5,15 +5,11 @@
  */
 package de.hfts.sensormonitor.controller;
 
-import de.hfts.sensormonitor.misc.IO;
-import de.hfts.sensormonitor.misc.Recording;
-import de.hfts.sensormonitor.misc.SensorChart;
-import de.hfts.sensormonitor.model.SensorData;
+import de.hfts.sensormonitor.misc.*;
 import de.hfts.sensormonitor.model.SensorData.Data;
 import java.net.URL;
 import java.util.ResourceBundle;
-import javafx.fxml.FXML;
-import javafx.fxml.Initializable;
+import javafx.fxml.*;
 import javafx.scene.chart.LineChart;
 
 /**

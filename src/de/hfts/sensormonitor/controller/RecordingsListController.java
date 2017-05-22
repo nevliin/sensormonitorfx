@@ -7,14 +7,10 @@ package de.hfts.sensormonitor.controller;
 
 import java.io.File;
 import java.net.URL;
-import java.util.List;
-import java.util.ResourceBundle;
+import java.util.*;
 import javafx.collections.FXCollections;
-import javafx.fxml.FXML;
-import javafx.fxml.Initializable;
-import javafx.scene.control.ListView;
-import javafx.scene.control.SelectionMode;
-import javafx.scene.control.TableView;
+import javafx.fxml.*;
+import javafx.scene.control.*;
 import javafx.stage.DirectoryChooser;
 
 /**

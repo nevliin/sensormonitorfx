@@ -5,25 +5,16 @@
  */
 package de.hfts.sensormonitor.misc;
 
-import de.hfts.sensormonitor.chart.GraphPoint;
 import de.hfts.sensormonitor.main.SensorMonitor;
-import de.hfts.sensormonitor.model.ChartData;
+import de.hfts.sensormonitor.model.*;
 import de.hfts.sensormonitor.model.SensorData.Data;
-import de.hfts.sensormonitor.model.SensorDataPoint;
-import java.io.BufferedWriter;
-import java.io.FileWriter;
-import java.io.IOException;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.sql.Timestamp;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
+import java.sql.*;
+import java.util.*;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
 /**
- * Inner class for a recording loaded from the database
+ * Class for a recording loaded from the database
  *
  * @author Polarix IT Solutions
  */

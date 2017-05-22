@@ -5,15 +5,12 @@
  */
 package de.hfts.sensormonitor.misc;
 
-import de.hft.ss17.cebarround.CeBarRoundObserver;
-import de.hft.ss17.cebarround.SensorEvent;
-import de.hfts.sensormonitor.controller.MainController;
+import de.hft.ss17.cebarround.*;
 import de.hfts.sensormonitor.exceptions.IllegalTableNameException;
 import de.hfts.sensormonitor.main.SensorMonitor;
 import java.sql.Timestamp;
 import java.util.Optional;
-import java.util.logging.Level;
-import java.util.logging.Logger;
+import java.util.logging.*;
 import javafx.scene.control.TextInputDialog;
 
 /**
@@ -48,8 +45,7 @@ public class Recorder implements CeBarRoundObserver<SensorEvent>{
         private int rowid;
         private String genericName;
         private IO io;
-        
-        
+              
 
         /**
          *

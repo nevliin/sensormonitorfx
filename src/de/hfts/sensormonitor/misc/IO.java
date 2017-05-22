@@ -1,24 +1,11 @@
 package de.hfts.sensormonitor.misc;
 
-import de.hft.ss17.cebarround.BaseSensor;
-import de.hft.ss17.cebarround.CeBarRoundDataSensor;
-import de.hft.ss17.cebarround.CeBarRoundDataSensorV2;
-import de.hfts.sensormonitor.main.*;
-import de.hft.ss17.cebarround.CeBarRoundObserver;
-import de.hfts.sensormonitor.exceptions.IllegalSensorAmountException;
-import de.hfts.sensormonitor.exceptions.IllegalTableNameException;
-import de.hfts.sensormonitor.exceptions.ImportRecordingException;
-import de.hfts.sensormonitor.model.SensorData;
+import de.hft.ss17.cebarround.*;
+import de.hfts.sensormonitor.exceptions.*;
 import de.hfts.sensormonitor.model.SensorData.Data;
 import java.io.*;
 import java.net.*;
-import java.nio.file.FileSystem;
-import java.nio.file.FileSystems;
-import java.nio.file.FileVisitResult;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
-import java.nio.file.SimpleFileVisitor;
+import java.nio.file.*;
 import java.nio.file.attribute.BasicFileAttributes;
 import java.sql.*;
 import java.text.ParseException;
@@ -28,6 +15,8 @@ import javafx.stage.DirectoryChooser;
 
 /**
  * Class to handle all input/output actions, both from the JAR itself and the OS
+ * 
+ * @author Polarix IT Solutions
  */
 public class IO {
 
@@ -501,7 +490,7 @@ public class IO {
      * @throws IllegalTableNameException
      * @throws IOException
      * @throws ParseException
-     * @throws de.hfts.sensormonitor.exceptions.ImportRecordingException
+     * @throws ImportRecordingException
      */
     public void importRecording(File file) throws IllegalTableNameException, IOException, ParseException, ImportRecordingException {
         String name = file.getName();

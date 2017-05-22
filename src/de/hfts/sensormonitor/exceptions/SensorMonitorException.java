@@ -1,7 +1,6 @@
 package de.hfts.sensormonitor.exceptions;
 
 import java.util.ResourceBundle;
-import javafx.scene.control.Alert;
 
 /**
  * Parent-exception for all exceptions thrown by the application
