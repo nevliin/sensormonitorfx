@@ -2,6 +2,7 @@ package de.hfts.sensormonitor.controller;
 
 import de.hft.ss17.cebarround.BaseSensor;
 import de.hfts.sensormonitor.exceptions.*;
+import de.hfts.sensormonitor.execute.SensorMonitor;
 import de.hfts.sensormonitor.misc.*;
 import de.hfts.sensormonitor.model.*;
 import de.hfts.sensormonitor.model.SensorData.Data;
@@ -15,7 +16,6 @@ import java.util.logging.Logger;
 import javafx.collections.ObservableList;
 import javafx.fxml.*;
 import javafx.scene.*;
-import javafx.scene.chart.*;
 import javafx.scene.control.*;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
@@ -29,20 +29,46 @@ import org.controlsfx.control.CheckComboBox;
  */
 public class MainController implements Initializable {
 
+    /**
+     *
+     */
     @FXML
     private Label labelInfo;
+    /**
+     * Button for starting a recording through the associated Recorder
+     */
     @FXML
     private Button buttonStartRecording;
+    /**
+     * Button for stopping a recording through the associated Recorder
+     */
     @FXML
     private Button buttonStopRecording;
+    /**
+     * Main TabPane including Tab's for realtime and recordings
+     */
     @FXML
     private TabPane mainTabPane;
+    /**
+     * Menu containing MenuItems for recording actions
+     */
     @FXML
     private Menu menuRecordings;
+    /**
+     * SensorChart in the Overview Tab displaying temperature info of the
+     * sensors
+     */
     @FXML
     private SensorChart chartTemperature;
+    /**
+     * SensorChart in the Overview Tab displaying pressure info of the sensors
+     */
     @FXML
     private SensorChart chartPressure;
+    /**
+     * SensorChart in the Overview Tab displaying revolutions info of the
+     * sensors
+     */
     @FXML
     private SensorChart chartRevolutions;
     @FXML
@@ -65,6 +91,7 @@ public class MainController implements Initializable {
     private CheckBox checkBoxPressure;
     @FXML
     private CheckBox checkBoxRevolutions;
+    
     private IO io;
     private Stage recordingswindow;
     private Stage settingswindow;
@@ -162,13 +189,21 @@ public class MainController implements Initializable {
      *
      */
     public void handleMenuItemQuit() {
+        quitProgramm();
+        System.exit(0);
     }
 
     /**
      *
      */
     public void handleMenuItemReboot() {
-
+        quitProgramm();
+        SensorMonitor sm = new SensorMonitor();
+        try {
+            sm.start(new Stage());
+        } catch (Exception ex) {
+            Logger.getLogger(MainController.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
 
     /**
@@ -303,12 +338,11 @@ public class MainController implements Initializable {
      * and closing the database connection.
      */
     public void quitProgramm() {
-        //isRecording = false;
-        //if (recording != null) {
-        //    saveRecording();
-        //}
-        //io.closeConnection();
-        System.exit(0);
+        if (recorder.getRecording() != null) {
+            recorder.stopRecording();
+        }
+        labelInfo.getScene().getWindow().hide();
+        io.closeConnection();
     }
 
     /**

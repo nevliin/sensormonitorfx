@@ -329,11 +329,6 @@ public class SensorChart extends LineChart implements ChartDataChangeListener {
         return chartdata;
     }
 
-    @Override
-    public void dataChanged(long sensorID) {
-        this.setData(chartdata.getObservableList());
-    }
-
     /**
      *
      */

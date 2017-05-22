@@ -173,6 +173,7 @@ public class Recorder implements CeBarRoundObserver<SensorEvent>{
      *
      */
     public void stopRecording() {
+        
         recording.saveRecording();
     }
 

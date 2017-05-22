@@ -74,17 +74,6 @@ public class ChartData implements DataChangeListener {
     }
 
     /**
-     * Notifies all listeners of a change in the graph data
-     *
-     * @param sensorID Sensor ID (name) of the graph that was changed
-     */
-    public void notifyListenersOfDataChange(long sensorID) {
-        for (ChartDataChangeListener dcl : listeners) {
-            dcl.dataChanged(sensorID);
-        }
-    }
-
-    /**
      * Notifies all listeners of a change in the graph axis
      *
      *
@@ -119,7 +108,6 @@ public class ChartData implements DataChangeListener {
             });
         }
         setPointsToSeries(chartGraphs.get(sensorID), points);
-        notifyListenersOfDataChange(sensorID);
     }
 
     /**
@@ -168,7 +156,6 @@ public class ChartData implements DataChangeListener {
             });
         }
         setPointsToSeries(chartGraphs.get(sensorID), points);
-        notifyListenersOfDataChange(sensorID);
     }
 
     /**

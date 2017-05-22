@@ -10,13 +10,6 @@ package de.hfts.sensormonitor.model;
  * @author Polarix IT Solutions
  */
 public interface ChartDataChangeListener {
-
-    /**
-     * Triggered when the data in a SensorChartData changes
-     *
-     * @param sensorID
-     */
-    void dataChanged(long sensorID);
     
     /**
      *

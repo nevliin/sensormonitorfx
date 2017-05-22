@@ -15,6 +15,7 @@ import java.util.logging.Logger;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
+import javafx.scene.image.Image;
 import javafx.scene.layout.BorderPane;
 import javafx.stage.Stage;
 
@@ -43,17 +44,18 @@ public class SensorMonitor extends Application {
             new ExceptionDialog(io.getLangpackString("exception_illegalsensoramount"), null);
             System.exit(0);
         }
+        URL url = getClass().getClassLoader().getResource("images/logo_rose_marble.png");
+        Image image = new Image(url.toExternalForm());
+        stage.getIcons().add(image);
         loadMainWindow(io, stage, sensors, isDBConnected);
-
-    
     }
-    
+
     /**
-     * 
+     *
      * @param io
      * @param stage
      * @param sensors
-     * @param isDBConnected 
+     * @param isDBConnected
      */
     private void loadMainWindow(IO io, Stage stage, List<BaseSensor> sensors, boolean isDBConnected) {
         try {
@@ -62,10 +64,10 @@ public class SensorMonitor extends Application {
             loader.setLocation(url);
             loader.setResources(io.getLangpack());
             BorderPane root = (BorderPane) loader.load();
-            
+
             ((MainController) loader.getController()).setIo(io);
             ((MainController) loader.getController()).setIsDBConnected(isDBConnected);
-            
+
             Scene scene = new Scene(root);
             scene.getStylesheets().addAll(io.getStyleSheet("base"), io.getStyleSheet(io.getConfigProp("style")));
             stage.setScene(scene);
@@ -73,6 +75,7 @@ public class SensorMonitor extends Application {
             stage.setMaximized(true);
             stage.setOnCloseRequest(eh -> {
                 ((MainController) loader.getController()).quitProgramm();
+                System.exit(0);
             });
             stage.show();
             ((MainController) loader.getController()).startDisplay(sensors);
@@ -89,7 +92,7 @@ public class SensorMonitor extends Application {
         // Start the application
         launch(args);
     }
-    
+
     /**
      *
      */

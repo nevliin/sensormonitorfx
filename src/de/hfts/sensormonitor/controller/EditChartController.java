@@ -19,21 +19,40 @@ import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 
 /**
- * FXML Controller class
+ * EditChartController --- Controller of the window for editing the X- and
+ * Y-scale bounds of a SensorChart
  *
  * @author Polarix IT Solutions
  */
 public class EditChartController implements Initializable {
 
+    /**
+     * ChartData of the related SensorChart
+     */
     ChartData chartData;
+    /**
+     * Title of the window, naming the related SensorChart
+     */
     @FXML
     private Label labelTitle;
+    /**
+     * Editable TextField showing the current lower X-Axis bound
+     */
     @FXML
     private TextField textFieldXMin;
+    /**
+     * Editable TextField showing the current upper X-Axis bound
+     */
     @FXML
     private TextField textFieldXMax;
+    /**
+     * Editable TextField showing the current lower Y-Axis bound
+     */
     @FXML
     private TextField textFieldYMin;
+    /**
+     * Editable TextField showing the current upper Y-Axis bound
+     */
     @FXML
     private TextField textFieldYMax;
 
@@ -49,6 +68,8 @@ public class EditChartController implements Initializable {
     }
 
     /**
+     * Sets the ChartData to the Controller and assigns the values of it to the
+     * according TextField's
      *
      * @param chartData
      */
@@ -72,14 +93,15 @@ public class EditChartController implements Initializable {
     }
 
     /**
-     *
+     * Handles the "Cancel" button by hiding the window
      */
     public void handleCancelButton() {
         textFieldXMax.getScene().getWindow().hide();
     }
 
     /**
-     *
+     * Handles the "Save" button by updating the bounds with the given values
+     * and handling possibly thrown exceptions.
      */
     public void handleSaveButton() {
         try {
@@ -93,6 +115,18 @@ public class EditChartController implements Initializable {
         }
     }
 
+    /**
+     * Verifies if the new bounds are valid and assigns them to the ChartData if
+     * they are. Throws the according exception if any of the bounds are not
+     * valid.
+     *
+     * @param xmin
+     * @param xmax
+     * @param ymin
+     * @param ymax
+     * @throws IllegalXScaleException
+     * @throws IllegalYScaleException
+     */
     private void updateBounds(String xmin, String xmax, String ymin, String ymax) throws IllegalXScaleException, IllegalYScaleException {
         boolean isXScaleValid = true;
         double valueXMin = 0;
