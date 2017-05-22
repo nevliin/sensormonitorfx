@@ -7,6 +7,7 @@
 <?import javafx.scene.chart.*?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
+<?import de.hfts.sensormonitor.misc.SensorChart?>
 <?import org.controlsfx.control.CheckComboBox?>
 
 
@@ -19,36 +20,18 @@
         <Separator 
             GridPane.columnIndex="0" GridPane.rowIndex="1"
             GridPane.columnSpan="3" />       
-        <LineChart fx:id="chartTemperature"
+        <SensorChart fx:id="chartTemperature"
                    GridPane.columnIndex="0" GridPane.rowIndex="2"
                    title="%temperature">
-            <xAxis>
-                <NumberAxis label="sec" autoRanging="false" />
-            </xAxis>
-            <yAxis>
-                <NumberAxis label="°C" />
-            </yAxis>
-        </LineChart>
-        <LineChart fx:id="chartPressure"
+        </SensorChart>
+        <SensorChart fx:id="chartPressure"
                    GridPane.columnIndex="1" GridPane.rowIndex="2"
                    title="%pressure" >
-            <xAxis>
-                <NumberAxis label="sec" autoRanging="false" />
-            </xAxis>
-            <yAxis>
-                <NumberAxis label="hPa" />
-            </yAxis>
-        </LineChart>
-        <LineChart fx:id="chartRevolutions"
+        </SensorChart>
+        <SensorChart fx:id="chartRevolutions"
                    GridPane.columnIndex="2" GridPane.rowIndex="2"
                    title="%revolutions" >
-            <xAxis>
-                <NumberAxis label="sec" autoRanging="false" />
-            </xAxis>
-            <yAxis>
-                <NumberAxis label="RPM" />
-            </yAxis>
-        </LineChart>              
+        </SensorChart>              
     </children>
     <columnConstraints>
         <ColumnConstraints hgrow="ALWAYS"/>                        

@@ -80,9 +80,9 @@ public class Recording {
             Logger.getLogger(SensorMonitor.class.getName()).log(Level.SEVERE, null, ex);
         }
 
-        chartDatas.put(Data.TEMPERATURE, new ChartData());
-        chartDatas.put(Data.PRESSURE, new ChartData());
-        chartDatas.put(Data.REVOLUTIONS, new ChartData());
+        chartDatas.put(Data.TEMPERATURE, new ChartData(Data.TEMPERATURE));
+        chartDatas.put(Data.PRESSURE, new ChartData(Data.PRESSURE));
+        chartDatas.put(Data.REVOLUTIONS, new ChartData(Data.REVOLUTIONS));
 
         for (Data d : chartDatas.keySet()) {
             chartDatas.get(d).setxMin(0);

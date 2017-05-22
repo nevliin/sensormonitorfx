@@ -22,11 +22,11 @@ public class RecordingDisplayController implements Initializable {
     IO io;
 
     @FXML
-    private LineChart chartTemperature;
+    private SensorChart chartTemperature;
     @FXML
-    private LineChart chartPressure;
+    private SensorChart chartPressure;
     @FXML
-    private LineChart chartRevolutions;
+    private SensorChart chartRevolutions;
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
@@ -46,9 +46,9 @@ public class RecordingDisplayController implements Initializable {
      * @param recording
      */
     public void setRecording(Recording recording) {
-        SensorChart sensorChartTemperature = new SensorChart(chartTemperature, recording.getChartData(Data.TEMPERATURE), io.getLangpack());
-        SensorChart sensorChartPressure = new SensorChart(chartPressure, recording.getChartData(Data.PRESSURE), io.getLangpack());
-        SensorChart sensorChartRevolutions = new SensorChart(chartRevolutions, recording.getChartData(Data.REVOLUTIONS), io.getLangpack());
+        chartTemperature.setChartData(recording.getChartData(Data.TEMPERATURE), io.getLangpack(), "sec", "°C");
+        chartPressure.setChartData(recording.getChartData(Data.PRESSURE), io.getLangpack(), "sec", "hPa");
+        chartRevolutions.setChartData(recording.getChartData(Data.REVOLUTIONS), io.getLangpack(), "sec", "RPM");
     }
 
 }

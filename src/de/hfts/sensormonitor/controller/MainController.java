@@ -40,23 +40,23 @@ public class MainController implements Initializable {
     @FXML
     private Menu menuRecordings;
     @FXML
-    private LineChart chartTemperature;
+    private SensorChart chartTemperature;
     @FXML
-    private LineChart chartPressure;
+    private SensorChart chartPressure;
     @FXML
-    private LineChart chartRevolutions;
+    private SensorChart chartRevolutions;
     @FXML
     private CheckComboBox checkComboBoxSensors;
     @FXML
-    private LineChart chartTemperatureSpecific;
+    private SensorChart chartTemperatureSpecific;
     @FXML
     private TableView tableViewTemperature;
     @FXML
-    private LineChart chartPressureSpecific;
+    private SensorChart chartPressureSpecific;
     @FXML
     private TableView tableViewPressure;
     @FXML
-    private LineChart chartRevolutionsSpecific;
+    private SensorChart chartRevolutionsSpecific;
     @FXML
     private TableView tableViewRevolutions;
     @FXML
@@ -129,9 +129,9 @@ public class MainController implements Initializable {
         dataRevolutions.setyScaleMax(Double.valueOf(io.getConfigProp("revolutions_yscalemax")));
         dataRevolutions.setyScaleMin(Double.valueOf(io.getConfigProp("revolutions_yscalemin")));
 
-        SensorChart sensorChartTemperature = new SensorChart(chartTemperature, dataTemperature, io.getLangpack());
-        SensorChart sensorChartPressure = new SensorChart(chartPressure, dataPressure, io.getLangpack());
-        SensorChart sensorChartRevolutions = new SensorChart(chartRevolutions, dataRevolutions, io.getLangpack());
+        chartTemperature.setChartData(dataTemperature, io.getLangpack(), "sec", "°C");
+        chartPressure.setChartData(dataPressure, io.getLangpack(), "sec", "hPa");
+        chartRevolutions.setChartData(dataRevolutions, io.getLangpack(), "sec", "RPM");
 
         ChartData dataTemperatureSpecific = dataTemperature.clone();
         chartData.put(Data.TEMPERATURE, dataTemperatureSpecific);
@@ -140,9 +140,9 @@ public class MainController implements Initializable {
         ChartData dataRevolutionsSpecific = dataRevolutions.clone();
         chartData.put(Data.REVOLUTIONS, dataRevolutionsSpecific);
 
-        SensorChart sensorChartTemperatureSpecific = new SensorChart(chartTemperatureSpecific, dataTemperatureSpecific, io.getLangpack());
-        SensorChart sensorChartPressureSpecific = new SensorChart(chartPressureSpecific, dataPressureSpecific, io.getLangpack());
-        SensorChart sensorChartRevolutionsSpecific = new SensorChart(chartRevolutionsSpecific, dataRevolutionsSpecific, io.getLangpack());
+        chartTemperatureSpecific.setChartData(dataTemperatureSpecific, io.getLangpack(), "sec", "°C");
+        chartPressureSpecific.setChartData(dataPressureSpecific, io.getLangpack(), "sec", "hPa");
+        chartRevolutionsSpecific.setChartData(dataRevolutionsSpecific, io.getLangpack(), "sec", "RPM");
 
         for (long l : data.getSensorIDs()) {
             checkComboBoxSensors.getItems().add(Long.toString(l));
@@ -195,7 +195,7 @@ public class MainController implements Initializable {
     public void handleMenuItemShowAll() {
         if (recordingswindow == null) {
             try {
-                FXMLLoader loader = new FXMLLoader(this.getClass().getClassLoader().getResource("de/hfts/sensormonitor/view/recordingslist.fxml"), io.getLangpack());
+                FXMLLoader loader = new FXMLLoader(this.getClass().getClassLoader().getResource("de/hfts/sensormonitor/view/recordingsListWindow.fxml"), io.getLangpack());
                 BorderPane root = (BorderPane) loader.load();
                 ((RecordingsListController) loader.getController()).setListItems(io.getTables());
                 ((RecordingsListController) loader.getController()).setParentController(this);

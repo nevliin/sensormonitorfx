@@ -43,36 +43,18 @@
                                 <Separator 
                                     GridPane.columnIndex="0" GridPane.rowIndex="1"
                                     GridPane.columnSpan="3" />       
-                                <LineChart fx:id="chartTemperature"
+                                <SensorChart fx:id="chartTemperature"
                                            GridPane.columnIndex="0" GridPane.rowIndex="2"
                                            title="%temperature">
-                                    <xAxis>
-                                        <NumberAxis label="%seconds" autoRanging="false"  />
-                                    </xAxis>
-                                    <yAxis>
-                                        <NumberAxis label="°C" />
-                                    </yAxis>
-                                </LineChart>
-                                <LineChart fx:id="chartPressure"
+                                </SensorChart>
+                                <SensorChart fx:id="chartPressure"
                                            GridPane.columnIndex="1" GridPane.rowIndex="2"
                                            title="%pressure" >
-                                    <xAxis>
-                                        <NumberAxis label="%seconds" autoRanging="false"  />
-                                    </xAxis>
-                                    <yAxis>
-                                        <NumberAxis label="hPa" />
-                                    </yAxis>
-                                </LineChart>
-                                <LineChart fx:id="chartRevolutions"
+                                </SensorChart>
+                                <SensorChart fx:id="chartRevolutions"
                                            GridPane.columnIndex="2" GridPane.rowIndex="2"
                                            title="%revolutions" >
-                                    <xAxis>
-                                        <NumberAxis label="%seconds" autoRanging="false" />
-                                    </xAxis>
-                                    <yAxis>
-                                        <NumberAxis label="RPM" />
-                                    </yAxis>
-                                </LineChart>
+                                </SensorChart>
                                 <GridPane fx:id="recordingControls" 
                                           GridPane.columnIndex="0" GridPane.rowIndex="4"
                                           GridPane.columnSpan="3" >
@@ -131,16 +113,10 @@
                                 <Separator 
                                     GridPane.columnIndex="0" GridPane.rowIndex="1"
                                     GridPane.columnSpan="2" />       
-                                <LineChart fx:id="chartTemperatureSpecific"
+                                <SensorChart fx:id="chartTemperatureSpecific"
                                            GridPane.columnIndex="0" GridPane.rowIndex="2"
                                            title="%temperature">
-                                    <xAxis>
-                                        <NumberAxis label="%seconds" autoRanging="false"  />
-                                    </xAxis>
-                                    <yAxis>
-                                        <NumberAxis label="°C" />
-                                    </yAxis>
-                                </LineChart>
+                                </SensorChart>
                                 <TableView fx:id="tableViewTemperature" 
                                     GridPane.columnIndex="1" GridPane.rowIndex="2" />
                             </children>
@@ -163,16 +139,10 @@
                                 <Separator 
                                     GridPane.columnIndex="0" GridPane.rowIndex="1"
                                     GridPane.columnSpan="2" />       
-                                <LineChart fx:id="chartPressureSpecific"
+                                <SensorChart fx:id="chartPressureSpecific"
                                            GridPane.columnIndex="0" GridPane.rowIndex="2"
                                            title="%temperature">
-                                    <xAxis>
-                                        <NumberAxis label="%seconds" autoRanging="false"  />
-                                    </xAxis>
-                                    <yAxis>
-                                        <NumberAxis label="°C" />
-                                    </yAxis>
-                                </LineChart>
+                                </SensorChart>
                                 <TableView fx:id="tableViewPressure" 
                                     GridPane.columnIndex="1" GridPane.rowIndex="2" />
                             </children>
@@ -195,16 +165,10 @@
                                 <Separator 
                                     GridPane.columnIndex="0" GridPane.rowIndex="1"
                                     GridPane.columnSpan="2" />       
-                                <LineChart fx:id="chartRevolutionsSpecific"
+                                <SensorChart fx:id="chartRevolutionsSpecific"
                                            GridPane.columnIndex="0" GridPane.rowIndex="2"
                                            title="%temperature">
-                                    <xAxis>
-                                        <NumberAxis label="%seconds" autoRanging="false"  />
-                                    </xAxis>
-                                    <yAxis>
-                                        <NumberAxis label="°C" />
-                                    </yAxis>
-                                </LineChart>
+                                </SensorChart>
                                 <TableView fx:id="tableViewRevolutions" 
                                     GridPane.columnIndex="1" GridPane.rowIndex="2" />
                             </children>

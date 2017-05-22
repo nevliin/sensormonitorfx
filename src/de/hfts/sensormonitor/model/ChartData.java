@@ -48,8 +48,9 @@ public class ChartData implements DataChangeListener {
     /**
      *
      */
-    public ChartData() {
+    public ChartData(Data type) {
         listeners = new ArrayList<>();
+        this.type = type;
         this.chartGraphs = new HashMap<>();
     }
 
@@ -141,7 +142,7 @@ public class ChartData implements DataChangeListener {
                 time = lastPoint.getTime() - p.time.getTime();
                 time = lastTime - (time / 1000.0);
             }
-            if (time >= this.getxMin()-1) {
+            if (time >= this.getxMin() - 1) {
                 if (!p.isEmpty()) {
                     try {
                         series.getData().add(new XYChart.Data(time, p.value));
@@ -335,7 +336,5 @@ public class ChartData implements DataChangeListener {
     public void setType(Data type) {
         this.type = type;
     }
-    
-    
 
 }

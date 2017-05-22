@@ -58,7 +58,7 @@ public class SensorMonitor extends Application {
     private void loadMainWindow(IO io, Stage stage, List<BaseSensor> sensors, boolean isDBConnected) {
         try {
             FXMLLoader loader = new FXMLLoader();
-            URL url = this.getClass().getClassLoader().getResource("de/hfts/sensormonitor/view/main.fxml");
+            URL url = this.getClass().getClassLoader().getResource("de/hfts/sensormonitor/view/mainWindow.fxml");
             loader.setLocation(url);
             loader.setResources(io.getLangpack());
             BorderPane root = (BorderPane) loader.load();
