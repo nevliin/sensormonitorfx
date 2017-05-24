@@ -13,8 +13,8 @@ import javafx.collections.ObservableList;
 import javafx.scene.chart.XYChart;
 
 /**
- * ChartData --- Converts data from the SensorData to XYChart.Series and stores it,
- * provides the model for the SensorChart
+ * ChartData --- Converts data from the SensorData to XYChart.Series and stores
+ * it, provides the model for the SensorChart
  *
  * @author Polarix IT Solutions
  */
@@ -46,8 +46,9 @@ public class ChartData implements SensorDataChangeListener {
 
     // -------------- CONSTRUCTORS ---------------------------------------------
     /**
-     * Creates new ChartData, sets type and starts listening to the SensorData for new data
-     * 
+     * Creates new ChartData, sets type and starts listening to the SensorData
+     * for new data
+     *
      * @param type
      * @param sensorData
      */
@@ -98,17 +99,9 @@ public class ChartData implements SensorDataChangeListener {
         }
     }
 
-    // -------------- GETTERS & SETTERS ----------------------------------------
+    // -------------- OTHER METHODS --------------------------------------------
     /**
-     *
-     * @param sensorID
-     * @return
-     */
-    public XYChart.Series<Double, Double> getSeries(long sensorID) {
-        return chartGraphs.get(sensorID);
-    }
-
-    /**
+     * Adds a List of SensorDataPoint's to the ChartData
      *
      * @param sensorID
      * @param points
@@ -126,7 +119,7 @@ public class ChartData implements SensorDataChangeListener {
     }
 
     /**
-     * Clear the Series and add the GraphPoint's in the List to it
+     * Clears the series and adds the given SensorDataPoint's to it
      *
      * @param series
      * @param points
@@ -135,7 +128,7 @@ public class ChartData implements SensorDataChangeListener {
         try {
             series.getData().clear();
         } catch (NullPointerException e) {
-            // Catching NullPointerException if the series doesn't have any data yet
+            // NO-OP - Catching NullPointerException if the series doesn't have any data yet
         }
         double lastTime = 0;
         Date lastPoint = null;
@@ -159,6 +152,11 @@ public class ChartData implements SensorDataChangeListener {
         }
     }
 
+    /**
+     * Listener for changes in the connected SensorData
+     *
+     * @param sensorID
+     */
     @Override
     public void dataChanged(long sensorID) {
         ArrayList<SensorDataPoint> points = sensorData.getPoints(type, sensorID);
@@ -174,13 +172,10 @@ public class ChartData implements SensorDataChangeListener {
     }
 
     /**
+     * Returns a new ChartData with the attributes of this ChartData
      *
      * @return
      */
-    public ObservableList<XYChart.Series<Double, Double>> getObservableList() {
-        return lineChartModel;
-    }
-
     public ChartData clone() {
         ChartData result = new ChartData(this.type, this.sensorData);
         sensorData.addListener(this);
@@ -193,6 +188,25 @@ public class ChartData implements SensorDataChangeListener {
         result.setyScaleMax(yScaleMax);
         result.setyScaleMin(yScaleMin);
         return result;
+    }
+
+    // -------------- GETTERS & SETTERS ----------------------------------------
+    /**
+     * Returns a series from the ChartData based on the SensorID
+     *
+     * @param sensorID
+     * @return
+     */
+    public XYChart.Series<Double, Double> getSeries(long sensorID) {
+        return chartGraphs.get(sensorID);
+    }
+
+    /**
+     *
+     * @return
+     */
+    public ObservableList<XYChart.Series<Double, Double>> getObservableList() {
+        return lineChartModel;
     }
 
     /**

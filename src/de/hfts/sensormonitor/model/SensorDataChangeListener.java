@@ -11,8 +11,8 @@ public interface SensorDataChangeListener {
 
     /**
      * Triggered when the data in a SensorChartData changes
-     *
-     * @param graphname Sensor ID (name) of the graph which was changed
+     *  
+     * @param sensorID Sensor ID (name) of the graph which was changed
      */
     void dataChanged(long sensorID);
 

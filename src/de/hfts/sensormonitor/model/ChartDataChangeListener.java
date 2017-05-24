@@ -6,13 +6,13 @@
 package de.hfts.sensormonitor.model;
 
 /**
- *
+ * ChartDataChangeListener --- Listener for a ChartData
  * @author Polarix IT Solutions
  */
 public interface ChartDataChangeListener {
     
     /**
-     *
+     * Triggered when the axis bounds in the ChartData changes
      */
     void axisChanged();
 

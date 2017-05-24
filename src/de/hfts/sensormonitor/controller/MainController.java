@@ -13,6 +13,7 @@ import java.text.ParseException;
 import java.util.*;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.*;
 import javafx.scene.*;
@@ -365,7 +366,7 @@ public class MainController implements Initializable {
         chartRevolutionsSpecific.setChartData(dataRevolutionsSpecific, io.getLangpack(), "sec", "RPM");
 
         for (long l : data.getSensorIDs()) {
-            checkComboBoxSensors.getItems().add(Long.toString(l));
+            checkComboBoxSensors = new CheckComboBox(FXCollections.observableArrayList(data.getSensorIDs()));
         }
 
         for (BaseSensor b : sensors) {

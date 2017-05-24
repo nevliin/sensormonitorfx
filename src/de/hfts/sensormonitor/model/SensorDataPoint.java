@@ -8,24 +8,23 @@ package de.hfts.sensormonitor.model;
 import java.util.Date;
 
 /**
+ * SensorDataPoint --- Saves the time and value of one type of information from
+ * a SensorEvent
  *
  * @author Polarix IT Solutions
  */
 public class SensorDataPoint {
-    
-    /**
-     *
-     */
-    public double value;
 
-    /**
-     *
-     */
+    // -------------- PUBLIC FIELDS --------------------------------------------
+    public double value;
     public Date time;
+    
+    // -------------- PRIVATE FIELDS -------------------------------------------
     private boolean isEmpty = false;
 
+    // -------------- CONSTRUCTORS ---------------------------------------------
     /**
-     *
+     * 
      * @param value
      * @param time
      * @param isEmpty
@@ -35,7 +34,7 @@ public class SensorDataPoint {
         this.time = time;
         this.isEmpty = isEmpty;
     }
-    
+
     /**
      *
      * @param value
@@ -52,6 +51,7 @@ public class SensorDataPoint {
     public SensorDataPoint() {
     }
 
+    // -------------- GETTERS & SETTERS ----------------------------------------
     /**
      *
      * @return
@@ -67,7 +67,5 @@ public class SensorDataPoint {
     public void isEmpty(boolean isEmpty) {
         this.isEmpty = isEmpty;
     }
-    
-    
-    
+
 }
