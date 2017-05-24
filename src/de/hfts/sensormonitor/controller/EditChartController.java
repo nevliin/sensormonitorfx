@@ -5,8 +5,7 @@
  */
 package de.hfts.sensormonitor.controller;
 
-import de.hfts.sensormonitor.exceptions.IllegalXScaleException;
-import de.hfts.sensormonitor.exceptions.IllegalYScaleException;
+import de.hfts.sensormonitor.exceptions.*;
 import de.hfts.sensormonitor.misc.ExceptionDialog;
 import de.hfts.sensormonitor.model.ChartData;
 import java.net.URL;
@@ -15,12 +14,11 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
-import javafx.scene.control.Label;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
 
 /**
- * EditChartController --- Controller of the window for editing the X- and
- * Y-scale bounds of a SensorChart
+ * EditChartController --- FXML Controller of editChartWindow.fxml, the window
+ * for editing the X- and Y-scale bounds of a SensorChart
  *
  * @author Polarix IT Solutions
  */
@@ -120,10 +118,10 @@ public class EditChartController implements Initializable {
      * they are. Throws the according exception if any of the bounds are not
      * valid.
      *
-     * @param xmin
-     * @param xmax
-     * @param ymin
-     * @param ymax
+     * @param xmin Lower bound of the X-axis
+     * @param xmax Upper bound of the X-axis
+     * @param ymin Lower bound of the Y-axis
+     * @param ymax Upper bound of the Y-axis
      * @throws IllegalXScaleException
      * @throws IllegalYScaleException
      */

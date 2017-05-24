@@ -14,19 +14,34 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 /**
- * Class for a recording loaded from the database
+ * Recording --- Converts a given ResultSet into ChartData's, stores them to be
+ * used for SensorCharts
  *
  * @author Polarix IT Solutions
  */
 public class Recording {
 
-    private Timestamp firsttimestamp; // First timestamp of the recording
-    private Timestamp lasttimestamp; // Last timestamp of the recording
-    private HashMap<Long, String> sensors = new HashMap<>(); // A map with the sensorids as key and the corresponding sensortypes as value
+    // -------------- PRIVATE FIELDS -------------------------------------------
+    /**
+     * First timestamp of the recording
+     */
+    private Timestamp firsttimestamp;
+    /**
+     * Last timestamp of the recording
+     */
+    private Timestamp lasttimestamp; 
+    /**
+     * Map storing SensorIDs and TypeCodes
+     */
+    private HashMap<Long, String> sensors = new HashMap<>();
+    /**
+     * Map storing ChartData's based on SensorData.Data
+     */
     private HashMap<Data, ChartData> chartDatas = new HashMap<>();
 
+    // -------------- CONSTRUCTOR ----------------------------------------------
     /**
-     *
+     * Creates Recording, converts the given ResultSet into multiple ChartData's, sets their attributes and stores them
      * @param recording
      * @param io
      */
@@ -110,6 +125,7 @@ public class Recording {
 
     }
 
+    // -------------- GETTERS & SETTERS ----------------------------------------
     /**
      *
      * @return

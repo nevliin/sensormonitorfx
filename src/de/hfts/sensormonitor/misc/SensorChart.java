@@ -20,26 +20,44 @@ import javafx.stage.Stage;
 
 /**
  * SensorChart --- Class inherited from JavaFX' LineChart. Displays the data
- * saved in a SensorChartData and reacts to changes of the data.
+ * saved in a ChartData and reacts to changes of the data.
  *
  * @author Polarix IT Solutions
  */
 public class SensorChart extends LineChart implements ChartDataChangeListener {
 
+    // -------------- PRIVATE FIELDS -------------------------------------------
+    /**
+     * ContextMenu shown when right-clicking on the SensorChart
+     */
     private ContextMenu contextMenu;
+    /**
+     * Data model of the SensorChart
+     */
     private ChartData chartdata;
+    /**
+     * Window for editing the bounds of the SensorChart
+     */
     private Stage editChartWindow;
 
     private ResourceBundle langpack;
 
+    // -------------- CONSTRUCTORS ---------------------------------------------
+    /**
+     * Default constructor for the FXMLLoader
+     */
     public SensorChart() {
         super(new NumberAxis(), new NumberAxis());
     }
-    
+
+    // -------------- GETTERS & SETTERS ----------------------------------------
     /**
+     * Set the Data model of the SensorChart as well as the language
+     * ResourceBundle and the axis titles.
      *
-     * @param lineChart
      * @param chartData
+     * @param xAxisTitle
+     * @param yAxisTitle
      * @param langpack
      */
     public void setChartData(ChartData chartData, ResourceBundle langpack, String xAxisTitle, String yAxisTitle) {
@@ -53,6 +71,7 @@ public class SensorChart extends LineChart implements ChartDataChangeListener {
             updateAxis();
         });
 
+        // Set up the ContextMenu
         contextMenu = initContextMenu();
         this.setAnimated(false);
         this.setCreateSymbols(false);
@@ -63,12 +82,32 @@ public class SensorChart extends LineChart implements ChartDataChangeListener {
         this.addEventHandler(MouseEvent.MOUSE_PRESSED, event -> {
             contextMenu.hide();
         });
-        
+
+        // Set the axis titles
         this.getXAxis().setLabel(xAxisTitle);
         this.getYAxis().setLabel(yAxisTitle);
     }
 
-// <--- Window operations --->
+    /**
+     * Set the SensorChartData of the SensorChart
+     *
+     * @param data
+     */
+    public void setChartData(ChartData data) {
+        chartdata = data;
+        data.addListener(this);
+        updateAxis();
+    }
+
+    /**
+     *
+     * @return
+     */
+    public ChartData getChartData() {
+        return chartdata;
+    }
+
+    // -------------- OTHER METHODS --------------------------------------------
     /**
      * Add tooltips displaying detailed information to each XY-point on the
      * LineChart. Call this after the nodes have been displayed, only to be used
@@ -171,42 +210,6 @@ public class SensorChart extends LineChart implements ChartDataChangeListener {
         }
     }
 
-// <--- Graph operations --->
-    /**
-     * Sets up XY-Series for each String in the parameter. Required for realtime
-     * SensorCharts with dynamic data.
-     *
-     * @param graphs String array containing the Sensor IDs (names) of the
-     * graphs to be display
-     */
-    public void setUpGraphs(String[] graphs) {
-    }
-
-    /**
-     * Add a graph to the LineChart. Only to be used for static recordings,
-     * won't work with dynamic data.
-     *
-     * @param points List of GraphPoints, containing the graph to be displayed
-     * @param graphname Sensor ID (name) of the graph
-     */
-    public void addGraph(List<GraphPoint> points, String graphname) {
-    }
-
-    /**
-     * Sets the specified graphs visibility
-     *
-     * @param graphname Sensor ID (name) of the graph
-     * @param isVisible Visibility status
-     */
-    private void setGraphVisible(String graphname, boolean isVisible) {
-        /*if (isVisible) {
-            setPointsToSeries(seriesdata.get(graphname), chartdata.getPoints(Long.valueOf(graphname)));
-        } else {
-            seriesdata.get(graphname).getData().clear();
-        }
-        installTooltips();*/
-    }
-
     /**
      * Get the average of all Y-values of the specified series. Returns "NaN" if
      * the parameter is null.
@@ -233,7 +236,7 @@ public class SensorChart extends LineChart implements ChartDataChangeListener {
     }
 
     /**
-     * Updates the X- and Y-axis of the LineChart if the bounds changed
+     * Updates the X- and Y-axis of the SensorChart if the bounds changed
      */
     public void updateAxis() {
         Platform.runLater(() -> {
@@ -253,85 +256,6 @@ public class SensorChart extends LineChart implements ChartDataChangeListener {
         });
     }
 
-    /**
-     * Clear the Series and add the GraphPoint's in the List to it
-     *
-     * @param series
-     * @param points
-     */
-    private void setPointsToSeries(XYChart.Series series, List<SensorDataPoint> points) {
-        try {
-            series.getData().clear();
-        } catch (NullPointerException e) {
-            // Catching NullPointerException if the series doesn't have any data yet
-        }
-        double lastTime = 0;
-        Date lastPoint = null;
-        for (SensorDataPoint p : points) {
-            double time = 0;
-            if (lastPoint != null) {
-                time = lastPoint.getTime() - p.time.getTime();
-                time = lastTime - (time / 1000.0);
-            }
-            if (time > chartdata.getxMin()) {
-                if (!p.isEmpty()) {
-                    try {
-                        series.getData().add(new XYChart.Data(time, p.value));
-                    } catch (NullPointerException e) {
-
-                    }
-                }
-            }
-            lastPoint = p.time;
-            lastTime = time;
-        }
-    }
-
-// <--- Getters & Setters --->    
-    /**
-     * Set the SensorChartData of the SensorChart
-     *
-     * @param data
-     */
-    public void setChartData(ChartData data) {
-        chartdata = data;
-        data.addListener(this);
-        updateAxis();
-    }
-
-    /**
-     * Set the maximum and minimum of the X-scale
-     *
-     * @param xscalemin Minimum lower bound of the X-axis
-     * @param xscalemax Maximum upper bound of the X-axis
-     */
-    public void setXScaleBounds(double xscalemin, double xscalemax) {
-        chartdata.setxScaleMin(xscalemin);
-        chartdata.setxScaleMax(xscalemax);
-    }
-
-    /**
-     * Set the maximum and minimum of the Y-scale
-     *
-     * @param yscalemin Minimum lower bound of the Y-axis
-     * @param yscalemax Maximum upper bound of the Y-axis
-     */
-    public void setYScaleBounds(double yscalemin, double yscalemax) {
-        chartdata.setxScaleMin(yscalemin);
-        chartdata.setxScaleMax(yscalemax);
-    }
-
-    /**
-     *
-     * @return
-     */
-    public ChartData getChartData() {
-        return chartdata;
-    }
-
-    /**
-     *
-     */
     @Override
     public void axisChanged() {
         updateAxis();

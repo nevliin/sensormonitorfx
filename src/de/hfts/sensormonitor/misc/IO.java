@@ -14,21 +14,48 @@ import java.util.logging.*;
 import javafx.stage.DirectoryChooser;
 
 /**
- * Class to handle all input/output actions, both from the JAR itself and the OS
- * 
+ * IO --- Handle all input/output actions, both from the JAR itself and the OS
+ *
  * @author Polarix IT Solutions
  */
 public class IO {
 
+    // -------------- PRIVATE FIELDS -------------------------------------------
+    /**
+     * List of availables language ResourceBundle's
+     */
     private List<String> languages = new ArrayList<>();
+    /**
+     * List of available CSS stylesheets, excluding base.css
+     */
     private List<String> styles = new ArrayList<String>();
-    private List<String> tables = new ArrayList<>(); // List of all tables in the database
-    private String columns = "(TIME TIMESTAMP NOT NULL, ROWID INT, SENSORID BIGINT NOT NULL, SENSORTYPE CHARACTER(30) NOT NULL, TEMPERATURE INT, PRESSURE INT, REVOLUTIONS INT);";
-    private Connection conn; // Connection to the H2 embedded database
-    private Properties prop; // Properties file loaded from the home.dir/.sensormonitor
-    private Statement stat; // Statement to execute queries and commands
+    /**
+     * Configuration properties file loaded from the home.dir/.sensormonitor
+     */
+    private Properties configProp;
+    /**
+     * Language ResourceBundle for all texts visible to the user
+     */
     private ResourceBundle langpack;
 
+    /**
+     * List of tables in the connected H2 database
+     */
+    private List<String> tables = new ArrayList<>();
+    /**
+     * Template for the columns of tables for recordings
+     */
+    private String columns = "(TIME TIMESTAMP NOT NULL, ROWID INT, SENSORID BIGINT NOT NULL, SENSORTYPE CHARACTER(30) NOT NULL, TEMPERATURE INT, PRESSURE INT, REVOLUTIONS INT);";
+    /**
+     * Connection to the H2 embedded database
+     */
+    private Connection conn;
+    /**
+     * Statement to execute queries and commands for the database
+     */
+    private Statement stat;
+
+    // -------------- CONSTRUCTORS ---------------------------------------------
     /**
      * Standard constructor; tries to load the configuration and creates it if
      * it doesn't exist yet.
@@ -53,17 +80,17 @@ public class IO {
             folder.mkdir();
         }
 
-        // Try to load the properties from home.dir/.sensormonitor
+        // Try to load the configProperties from home.dir/.sensormonitor
         boolean isPropertiesExistant = true;
-        prop = new Properties();
+        configProp = new Properties();
         try {
             FileInputStream stream = new FileInputStream(currentUsersHomeDir + File.separator + ".sensormonitor" + File.separator + "config.properties");
-            prop.load(stream);
+            configProp.load(stream);
         } catch (FileNotFoundException ex) {
             Logger.getLogger(IO.class.getName()).log(Level.SEVERE, null, ex);
             InputStream stream = this.getClass().getClassLoader().getResourceAsStream("defaultconfig/config.properties");
             try {
-                prop.load(stream);
+                configProp.load(stream);
             } catch (IOException ex1) {
                 Logger.getLogger(IO.class.getName()).log(Level.SEVERE, null, ex1);
             }
@@ -72,7 +99,7 @@ public class IO {
             Logger.getLogger(IO.class.getName()).log(Level.SEVERE, null, ex);
         }
 
-        // If the properties file does not exist...
+        // If the configProperties file does not exist...
         if (!isPropertiesExistant) {
             // ... make the user pick a save directory for the database ...
             DirectoryChooser directoryChooser = new DirectoryChooser();
@@ -84,10 +111,10 @@ public class IO {
             FileOutputStream output = null;
             if (dir != null) {
                 try {
-                    // ... set it in the default config.properties and save them to home.dir/.sensormonitor
-                    prop.setProperty("savepath", dir.getAbsolutePath());
+                    // ... set it in the default config.configProperties and save them to home.dir/.sensormonitor
+                    configProp.setProperty("savepath", dir.getAbsolutePath());
                     output = new FileOutputStream(currentUsersHomeDir + File.separator + ".sensormonitor" + File.separator + "config.properties");
-                    prop.store(output, null);
+                    configProp.store(output, null);
                 } catch (IOException ex) {
                     Logger.getLogger(IO.class.getName()).log(Level.SEVERE, null, ex);
                 } finally {
@@ -107,10 +134,81 @@ public class IO {
         this.langpack = ResourceBundle.getBundle("lang.lang", new Locale(getConfigProp("lang")));
     }
 
-// <--- Database Operations -->    
+    // -------------- GETTERS & SETTERS ----------------------------------------    
+    /**
+     * Returns the list of tables in the database
+     *
+     * @return
+     */
+    public List<String> getTables() {
+        return this.tables;
+    }
+
+    /**
+     * Get a config configProperty
+     *
+     * @param key
+     * @return
+     */
+    public String getConfigProp(String key) {
+        return configProp.getProperty(key);
+    }
+
+    /**
+     * Set a config configProperty
+     *
+     * @param key
+     * @param value
+     */
+    public void setConfigProp(String key, String value) {
+        configProp.setProperty(key, value);
+    }
+    
+    /**
+     * Returns the loaded language ResourceBundle
+     * @return
+     */
+    public ResourceBundle getLangpack() {
+        return langpack;
+    }
+
+    /**
+     * Sets the language ResourceBundle
+     * @param langpack
+     */
+    public void setLangpack(ResourceBundle langpack) {
+        this.langpack = langpack;
+    }
+
+    /**
+     * Get a value from the loaded language ResourceBundle
+     * @param key
+     * @return
+     */
+    public String getLangpackString(String key) {
+        return langpack.getString(key);
+    }    
+    
+    /**
+     * Get a list of all available language ResourceBundle's
+     * @return 
+     */
+    public List<String> getLanguages() {
+        return languages;
+    }
+    
+    /**
+     * Get a list of all available stylesheets excluding base.css
+     * @return 
+     */
+    public List<String> getStyles() {
+        return styles;
+    }
+    
+    // -------------- DATABASE METHODS -----------------------------------------
     /**
      * Connect to the H2 database located in the folder specified in the
-     * properties and get a list of all tables
+     * configProperties and get a list of all tables
      *
      * @throws java.lang.ClassNotFoundException
      * @throws java.sql.SQLException
@@ -130,18 +228,9 @@ public class IO {
     }
 
     /**
-     * Returns the list of tables in the database
-     *
-     * @return
-     */
-    public List<String> getTables() {
-        return this.tables;
-    }
-
-    /**
      * Create a new table in the database with a generic name
      *
-     * @return
+     * @return Name of the table
      */
     public String createGenericTable() {
         boolean flag = true;
@@ -288,34 +377,14 @@ public class IO {
         return result;
     }
 
-// <--- Properties operations --->
+    // -------------- PROPERTIES METHODS ---------------------------------------
     /**
-     * Get a config property
-     *
-     * @param key
-     * @return 
-     */
-    public String getConfigProp(String key) {
-        return prop.getProperty(key);
-    }
-
-    /**
-     * Set a config property
-     *
-     * @param key
-     * @param value
-     */
-    public void setConfigProp(String key, String value) {
-        prop.setProperty(key, value);
-    }
-
-    /**
-     * Saves the config.properties
+     * Saves the config.configProperties
      */
     public void saveConfigProperties() {
         try {
-            FileOutputStream output = new FileOutputStream(System.getProperty("user.home") + File.separator + ".sensormonitor" + File.separator + "config.properties");
-            prop.store(output, null);
+            FileOutputStream output = new FileOutputStream(System.getProperty("user.home") + File.separator + ".sensormonitor" + File.separator + "config.configProperties");
+            configProp.store(output, null);
         } catch (FileNotFoundException ex) {
             Logger.getLogger(IO.class.getName()).log(Level.SEVERE, null, ex);
         } catch (IOException ex) {
@@ -324,9 +393,9 @@ public class IO {
     }
 
     /**
-     * Get a List of the sensors defined in sensors.properties
+     * Get a List of the sensors defined in sensors.configProperties
      *
-     * @return
+     * @return List of sensors
      * @throws IllegalSensorAmountException
      */
     public List<BaseSensor> loadSensors() throws IllegalSensorAmountException {
@@ -360,14 +429,14 @@ public class IO {
         return result;
     }
 
-// <--- ResourceBundles operations --->        
+    // -------------- RESOURCEBUNDLE METHODS -----------------------------------
     /**
      * Get a hashmap of the available language packs with the corresponding
      * Locale
      *
      * @return
      */
-    public HashMap<String, Locale> getAvailableLanguages() {
+    public HashMap<String, Locale> loadAvailableLanguages() {
         HashMap<String, Locale> result = new HashMap<>();
         try {
             URI uri = this.getClass().getResource("/lang").toURI();
@@ -395,14 +464,11 @@ public class IO {
         return result;
     }
 
-// <--- CSS Stylesheet operations --->
+    // -------------- CSS STYLESHEET METHODS -----------------------------------
     /**
-     * Get a list of the available stylesheets (excluding base.css)
-     *
-     * @return
+     * Load a list of the available stylesheets from the JAR (excluding base.css)
      */
-    public List<String> getAvailableSkins() {
-        List<String> result = new ArrayList<>();
+    public void loadAvailableSkins() {
         try {
             URI uri = this.getClass().getResource("/stylesheets").toURI();
             try (FileSystem fileSystem = (uri.getScheme().equals("jar") ? FileSystems.newFileSystem(uri, Collections.<String, Object>emptyMap()) : null)) {
@@ -424,10 +490,9 @@ public class IO {
         for (String s : styles) {
             String abbreviation = s.split("\\.")[0];
             if (!abbreviation.equalsIgnoreCase("base")) {
-                result.add(abbreviation);
+                styles.add(abbreviation);
             }
         }
-        return result;
     }
 
     /**
@@ -447,7 +512,7 @@ public class IO {
         }
     }
 
-// <--- CSV file operations --->
+    // -------------- CSV FILE METHODS -----------------------------------------
     /**
      * Export a recording from the database into a CSV file in the selected
      * directory
@@ -524,30 +589,4 @@ public class IO {
             in.close();
         }
     }
-
-    /**
-     *
-     * @return
-     */
-    public ResourceBundle getLangpack() {
-        return langpack;
-    }
-
-    /**
-     *
-     * @param langpack
-     */
-    public void setLangpack(ResourceBundle langpack) {
-        this.langpack = langpack;
-    }
-
-    /**
-     *
-     * @param key
-     * @return
-     */
-    public String getLangpackString(String key) {
-        return langpack.getString(key);
-    }
-
 }

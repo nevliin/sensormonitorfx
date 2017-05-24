@@ -13,13 +13,25 @@ import javafx.collections.ObservableList;
 import javafx.scene.chart.XYChart;
 
 /**
+ * ChartData --- Converts data from the SensorData to XYChart.Series and stores it,
+ * provides the model for the SensorChart
  *
  * @author Polarix IT Solutions
  */
-public class ChartData implements DataChangeListener {
+public class ChartData implements SensorDataChangeListener {
 
+    // -------------- PRIVATE FIELDS -------------------------------------------
+    /**
+     * List of listeners for changes in the axis-bounds
+     */
     private List<ChartDataChangeListener> listeners;
+    /**
+     * Data model for SensorCharts
+     */
     private ObservableList<XYChart.Series<Double, Double>> lineChartModel = new ObservableListWrapper<>(new ArrayList<XYChart.Series<Double, Double>>());
+    /**
+     * Map storing the Series with the SensorID's as keys for easy access
+     */
     private HashMap<Long, XYChart.Series<Double, Double>> chartGraphs;
     private SensorData sensorData;
     private Data type;
@@ -32,8 +44,10 @@ public class ChartData implements DataChangeListener {
     private double yMin = Double.MAX_VALUE;
     private double yMax = Double.MAX_VALUE;
 
+    // -------------- CONSTRUCTORS ---------------------------------------------
     /**
-     *
+     * Creates new ChartData, sets type and starts listening to the SensorData for new data
+     * 
      * @param type
      * @param sensorData
      */
@@ -46,7 +60,7 @@ public class ChartData implements DataChangeListener {
     }
 
     /**
-     *
+     * Creates new ChartData and sets type
      */
     public ChartData(Data type) {
         listeners = new ArrayList<>();
@@ -54,7 +68,7 @@ public class ChartData implements DataChangeListener {
         this.chartGraphs = new HashMap<>();
     }
 
-    // <--- Listener operations --->
+    // -------------- LISTENER METHODS -----------------------------------------
     /**
      * Add listener implementing DataChangeListener to the SensorChartData
      *
@@ -84,6 +98,7 @@ public class ChartData implements DataChangeListener {
         }
     }
 
+    // -------------- GETTERS & SETTERS ----------------------------------------
     /**
      *
      * @param sensorID

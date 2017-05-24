@@ -24,11 +24,15 @@ import javafx.stage.Stage;
 import org.controlsfx.control.CheckComboBox;
 
 /**
+ * MainController --- FXML Controller of mainWindow.fxml, handles all Menu,
+ * Button and CheckBox actions and connects View elements with the according
+ * Model
  *
  * @author Polarix IT Solutions
  */
 public class MainController implements Initializable {
 
+    // -------------- FXML FIELDS ----------------------------------------------
     /**
      *
      */
@@ -71,120 +75,75 @@ public class MainController implements Initializable {
      */
     @FXML
     private SensorChart chartRevolutions;
+    /**
+     * CheckComboBox listing the sensors and providing the option to hide them
+     */
     @FXML
     private CheckComboBox checkComboBoxSensors;
+    /**
+     * SensorChart in the specific Tab displaying temperature info of the
+     * sensors
+     */
     @FXML
     private SensorChart chartTemperatureSpecific;
+    /**
+     * TableView in the specific Tab displaying the exact values of the Sensors
+     */
     @FXML
     private TableView tableViewTemperature;
+    /**
+     * SensorChart in the specific Tab displaying temperature info of the
+     * sensors
+     */
     @FXML
     private SensorChart chartPressureSpecific;
+    /**
+     * TableView in the specific Tab displaying the exact values of the Sensors
+     */
     @FXML
     private TableView tableViewPressure;
+    /**
+     * SensorChart in the specific Tab displaying temperature info of the
+     * sensors
+     */
     @FXML
     private SensorChart chartRevolutionsSpecific;
+    /**
+     * TableView in the specific Tab displaying the exact values of the Sensors
+     */
     @FXML
     private TableView tableViewRevolutions;
+    /**
+     * CheckBox for toggling the recording of the temperature data of the
+     * sensors
+     */
     @FXML
     private CheckBox checkBoxTemperature;
+    /**
+     * CheckBox for toggling the recording of the pressure data of the sensors
+     */
     @FXML
     private CheckBox checkBoxPressure;
+    /**
+     * CheckBox for toggling the recording of the revolutions data of the
+     * sensors
+     */
     @FXML
     private CheckBox checkBoxRevolutions;
-    
+
+    // -------------- PRIVATE FIELDS -------------------------------------------
     private IO io;
+    private Recorder recorder;
+
     private Stage recordingswindow;
     private Stage settingswindow;
+
     private HashMap<Data, ChartData> chartData;
-
-    Recorder recorder;
-
-    List<BaseSensor> sensors;
+    private List<BaseSensor> sensors;
 
     boolean isDBConnected;
 
-    /**
-     *
-     * @return
-     */
-    public boolean isDBConnected() {
-        return isDBConnected;
-    }
-
-    /**
-     *
-     * @param isDBConnected
-     */
-    public void setIsDBConnected(boolean isDBConnected) {
-        this.isDBConnected = isDBConnected;
-        if (isDBConnected) {
-            menuRecordings.setDisable(false);
-            buttonStartRecording.setDisable(false);
-        } else {
-            menuRecordings.setDisable(true);
-            buttonStartRecording.setDisable(true);
-        }
-    }
-
-    @Override
-    public void initialize(URL location, ResourceBundle resources) {
-        chartData = new HashMap<>();
-    }
-
-    /**
-     *
-     * @param sensors
-     */
-    public void startDisplay(List<BaseSensor> sensors) {
-        SensorData data = new SensorData();
-        ChartData dataTemperature = new ChartData(Data.TEMPERATURE, data);
-        chartData.put(Data.TEMPERATURE, dataTemperature);
-        ChartData dataPressure = new ChartData(Data.PRESSURE, data);
-        chartData.put(Data.PRESSURE, dataPressure);
-        ChartData dataRevolutions = new ChartData(Data.REVOLUTIONS, data);
-        chartData.put(Data.REVOLUTIONS, dataRevolutions);
-        for (ChartData cd : chartData.values()) {
-            cd.setxMin(0 - Double.valueOf(io.getConfigProp("realtime_timeframe")));
-            cd.setxMax(0);
-            cd.setxScaleMin(Double.valueOf(io.getConfigProp("realtime_xscalemin")));
-            cd.setxScaleMax(Double.valueOf(io.getConfigProp("realtime_xscalemax")));
-        }
-        dataTemperature.setyScaleMax(Double.valueOf(io.getConfigProp("temperature_yscalemax")));
-        dataTemperature.setyScaleMin(Double.valueOf(io.getConfigProp("temperature_yscalemin")));
-        dataPressure.setyScaleMax(Double.valueOf(io.getConfigProp("pressure_yscalemax")));
-        dataPressure.setyScaleMin(Double.valueOf(io.getConfigProp("pressure_yscalemin")));
-        dataRevolutions.setyScaleMax(Double.valueOf(io.getConfigProp("revolutions_yscalemax")));
-        dataRevolutions.setyScaleMin(Double.valueOf(io.getConfigProp("revolutions_yscalemin")));
-
-        chartTemperature.setChartData(dataTemperature, io.getLangpack(), "sec", "°C");
-        chartPressure.setChartData(dataPressure, io.getLangpack(), "sec", "hPa");
-        chartRevolutions.setChartData(dataRevolutions, io.getLangpack(), "sec", "RPM");
-
-        ChartData dataTemperatureSpecific = dataTemperature.clone();
-        chartData.put(Data.TEMPERATURE, dataTemperatureSpecific);
-        ChartData dataPressureSpecific = dataPressure.clone();
-        chartData.put(Data.PRESSURE, dataPressureSpecific);
-        ChartData dataRevolutionsSpecific = dataRevolutions.clone();
-        chartData.put(Data.REVOLUTIONS, dataRevolutionsSpecific);
-
-        chartTemperatureSpecific.setChartData(dataTemperatureSpecific, io.getLangpack(), "sec", "°C");
-        chartPressureSpecific.setChartData(dataPressureSpecific, io.getLangpack(), "sec", "hPa");
-        chartRevolutionsSpecific.setChartData(dataRevolutionsSpecific, io.getLangpack(), "sec", "RPM");
-
-        for (long l : data.getSensorIDs()) {
-            checkComboBoxSensors.getItems().add(Long.toString(l));
-        }
-
-        for (BaseSensor b : sensors) {
-            b.addListener(data);
-            b.addListener(recorder);
-            b.stopMeasure();
-        }
-        for (BaseSensor b : sensors) {
-            b.startMeasure();
-        }
-    }
-
+    // -------------- FXML HANDLERS -------------------------------------------------    
     /**
      *
      */
@@ -316,6 +275,30 @@ public class MainController implements Initializable {
         }
     }
 
+    // -------------- GETTERS & SETTERS ----------------------------------------
+    /**
+     *
+     * @return
+     */
+    public boolean isDBConnected() {
+        return isDBConnected;
+    }
+
+    /**
+     *
+     * @param isDBConnected
+     */
+    public void setIsDBConnected(boolean isDBConnected) {
+        this.isDBConnected = isDBConnected;
+        if (isDBConnected) {
+            menuRecordings.setDisable(false);
+            buttonStartRecording.setDisable(false);
+        } else {
+            menuRecordings.setDisable(true);
+            buttonStartRecording.setDisable(true);
+        }
+    }
+
     /**
      *
      * @param io
@@ -333,6 +316,68 @@ public class MainController implements Initializable {
         return this.io;
     }
 
+    // -------------- OTHER METHODS --------------------------------------------
+    @Override
+    public void initialize(URL location, ResourceBundle resources) {
+        chartData = new HashMap<>();
+    }
+
+    /**
+     * Creates SensorData and connects ChartData, SensorChart and the sensors to
+     * it. Starts receiving data from the sensors when done.
+     *
+     * @param sensors
+     */
+    public void startDisplay(List<BaseSensor> sensors) {
+        SensorData data = new SensorData();
+        ChartData dataTemperature = new ChartData(Data.TEMPERATURE, data);
+        chartData.put(Data.TEMPERATURE, dataTemperature);
+        ChartData dataPressure = new ChartData(Data.PRESSURE, data);
+        chartData.put(Data.PRESSURE, dataPressure);
+        ChartData dataRevolutions = new ChartData(Data.REVOLUTIONS, data);
+        chartData.put(Data.REVOLUTIONS, dataRevolutions);
+        for (ChartData cd : chartData.values()) {
+            cd.setxMin(0 - Double.valueOf(io.getConfigProp("realtime_timeframe")));
+            cd.setxMax(0);
+            cd.setxScaleMin(Double.valueOf(io.getConfigProp("realtime_xscalemin")));
+            cd.setxScaleMax(Double.valueOf(io.getConfigProp("realtime_xscalemax")));
+        }
+        dataTemperature.setyScaleMax(Double.valueOf(io.getConfigProp("temperature_yscalemax")));
+        dataTemperature.setyScaleMin(Double.valueOf(io.getConfigProp("temperature_yscalemin")));
+        dataPressure.setyScaleMax(Double.valueOf(io.getConfigProp("pressure_yscalemax")));
+        dataPressure.setyScaleMin(Double.valueOf(io.getConfigProp("pressure_yscalemin")));
+        dataRevolutions.setyScaleMax(Double.valueOf(io.getConfigProp("revolutions_yscalemax")));
+        dataRevolutions.setyScaleMin(Double.valueOf(io.getConfigProp("revolutions_yscalemin")));
+
+        chartTemperature.setChartData(dataTemperature, io.getLangpack(), "sec", "°C");
+        chartPressure.setChartData(dataPressure, io.getLangpack(), "sec", "hPa");
+        chartRevolutions.setChartData(dataRevolutions, io.getLangpack(), "sec", "RPM");
+
+        ChartData dataTemperatureSpecific = dataTemperature.clone();
+        chartData.put(Data.TEMPERATURE, dataTemperatureSpecific);
+        ChartData dataPressureSpecific = dataPressure.clone();
+        chartData.put(Data.PRESSURE, dataPressureSpecific);
+        ChartData dataRevolutionsSpecific = dataRevolutions.clone();
+        chartData.put(Data.REVOLUTIONS, dataRevolutionsSpecific);
+
+        chartTemperatureSpecific.setChartData(dataTemperatureSpecific, io.getLangpack(), "sec", "°C");
+        chartPressureSpecific.setChartData(dataPressureSpecific, io.getLangpack(), "sec", "hPa");
+        chartRevolutionsSpecific.setChartData(dataRevolutionsSpecific, io.getLangpack(), "sec", "RPM");
+
+        for (long l : data.getSensorIDs()) {
+            checkComboBoxSensors.getItems().add(Long.toString(l));
+        }
+
+        for (BaseSensor b : sensors) {
+            b.addListener(data);
+            b.addListener(recorder);
+            b.stopMeasure();
+        }
+        for (BaseSensor b : sensors) {
+            b.startMeasure();
+        }
+    }
+
     /**
      * Shuts down the program safely by deleting a possibly running recording
      * and closing the database connection.
@@ -346,6 +391,7 @@ public class MainController implements Initializable {
     }
 
     /**
+     * Closes tabs of the mainTabPane based on the name of the Tab
      *
      * @param name
      */
@@ -359,6 +405,7 @@ public class MainController implements Initializable {
     }
 
     /**
+     * Closes tabs of the mainTabPane based on the names of the Tab's
      *
      * @param names
      */
@@ -372,6 +419,8 @@ public class MainController implements Initializable {
     }
 
     /**
+     * Creates a Tab and loads the according FXML file for displaying a
+     * recording from the Embedded H2 Database in SensorChart's
      *
      * @param recordingName
      */
@@ -379,7 +428,6 @@ public class MainController implements Initializable {
         try {
             FXMLLoader loader = new FXMLLoader(this.getClass().getClassLoader().getResource("de/hfts/sensormonitor/view/recordingDisplay.fxml"), io.getLangpack());
             GridPane root = (GridPane) loader.load();
-            ((RecordingDisplayController) loader.getController()).setIO(io);
             ((RecordingDisplayController) loader.getController()).setRecording(new Recording(io.loadRecording(recordingName), io));
             Tab tab = new Tab(recordingName, root);
             tab.setClosable(true);

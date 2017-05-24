@@ -3,13 +3,15 @@ package de.hfts.sensormonitor.exceptions;
 import java.util.ResourceBundle;
 
 /**
- * Parent-exception for all exceptions thrown by the application
+ * SensorMonitorException --- Parent-exception for all exceptions thrown by the
+ * application
+ *
  * @author Polarix IT Solutions
  */
 public class SensorMonitorException extends Exception {
-    
+
     /**
-     *
+     * Needs to be set before throwing any exceptions
      */
     public static ResourceBundle langpack;
 
@@ -20,7 +22,7 @@ public class SensorMonitorException extends Exception {
     public SensorMonitorException(String exceptionMessage) {
         super(langpack.getString(exceptionMessage));
     }
-    
+
     /**
      *
      */

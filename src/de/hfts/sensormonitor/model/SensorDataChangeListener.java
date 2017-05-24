@@ -7,7 +7,7 @@ package de.hfts.sensormonitor.model;
  *
  * @author Polarix IT Solutions
  */
-public interface DataChangeListener {
+public interface SensorDataChangeListener {
 
     /**
      * Triggered when the data in a SensorChartData changes

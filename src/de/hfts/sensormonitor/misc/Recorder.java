@@ -14,42 +14,41 @@ import java.util.logging.*;
 import javafx.scene.control.TextInputDialog;
 
 /**
+ * Recorder --- Handles recording the received SensorEvents if a recording is
+ * running
  *
  * @author Polarix IT Solutions
  */
-public class Recorder implements CeBarRoundObserver<SensorEvent>{
-    
-    IO io;
-    LiveRecording recording;
+public class Recorder implements CeBarRoundObserver<SensorEvent> {
+
+    // -------------- PRIVATE FIELDS -------------------------------------------
+    private IO io;
+    /**
+     * Current recording; null if none is running
+     */
+    private LiveRecording recording;
 
     boolean recordTemperature = true;
     boolean recordPressure = true;
     boolean recordRevolutions = true;
 
     /**
-     *
-     * @param cbre
-     */
-    @Override
-    public void sensorDataEventListener(SensorEvent cbre) {
-        if(recording != null) {
-            recording.recordData(cbre);
-        }
-    }
-    
-    /**
-     *
+     * Inner class, represents one recording session
      */
     public class LiveRecording {
 
+        // -------------- PRIVATE FIELDS ---------------------------------------
         private int rowid;
+        /**
+         * Generic name of the table in the database before finalizing it
+         */
         private String genericName;
         private IO io;
-              
 
+        // -------------- CONSTRUCTOR ------------------------------------------
         /**
+         * Creates new LiveRecording
          *
-         * @param sensor
          * @param io
          */
         public LiveRecording(IO io) {
@@ -59,6 +58,7 @@ public class Recorder implements CeBarRoundObserver<SensorEvent>{
         }
 
         /**
+         * Renames the table related to the recording
          *
          * @param name
          * @throws de.hfts.sensormonitor.exceptions.IllegalTableNameException
@@ -68,9 +68,10 @@ public class Recorder implements CeBarRoundObserver<SensorEvent>{
         }
 
         /**
+         * Records received SensorEvent by transforming it into a String and
+         * passing it to the instance of IO
          *
-         * @param data
-         * @param sensor
+         * @param cbre
          */
         public void recordData(SensorEvent cbre) {
             String insertstmt = rowid + ", " + Integer.toString((int) cbre.getUniqueSensorIdentifier()) + ", '" + cbre.getSensorTypeCode() + "'";
@@ -95,7 +96,8 @@ public class Recorder implements CeBarRoundObserver<SensorEvent>{
         }
 
         /**
-         *
+         * Shows dialog for chosing a name for the recording; ensures the given
+         * name matches the conventions.
          */
         public void saveRecording() {
             if (recording.getRowid() == 0) {
@@ -137,7 +139,7 @@ public class Recorder implements CeBarRoundObserver<SensorEvent>{
         }
 
         /**
-         *
+         * Returns the generic name of the table related to the recording
          * @return
          */
         public String getGenericName() {
@@ -145,7 +147,7 @@ public class Recorder implements CeBarRoundObserver<SensorEvent>{
         }
 
         /**
-         *
+         * Returns the current rowID in the table
          * @return
          */
         public int getRowid() {
@@ -153,30 +155,45 @@ public class Recorder implements CeBarRoundObserver<SensorEvent>{
         }
 
     }
-    
+
+    // -------------- CONSTRUCTORS ---------------------------------------------
     /**
+     * Standard constructor; requires instance of IO for database connection
      *
      * @param io
      */
     public Recorder(IO io) {
         this.io = io;
     }
-    
+
+    // -------------- OTHER METHODS --------------------------------------------
     /**
      *
+     * @param cbre
+     */
+    @Override
+    public void sensorDataEventListener(SensorEvent cbre) {
+        if (recording != null) {
+            recording.recordData(cbre);
+        }
+    }
+
+    /**
+     * Starts recording the received SensorEvents
      */
     public void startRecording() {
         recording = new LiveRecording(io);
     }
-    
+
     /**
-     *
+     * Stops recording the received SensorEvents
      */
     public void stopRecording() {
-        
         recording.saveRecording();
+        recording = null;
     }
 
+    // -------------- GETTERS & SETTERS ----------------------------------------
     /**
      *
      * @return
@@ -240,7 +257,5 @@ public class Recorder implements CeBarRoundObserver<SensorEvent>{
     public void setRecordRevolutions(boolean recordRevolutions) {
         this.recordRevolutions = recordRevolutions;
     }
-    
-    
-    
+
 }

@@ -36,7 +36,7 @@ public class SensorData implements CeBarRoundObserver<SensorEvent> {
         REVOLUTIONS
     }
 
-    private List<DataChangeListener> listeners = new ArrayList<>();
+    private List<SensorDataChangeListener> listeners = new ArrayList<>();
     Map<Long, String> mapIDTypeCode;
     Map<Data, Map<Long, ArrayList<SensorDataPoint>>> graphs;
 
@@ -77,7 +77,7 @@ public class SensorData implements CeBarRoundObserver<SensorEvent> {
      *
      * @param toAdd Object to be notified of changes
      */
-    public void addListener(DataChangeListener toAdd) {
+    public void addListener(SensorDataChangeListener toAdd) {
         listeners.add(toAdd);
     }
 
@@ -86,7 +86,7 @@ public class SensorData implements CeBarRoundObserver<SensorEvent> {
      *
      * @param toRemove Object to remove from the listeners
      */
-    public void removeListener(DataChangeListener toRemove) {
+    public void removeListener(SensorDataChangeListener toRemove) {
         listeners.remove(toRemove);
     }
 
@@ -97,7 +97,7 @@ public class SensorData implements CeBarRoundObserver<SensorEvent> {
      * @param graphname Sensor ID (name) of the graph that was changed
      */
     public void notifyListenersOfDataChange(long sensorID) {
-        for (DataChangeListener dcl : listeners) {
+        for (SensorDataChangeListener dcl : listeners) {
             dcl.dataChanged(sensorID);
         }
     }

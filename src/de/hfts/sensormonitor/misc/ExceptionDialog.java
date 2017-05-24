@@ -8,13 +8,14 @@ package de.hfts.sensormonitor.misc;
 import javafx.scene.control.Alert;
 
 /**
+ * ExceptionDialog --- Used to display errors and exceptions to the user
  *
  * @author Polarix IT Solutions
  */
 public class ExceptionDialog {
 
     /**
-     *
+     * Creates a JavaFX error alert with the given parameters and displays it
      * @param text
      * @param subtext
      */
