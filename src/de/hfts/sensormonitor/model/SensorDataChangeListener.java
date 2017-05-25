@@ -3,7 +3,7 @@ package de.hfts.sensormonitor.model;
 
 /**
  * Interface to be implemented by objects who want to be informed about changes
- * in a SensorChartData
+ * in a SensorData
  *
  * @author Polarix IT Solutions
  */

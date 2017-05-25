@@ -7,7 +7,6 @@ package de.hfts.sensormonitor.misc;
 
 import de.hft.ss17.cebarround.*;
 import de.hfts.sensormonitor.exceptions.IllegalTableNameException;
-import de.hfts.sensormonitor.main.SensorMonitor;
 import java.sql.Timestamp;
 import java.util.Optional;
 import java.util.logging.*;
@@ -126,7 +125,7 @@ public class Recorder implements CeBarRoundObserver<SensorEvent> {
                             recording.finalizeName(newname.get());
                             isNameInvalid = false;
                         } catch (IllegalTableNameException ex) {
-                            Logger.getLogger(SensorMonitor.class.getName()).log(Level.SEVERE, null, ex);
+                            Logger.getLogger(Recorder.class.getName()).log(Level.SEVERE, null, ex);
                         }
                     }
                     secondtry = true;

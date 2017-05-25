@@ -11,7 +11,8 @@ import java.util.ResourceBundle;
 public class SensorMonitorException extends Exception {
 
     /**
-     * Needs to be set before throwing any exceptions
+     * Needs to be set before throwing any exceptions; provides messages for all
+     * exceptions
      */
     public static ResourceBundle langpack;
 

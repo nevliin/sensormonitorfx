@@ -1,6 +1,5 @@
 package de.hfts.sensormonitor.misc;
 
-import de.hfts.sensormonitor.chart.*;
 import de.hfts.sensormonitor.controller.EditChartController;
 import de.hfts.sensormonitor.model.*;
 import java.io.IOException;

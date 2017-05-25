@@ -100,8 +100,7 @@ public class SensorData implements CeBarRoundObserver<SensorEvent> {
     /**
      * Notifies all listeners of a change in the graph data
      *
-     * @param sensorID
-     * @param graphname Sensor ID (name) of the graph that was changed
+     * @param sensorID Sensor ID (name) of the graph that was changed
      */
     public void notifyListenersOfDataChange(long sensorID) {
         for (SensorDataChangeListener dcl : listeners) {

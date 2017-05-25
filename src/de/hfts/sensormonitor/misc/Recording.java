@@ -5,7 +5,6 @@
  */
 package de.hfts.sensormonitor.misc;
 
-import de.hfts.sensormonitor.main.SensorMonitor;
 import de.hfts.sensormonitor.model.*;
 import de.hfts.sensormonitor.model.SensorData.Data;
 import java.sql.*;
@@ -92,7 +91,7 @@ public class Recording {
 
             }
         } catch (SQLException ex) {
-            Logger.getLogger(SensorMonitor.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(Recording.class.getName()).log(Level.SEVERE, null, ex);
         }
 
         chartDatas.put(Data.TEMPERATURE, new ChartData(Data.TEMPERATURE));
