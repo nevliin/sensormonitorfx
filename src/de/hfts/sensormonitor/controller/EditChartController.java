@@ -125,7 +125,7 @@ public class EditChartController implements Initializable {
      * @throws IllegalXScaleException
      * @throws IllegalYScaleException
      */
-    private void updateBounds(String xmin, String xmax, String ymin, String ymax) throws IllegalXScaleException, IllegalYScaleException {
+    void updateBounds(String xmin, String xmax, String ymin, String ymax) throws IllegalXScaleException, IllegalYScaleException {
         boolean isXScaleValid = true;
         double valueXMin = 0;
         double valueXMax = 0;
@@ -156,7 +156,7 @@ public class EditChartController implements Initializable {
             try {
                 valueYMin = Double.valueOf(ymin);
                 valueYMax = Double.valueOf(ymax);
-                if (valueYMin < chartData.getyScaleMin() || valueYMax > chartData.getyScaleMax() || valueYMax < valueYMin) {
+                if (valueYMin < chartData.getyScaleMin() || valueYMax > chartData.getyScaleMax() || valueYMax <= valueYMin) {
                     isYScaleValid = false;
                 }
             } catch (NumberFormatException e) {

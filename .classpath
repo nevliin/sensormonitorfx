@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<classpath>
+	<classpathentry kind="src" path="src"/>
+	<classpathentry kind="src" path="test"/>
+	<classpathentry kind="lib" path="dist/lib/cebarround-1.2.0.jar"/>
+	<classpathentry kind="lib" path="dist/lib/controlsfx-8.40.12.jar"/>
+	<classpathentry kind="lib" path="dist/lib/h2-1.4.194.jar"/>
+	<classpathentry kind="lib" path="dist/SensorMonitor_FXML.jar"/>
+	<classpathentry kind="lib" path="libs/cebarround-1.1.0.jar"/>
+	<classpathentry kind="lib" path="libs/cebarround-1.2.0.jar"/>
+	<classpathentry kind="lib" path="libs/controlsfx-8.40.12.jar"/>
+	<classpathentry kind="lib" path="libs/h2-1.4.194.jar"/>
+	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
+	<classpathentry kind="output" path="build/classes"/>
+</classpath>

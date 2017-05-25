@@ -10,6 +10,7 @@
             <file>file:/I:/WiInfProjekt/sensormonitorfx/src/de/hfts/sensormonitor/execute/SensorMonitor.java</file>
             <file>file:/I:/WiInfProjekt/sensormonitorfx/src/de/hfts/sensormonitor/controller/RecordingDisplayController.java</file>
             <file>file:/I:/WiInfProjekt/sensormonitorfx/src/de/hfts/sensormonitor/view/recordingDisplay.fxml</file>
+            <file>file:/I:/WiInfProjekt/sensormonitorfx/nbproject/build-impl.xml</file>
             <file>file:/I:/WiInfProjekt/sensormonitorfx/src/de/hfts/sensormonitor/exceptions/IllegalSensorAmountException.java</file>
             <file>file:/I:/WiInfProjekt/sensormonitorfx/src/de/hfts/sensormonitor/controller/MainController.java</file>
             <file>file:/I:/WiInfProjekt/sensormonitorfx/src/de/hfts/sensormonitor/model/SensorDataPoint.java</file>
@@ -18,6 +19,7 @@
             <file>file:/I:/WiInfProjekt/sensormonitorfx/src/de/hfts/sensormonitor/view/settingsWindow.fxml</file>
             <file>file:/I:/WiInfProjekt/sensormonitorfx/src/de/hfts/sensormonitor/controller/EditChartController.java</file>
             <file>file:/I:/WiInfProjekt/sensormonitorfx/src/de/hfts/sensormonitor/misc/IO.java</file>
+            <file>file:/I:/WiInfProjekt/sensormonitorfx/test/de/hfts/sensormonitor/controller/EditChartControllerTest.java</file>
             <file>file:/I:/WiInfProjekt/sensormonitorfx/src/de/hfts/sensormonitor/model/SensorDataChangeListener.java</file>
             <file>file:/I:/WiInfProjekt/sensormonitorfx/src/de/hfts/sensormonitor/model/ChartDataChangeListener.java</file>
             <file>file:/I:/WiInfProjekt/sensormonitorfx/src/de/hfts/sensormonitor/controller/SettingsController.java</file>
@@ -31,6 +33,7 @@
             <file>file:/I:/WiInfProjekt/sensormonitorfx/resources/stylesheets/dark.css</file>
             <file>file:/I:/WiInfProjekt/sensormonitorfx/src/de/hfts/sensormonitor/exceptions/ImportRecordingException.java</file>
             <file>file:/I:/WiInfProjekt/sensormonitorfx/src/de/hfts/sensormonitor/misc/Recording.java</file>
+            <file>file:/I:/WiInfProjekt/sensormonitorfx/test/de/hfts/sensormonitor/misc/IOTest.java</file>
             <file>file:/I:/WiInfProjekt/sensormonitorfx/src/de/hfts/sensormonitor/model/ChartData.java</file>
             <file>file:/I:/WiInfProjekt/sensormonitorfx/src/de/hfts/sensormonitor/view/recordingsListWindow.fxml</file>
             <file>file:/I:/WiInfProjekt/sensormonitorfx/resources/stylesheets/base.css</file>

@@ -111,7 +111,7 @@ public class Recorder implements CeBarRoundObserver<SensorEvent> {
                     dialog.setTitle(io.getLangpack().getString("save_recording_title"));
                     dialog.setContentText(io.getLangpack().getString("save_recording"));
                     if (secondtry) {
-                        dialog.setHeaderText(io.getLangpack().getString("exception_tablenameexception"));
+                        dialog.setHeaderText(io.getLangpack().getString("exception_illegaltablename"));
                     } else {
                         dialog.setHeaderText(io.getLangpack().getString("save_recording_title"));
                     }
