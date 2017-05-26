@@ -196,11 +196,13 @@ public class ChartData implements SensorDataChangeListener {
      */
     public void setGraphVisible(long sensorID, boolean isVisible) {
         if (isVisible) {
-            setPointsToSeries(chartGraphs.get(sensorID), sensorData.getPoints(type, sensorID));
+            if (!lineChartModel.contains(chartGraphs.get(sensorID))) {
+                lineChartModel.add(chartGraphs.get(sensorID));
+            }
         } else {
             try {
-            chartGraphs.get(sensorID).getData().clear();
-            } catch(NullPointerException ex) {
+                lineChartModel.remove(chartGraphs.get(sensorID));
+            } catch (NullPointerException ex) {
                 // NO-OP
             }
         }
