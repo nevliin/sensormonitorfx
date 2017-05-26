@@ -222,7 +222,27 @@ public class MainController implements Initializable {
      *
      */
     public void handleMenuItemSettings() {
-
+        io.loadAvailableLanguages();
+        if (settingswindow == null) {
+            try {
+                FXMLLoader loader = new FXMLLoader(this.getClass().getClassLoader().getResource("de/hfts/sensormonitor/view/settingsWindow.fxml"), io.getLangpack());
+                TabPane root = (TabPane) loader.load();
+                settingswindow = new Stage();
+                Scene scene = new Scene(root);
+                scene.getStylesheets().addAll(labelInfo.getScene().getStylesheets());
+                ((SettingsController) loader.getController()).setIO(io);
+                settingswindow.setScene(scene);
+                settingswindow.sizeToScene();
+                settingswindow.setOnCloseRequest(eh -> {
+                    settingswindow = null;
+                });
+                settingswindow.show();
+            } catch (IOException ex) {
+                Logger.getLogger(MainController.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        } else {
+            settingswindow.toFront();
+        }
     }
 
     /**
@@ -350,9 +370,9 @@ public class MainController implements Initializable {
         dataRevolutions.setyScaleMax(Double.valueOf(io.getConfigProp("revolutions_yscalemax")));
         dataRevolutions.setyScaleMin(Double.valueOf(io.getConfigProp("revolutions_yscalemin")));
 
-        chartTemperature.setChartData(dataTemperature, io.getLangpack(), "sec", "°C");
-        chartPressure.setChartData(dataPressure, io.getLangpack(), "sec", "hPa");
-        chartRevolutions.setChartData(dataRevolutions, io.getLangpack(), "sec", "RPM");
+        chartTemperature.setChartData(dataTemperature, io.getLangpack(), "sec", "°C", Boolean.valueOf(io.getConfigProp("displayPointSymbols")));
+        chartPressure.setChartData(dataPressure, io.getLangpack(), "sec", "hPa", Boolean.valueOf(io.getConfigProp("displayPointSymbols")));
+        chartRevolutions.setChartData(dataRevolutions, io.getLangpack(), "sec", "RPM", Boolean.valueOf(io.getConfigProp("displayPointSymbols")));
 
         ChartData dataTemperatureSpecific = dataTemperature.clone();
         chartData.put(Data.TEMPERATURE, dataTemperatureSpecific);
@@ -361,13 +381,11 @@ public class MainController implements Initializable {
         ChartData dataRevolutionsSpecific = dataRevolutions.clone();
         chartData.put(Data.REVOLUTIONS, dataRevolutionsSpecific);
 
-        chartTemperatureSpecific.setChartData(dataTemperatureSpecific, io.getLangpack(), "sec", "°C");
-        chartPressureSpecific.setChartData(dataPressureSpecific, io.getLangpack(), "sec", "hPa");
-        chartRevolutionsSpecific.setChartData(dataRevolutionsSpecific, io.getLangpack(), "sec", "RPM");
+        chartTemperatureSpecific.setChartData(dataTemperatureSpecific, io.getLangpack(), "sec", "°C", Boolean.valueOf(io.getConfigProp("displayPointSymbols")));
+        chartPressureSpecific.setChartData(dataPressureSpecific, io.getLangpack(), "sec", "hPa", Boolean.valueOf(io.getConfigProp("displayPointSymbols")));
+        chartRevolutionsSpecific.setChartData(dataRevolutionsSpecific, io.getLangpack(), "sec", "RPM", Boolean.valueOf(io.getConfigProp("displayPointSymbols")));
 
-        for (long l : data.getSensorIDs()) {
-            checkComboBoxSensors = new CheckComboBox(FXCollections.observableArrayList(data.getSensorIDs()));
-        }
+        checkComboBoxSensors.getItems().setAll(data.getSensorIDs());
 
         for (BaseSensor b : sensors) {
             b.addListener(data);

@@ -34,11 +34,10 @@ import static org.junit.Assert.*;
  */
 public class IOTest {
 
-    IO io;
-    String oldname;
+    static IO io;
+    static String oldname;
 
     public IOTest() {
-        SensorMonitorException.langpack = ResourceBundle.getBundle("lang.lang", new Locale("en"));
         io = new IO();
         try {
             io.connectDB();
@@ -54,17 +53,18 @@ public class IOTest {
     }
 
     @AfterClass
-    public static void tearDownClass() {
+    public static void tearDownClass() {        
+        new File("a0c1b1f7cfe1e904368.csv").delete();
+        io.dropTable(oldname);
     }
 
     @Before
-    public void setUp() {
+    public void setUp() {        
+        SensorMonitorException.langpack = ResourceBundle.getBundle("lang.lang", new Locale("en"));
     }
 
     @After
     public void tearDown() {
-        //new File("test.csv").delete();
-        io.dropTable("oldname");
     }
 
     @Test(expected = IllegalTableNameException.class)

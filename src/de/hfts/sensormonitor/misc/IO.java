@@ -9,6 +9,7 @@ import java.nio.file.*;
 import java.nio.file.attribute.BasicFileAttributes;
 import java.sql.*;
 import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.*;
 import java.util.logging.*;
 import javafx.stage.DirectoryChooser;
@@ -54,6 +55,10 @@ public class IO {
      * Statement to execute queries and commands for the database
      */
     private Statement stat;
+    /**
+     *
+     */
+    private final SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy HH:mm:ss.SSS");
 
     // -------------- CONSTRUCTORS ---------------------------------------------
     /**
@@ -163,9 +168,10 @@ public class IO {
     public void setConfigProp(String key, String value) {
         configProp.setProperty(key, value);
     }
-    
+
     /**
      * Returns the loaded language ResourceBundle
+     *
      * @return
      */
     public ResourceBundle getLangpack() {
@@ -174,6 +180,7 @@ public class IO {
 
     /**
      * Sets the language ResourceBundle
+     *
      * @param langpack
      */
     public void setLangpack(ResourceBundle langpack) {
@@ -182,29 +189,32 @@ public class IO {
 
     /**
      * Get a value from the loaded language ResourceBundle
+     *
      * @param key
      * @return
      */
     public String getLangpackString(String key) {
         return langpack.getString(key);
-    }    
-    
+    }
+
     /**
      * Get a list of all available language ResourceBundle's
-     * @return 
+     *
+     * @return
      */
     public List<String> getLanguages() {
         return languages;
     }
-    
+
     /**
      * Get a list of all available stylesheets excluding base.css
-     * @return 
+     *
+     * @return
      */
     public List<String> getStyles() {
         return styles;
     }
-    
+
     // -------------- DATABASE METHODS -----------------------------------------
     /**
      * Connect to the H2 database located in the folder specified in the
@@ -436,8 +446,8 @@ public class IO {
      *
      * @return
      */
-    public HashMap<String, Locale> loadAvailableLanguages() {
-        HashMap<String, Locale> result = new HashMap<>();
+    public void loadAvailableLanguages() {
+        ArrayList<String> langs = new ArrayList<>();
         try {
             URI uri = this.getClass().getResource("/lang").toURI();
             try (FileSystem fileSystem = (uri.getScheme().equals("jar") ? FileSystems.newFileSystem(uri, Collections.<String, Object>emptyMap()) : null)) {
@@ -446,7 +456,7 @@ public class IO {
                     @Override
                     public FileVisitResult visitFile(Path file, BasicFileAttributes attrs) throws IOException {
                         File f = new File(file.toString());
-                        languages.add(f.getName());
+                        langs.add(f.getName());
                         return FileVisitResult.CONTINUE;
                     }
                 });
@@ -456,17 +466,17 @@ public class IO {
         } catch (URISyntaxException ex) {
             Logger.getLogger(IO.class.getName()).log(Level.SEVERE, null, ex);
         }
-        for (String s : languages) {
+        for (String s : langs) {
             String s1 = s.split("_")[1];
             String abbreviation = s1.split("\\.")[0];
-            result.put(new Locale(abbreviation).getDisplayLanguage(new Locale(abbreviation)), new Locale(abbreviation));
+            languages.add(new Locale(abbreviation).getDisplayLanguage(new Locale(abbreviation)));
         }
-        return result;
     }
 
     // -------------- CSS STYLESHEET METHODS -----------------------------------
     /**
-     * Load a list of the available stylesheets from the JAR (excluding base.css)
+     * Load a list of the available stylesheets from the JAR (excluding
+     * base.css)
      */
     public void loadAvailableSkins() {
         try {
@@ -578,7 +588,7 @@ public class IO {
             String insertstmt = "";
             for (int i = 0; i < linesplit.length; i++) {
                 if (i == 0) {
-                    timestamp = Timestamp.valueOf(linesplit[i]);
+                    timestamp = new Timestamp(sdf.parse(linesplit[i]).getTime());
                 } else if (i == linesplit.length - 1) {
                     insertstmt += linesplit[i];
                 } else {
@@ -586,7 +596,7 @@ public class IO {
                 }
             }
             this.saveData(namesplit[0], insertstmt, timestamp);
-            in.close();
         }
+        in.close();
     }
 }

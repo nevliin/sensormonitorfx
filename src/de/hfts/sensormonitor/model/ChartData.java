@@ -190,6 +190,22 @@ public class ChartData implements SensorDataChangeListener {
         return result;
     }
 
+    /**
+     * @param sensorID
+     * @param isVisible
+     */
+    public void setGraphVisible(long sensorID, boolean isVisible) {
+        if (isVisible) {
+            setPointsToSeries(chartGraphs.get(sensorID), sensorData.getPoints(type, sensorID));
+        } else {
+            try {
+            chartGraphs.get(sensorID).getData().clear();
+            } catch(NullPointerException ex) {
+                // NO-OP
+            }
+        }
+    }
+
     // -------------- GETTERS & SETTERS ----------------------------------------
     /**
      * Returns a series from the ChartData based on the SensorID
@@ -199,6 +215,10 @@ public class ChartData implements SensorDataChangeListener {
      */
     public XYChart.Series<Double, Double> getSeries(long sensorID) {
         return chartGraphs.get(sensorID);
+    }
+
+    public Collection<XYChart.Series<Double, Double>> getSeries() {
+        return chartGraphs.values();
     }
 
     /**

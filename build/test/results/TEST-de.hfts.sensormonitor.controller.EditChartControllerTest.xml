@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<testsuite errors="0" failures="0" hostname="DESKTOP-6NNQD1O" name="de.hfts.sensormonitor.controller.EditChartControllerTest" skipped="0" tests="6" time="0.05" timestamp="2017-05-25T17:07:49">
+<testsuite errors="0" failures="0" hostname="DESKTOP-6NNQD1O" name="de.hfts.sensormonitor.controller.EditChartControllerTest" skipped="0" tests="6" time="0.051" timestamp="2017-05-26T13:40:59">
   <properties>
     <property name="netbeans.autoupdate.country" value="DE" />
     <property name="nb.wait.for.caches" value="true" />
@@ -38,7 +38,7 @@
     <property name="user.name" value="Lord_Roke" />
     <property name="copylibs.rebase" value="true" />
     <property name="libs.swing-layout.maven-pom" value="" />
-    <property name="sun.java.command" value="org.apache.tools.ant.taskdefs.optional.junit.JUnitTestRunner de.hfts.sensormonitor.controller.EditChartControllerTest skipNonTests=false filtertrace=true haltOnError=false haltOnFailure=false showoutput=true outputtoformatters=true logfailedtests=true threadid=0 logtestlistenerevents=true formatter=org.apache.tools.ant.taskdefs.optional.junit.BriefJUnitResultFormatter formatter=org.apache.tools.ant.taskdefs.optional.junit.XMLJUnitResultFormatter,I:\WiInfProjekt\sensormonitorfx\build\test\results\TEST-de.hfts.sensormonitor.controller.EditChartControllerTest.xml crashfile=I:\WiInfProjekt\sensormonitorfx\build\junitvmwatcher2224866200500891466.properties propsfile=I:\WiInfProjekt\sensormonitorfx\build\junit3760071308838636461.properties" />
+    <property name="sun.java.command" value="org.apache.tools.ant.taskdefs.optional.junit.JUnitTestRunner de.hfts.sensormonitor.controller.EditChartControllerTest skipNonTests=false filtertrace=true haltOnError=false haltOnFailure=false showoutput=true outputtoformatters=true logfailedtests=true threadid=0 logtestlistenerevents=true formatter=org.apache.tools.ant.taskdefs.optional.junit.BriefJUnitResultFormatter formatter=org.apache.tools.ant.taskdefs.optional.junit.XMLJUnitResultFormatter,I:\WiInfProjekt\sensormonitorfx\build\test\results\TEST-de.hfts.sensormonitor.controller.EditChartControllerTest.xml crashfile=I:\WiInfProjekt\sensormonitorfx\build\junitvmwatcher177910828653168781.properties propsfile=I:\WiInfProjekt\sensormonitorfx\build\junit5701824225243153125.properties" />
     <property name="build.classes.dir" value="build/classes" />
     <property name="netbeans.accept_license_class" value="org.netbeans.license.AcceptLicense" />
     <property name="build.sysclasspath" value="ignore" />
@@ -190,7 +190,6 @@
     <property name="javadoc.encoding.used" value="UTF-8" />
     <property name="dist.jar" value="dist/SensorMonitor_FXML.jar" />
     <property name="libs.spring-framework400.maven-pom" value="" />
-    <property name="netbeans.automatic.build" value="true" />
     <property name="java.runtime.name" value="Java(TM) SE Runtime Environment" />
     <property name="ant.project.name" value="SensorMonitor_FXML" />
     <property name="netbeans.hash.code" value="unique=NBJDK_EXTIDE_JAVA0da63cf24-f8b9-472d-90a4-38ca979920ad_8b7143e9-0955-4824-b3c0-5900176bb863" />
@@ -323,7 +322,7 @@
     <property name="platform.active" value="default_platform" />
     <property name="awt.toolkit" value="sun.awt.windows.WToolkit" />
   </properties>
-  <testcase classname="de.hfts.sensormonitor.controller.EditChartControllerTest" name="testXAxisUpdateWithMinHigherThanMaxValues" time="0.001" />
+  <testcase classname="de.hfts.sensormonitor.controller.EditChartControllerTest" name="testXAxisUpdateWithMinHigherThanMaxValues" time="0.005" />
   <testcase classname="de.hfts.sensormonitor.controller.EditChartControllerTest" name="testYAxisUpdateWithMinHigherThanMaxValues" time="0.0" />
   <testcase classname="de.hfts.sensormonitor.controller.EditChartControllerTest" name="testXAxisUpdateWithSameValues" time="0.0" />
   <testcase classname="de.hfts.sensormonitor.controller.EditChartControllerTest" name="testXAxisUpdateWithOutOfRangeValues" time="0.0" />

@@ -35,7 +35,6 @@ public class EditChartControllerTest {
         cd.setyScaleMin(0);
         cd.setyScaleMax(100);
         ecc.chartData = cd;
-        SensorMonitorException.langpack = ResourceBundle.getBundle("lang.lang", new Locale("en"));
     }
 
     @BeforeClass
@@ -47,7 +46,8 @@ public class EditChartControllerTest {
     }
 
     @Before
-    public void setUp() {
+    public void setUp() {                
+        SensorMonitorException.langpack = ResourceBundle.getBundle("lang.lang", new Locale("en"));
     }
 
     @After

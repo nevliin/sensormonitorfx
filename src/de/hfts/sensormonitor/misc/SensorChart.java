@@ -8,6 +8,7 @@ import java.util.*;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javafx.application.Platform;
+import javafx.event.EventHandler;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.scene.chart.*;
@@ -59,7 +60,7 @@ public class SensorChart extends LineChart implements ChartDataChangeListener {
      * @param yAxisTitle
      * @param langpack
      */
-    public void setChartData(ChartData chartData, ResourceBundle langpack, String xAxisTitle, String yAxisTitle) {
+    public void setChartData(ChartData chartData, ResourceBundle langpack, String xAxisTitle, String yAxisTitle, boolean createSymbols) {
         this.chartdata = chartData;
         this.langpack = langpack;
 
@@ -73,7 +74,7 @@ public class SensorChart extends LineChart implements ChartDataChangeListener {
         // Set up the ContextMenu
         contextMenu = initContextMenu();
         this.setAnimated(false);
-        this.setCreateSymbols(false);
+        this.setCreateSymbols(createSymbols);
         this.addEventHandler(ContextMenuEvent.CONTEXT_MENU_REQUESTED, event -> {
             contextMenu.show(this, event.getScreenX(), event.getScreenY());
             event.consume();
@@ -113,13 +114,13 @@ public class SensorChart extends LineChart implements ChartDataChangeListener {
      * on static data.
      */
     public void installTooltips() {
-        /*for (XYChart.Series s : seriesdata.values()) {
+        for (XYChart.Series s : chartdata.getSeries()) {
             for (Object d : s.getData()) {
                 XYChart.Data data = (XYChart.Data) d;
-                Tooltip tooltip = new Tooltip(chartdata.getLangpack().getString("sensor_id") + ": " + s.getName() + "\n"
-                        + chartdata.getLangpack().getString("average") + ": " + this.getYAverage(s.getName()) + " " + chartdata.getYUnit() + "\n"
-                        + chartdata.getLangpack().getString("x_value") + ": " + Math.round(Double.valueOf(data.getXValue().toString()) * 100) / 100.0 + " " + chartdata.getXUnit() + "\n"
-                        + chartdata.getLangpack().getString("y_value") + ": " + data.getYValue() + " " + chartdata.getYUnit());
+                Tooltip tooltip = new Tooltip(langpack.getString("sensor_id") + ": " + s.getName() + "\n"
+                        + langpack.getString("average") + ": " + this.getYAverage(s.getName()) + " " + this.getYAxis().getLabel() + "\n"
+                        + langpack.getString("x_value") + ": " + Math.round(Double.valueOf(data.getXValue().toString()) * 100) / 100.0 + " " + this.getXAxis().getLabel() + "\n"
+                        + langpack.getString("y_value") + ": " + data.getYValue() + " " + this.getYAxis().getLabel());
                 try {
                     //Adding class on hover
                     data.getNode().setOnMouseEntered(new EventHandler<MouseEvent>() {
@@ -143,7 +144,7 @@ public class SensorChart extends LineChart implements ChartDataChangeListener {
 
                 }
             }
-        }*/
+        }
     }
 
     /**
@@ -252,6 +253,7 @@ public class SensorChart extends LineChart implements ChartDataChangeListener {
                 ((NumberAxis) this.getYAxis()).setUpperBound(chartdata.getyMax());
                 ((NumberAxis) this.getYAxis()).setTickUnit((chartdata.getyMax() - chartdata.getyMin()) / 10);
             }
+            installTooltips();
         });
     }
 

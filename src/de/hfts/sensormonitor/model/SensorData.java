@@ -5,9 +5,11 @@
  */
 package de.hfts.sensormonitor.model;
 
+import com.sun.javafx.collections.ObservableListWrapper;
 import de.hft.ss17.cebarround.*;
 import java.util.*;
 import javafx.application.Platform;
+import javafx.collections.ObservableList;
 
 /**
  * SensorData --- Receives and saves SensorEvent's from the BaseSensor's it
@@ -39,8 +41,9 @@ public class SensorData implements CeBarRoundObserver<SensorEvent> {
 
     // -------------- PRIVATE FIELDS -------------------------------------------
     private List<SensorDataChangeListener> listeners = new ArrayList<>();
-    Map<Long, String> mapIDTypeCode = new HashMap<>();
-    Map<Data, Map<Long, ArrayList<SensorDataPoint>>> graphs = new HashMap<>();
+    private ObservableList<String> sensorIDs = new ObservableListWrapper<>(new ArrayList<String>());
+    private Map<Long, String> mapIDTypeCode = new HashMap<>();
+    private Map<Data, Map<Long, ArrayList<SensorDataPoint>>> graphs = new HashMap<>();
 
     // -------------- CONSTRUCTORS ---------------------------------------------
     /**
@@ -65,6 +68,7 @@ public class SensorData implements CeBarRoundObserver<SensorEvent> {
             // Create new ArrayList's and save the TypeCode if the SensorID is unknown
             if (!mapIDTypeCode.keySet().contains(cbre.getUniqueSensorIdentifier())) {
                 mapIDTypeCode.put(cbre.getUniqueSensorIdentifier(), cbre.getSensorTypeCode());
+                sensorIDs.add(Long.toString(cbre.getUniqueSensorIdentifier()));
                 graphs.get(Data.TEMPERATURE).put(cbre.getUniqueSensorIdentifier(), new ArrayList<>());
                 graphs.get(Data.PRESSURE).put(cbre.getUniqueSensorIdentifier(), new ArrayList<>());
                 graphs.get(Data.REVOLUTIONS).put(cbre.getUniqueSensorIdentifier(), new ArrayList<>());
@@ -132,8 +136,10 @@ public class SensorData implements CeBarRoundObserver<SensorEvent> {
      *
      * @return
      */
-    public Set<Long> getSensorIDs() {
-        return mapIDTypeCode.keySet();
+    public ObservableList<String> getSensorIDs() {
+        return sensorIDs;
     }
+    
+    
 
 }

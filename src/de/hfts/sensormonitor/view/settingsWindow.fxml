@@ -6,12 +6,93 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 
-<TabPane fx:id="Settings" xmlns:fx="http://javafx.com/fxml/1" fx:controller="de.hfts.sensormonitor.controller.SettingsController">
-    <Tab>
-        <BorderPane>
-            <center>
-                
-            </center>
-        </BorderPane>
+<TabPane fx:id="Settings" xmlns:fx="http://javafx.com/fxml/1" 
+         fx:controller="de.hfts.sensormonitor.controller.SettingsController" tabClosingPolicy="UNAVAILABLE" >
+    <Tab text="%language" >
+        <GridPane styleClass="mainGridPane">
+            <children>
+                <Label text="%language"
+                       GridPane.rowIndex="0" GridPane.columnIndex="0" />
+                <ComboBox fx:id="comboBoxLanguages" editable="false" 
+                          GridPane.rowIndex="0" GridPane.columnIndex="1" />
+                <Label text=""
+                       GridPane.rowIndex="1" GridPane.columnIndex="0" />
+                <Label text=""
+                       GridPane.rowIndex="1" GridPane.columnIndex="1" />
+                <Label text=""
+                       GridPane.rowIndex="2" GridPane.columnIndex="0" />
+                <Label text=""
+                       GridPane.rowIndex="2" GridPane.columnIndex="1" />
+                <Label text=""
+                       GridPane.rowIndex="3" GridPane.columnIndex="0" />
+                <Label text=""
+                       GridPane.rowIndex="3" GridPane.columnIndex="1" />
+                <Label text=""
+                       GridPane.rowIndex="4" GridPane.columnIndex="0" />
+                <Label text=""
+                       GridPane.rowIndex="4" GridPane.columnIndex="1" />
+                <Label fx:id="labelErrorLanguage" 
+                       GridPane.rowIndex="5" GridPane.columnIndex="0" 
+                       GridPane.columnSpan="2" />
+                <Button text="%save" onAction="#handleSaveButtonLanguage"
+                        GridPane.rowIndex="6" GridPane.columnIndex="1" />
+            </children>
+            <columnConstraints>
+                <ColumnConstraints hgrow="ALWAYS"/>                
+                <ColumnConstraints hgrow="ALWAYS"/>
+                <ColumnConstraints hgrow="ALWAYS"/>
+                <ColumnConstraints hgrow="ALWAYS"/>
+                <ColumnConstraints hgrow="ALWAYS"/>
+                <ColumnConstraints hgrow="ALWAYS"/>
+                <ColumnConstraints hgrow="ALWAYS"/>
+            </columnConstraints>
+            <rowConstraints>
+                <RowConstraints vgrow="ALWAYS" />
+                <RowConstraints vgrow="ALWAYS" />
+            </rowConstraints>
+        </GridPane>
+    </Tab>
+       <Tab text="%graphs" >
+        <GridPane styleClass="mainGridPane">
+            <children>
+                <Label text="%displayedtimeframe"
+                       GridPane.rowIndex="0" GridPane.columnIndex="0" />
+                <TextField fx:id="textFieldTimeFrame" editable="false" 
+                          GridPane.rowIndex="0" GridPane.columnIndex="1" />
+                <CheckBox text="%display_point_symbols" fx:id="comboBoxDisplayPoints"
+                       GridPane.rowIndex="1" GridPane.columnIndex="0" 
+                       GridPane.columnSpan="2" />
+                <Label text=""
+                       GridPane.rowIndex="2" GridPane.columnIndex="0" />
+                <Label text=""
+                       GridPane.rowIndex="2" GridPane.columnIndex="1" />
+                <Label text=""
+                       GridPane.rowIndex="3" GridPane.columnIndex="0" />
+                <Label text=""
+                       GridPane.rowIndex="3" GridPane.columnIndex="1" />
+                <Label text=""
+                       GridPane.rowIndex="4" GridPane.columnIndex="0" />
+                <Label text=""
+                       GridPane.rowIndex="4" GridPane.columnIndex="1" />
+                <Label fx:id="labelErrorGraphs" 
+                       GridPane.rowIndex="5" GridPane.columnIndex="0" 
+                       GridPane.columnSpan="2" />
+                <Button text="%save" onAction="#handleSaveButtonGraphs"
+                        GridPane.rowIndex="6" GridPane.columnIndex="1" />
+            </children>
+            <columnConstraints>
+                <ColumnConstraints hgrow="ALWAYS"/>                
+                <ColumnConstraints hgrow="ALWAYS"/>
+                <ColumnConstraints hgrow="ALWAYS"/>
+                <ColumnConstraints hgrow="ALWAYS"/>
+                <ColumnConstraints hgrow="ALWAYS"/>
+                <ColumnConstraints hgrow="ALWAYS"/>
+                <ColumnConstraints hgrow="ALWAYS"/>
+            </columnConstraints>
+            <rowConstraints>
+                <RowConstraints vgrow="ALWAYS" />
+                <RowConstraints vgrow="ALWAYS" />
+            </rowConstraints>
+        </GridPane>
     </Tab>
 </TabPane>
