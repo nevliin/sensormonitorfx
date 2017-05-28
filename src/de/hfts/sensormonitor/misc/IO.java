@@ -25,7 +25,7 @@ public class IO {
     /**
      * List of availables language ResourceBundle's
      */
-    private List<String> languages = new ArrayList<>();
+    private Map<String, String> languages = new HashMap<>();
     /**
      * List of available CSS stylesheets, excluding base.css
      */
@@ -202,7 +202,7 @@ public class IO {
      *
      * @return
      */
-    public List<String> getLanguages() {
+    public Map<String, String> getLanguages() {
         return languages;
     }
 
@@ -393,7 +393,7 @@ public class IO {
      */
     public void saveConfigProperties() {
         try {
-            FileOutputStream output = new FileOutputStream(System.getProperty("user.home") + File.separator + ".sensormonitor" + File.separator + "config.configProperties");
+            FileOutputStream output = new FileOutputStream(System.getProperty("user.home") + File.separator + ".sensormonitor" + File.separator + "config.properties");
             configProp.store(output, null);
         } catch (FileNotFoundException ex) {
             Logger.getLogger(IO.class.getName()).log(Level.SEVERE, null, ex);
@@ -469,7 +469,7 @@ public class IO {
         for (String s : langs) {
             String s1 = s.split("_")[1];
             String abbreviation = s1.split("\\.")[0];
-            languages.add(new Locale(abbreviation).getDisplayLanguage(new Locale(abbreviation)));
+            languages.put(new Locale(abbreviation).getDisplayLanguage(new Locale(abbreviation)), abbreviation);
         }
     }
 

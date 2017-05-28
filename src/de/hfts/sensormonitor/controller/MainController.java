@@ -139,7 +139,8 @@ public class MainController implements Initializable {
     private Stage recordingswindow;
     private Stage settingswindow;
 
-    private HashMap<Data, ChartData> chartData;
+    private ArrayList<ChartData> chartDatas = new ArrayList<>();
+    private ArrayList<SensorChart> sensorCharts = new ArrayList<>();
     private List<BaseSensor> sensors;
 
     boolean isDBConnected;
@@ -157,13 +158,7 @@ public class MainController implements Initializable {
      *
      */
     public void handleMenuItemReboot() {
-        quitProgramm();
-        SensorMonitor sm = new SensorMonitor();
-        try {
-            sm.start(new Stage());
-        } catch (Exception ex) {
-            Logger.getLogger(MainController.class.getName()).log(Level.SEVERE, null, ex);
-        }
+        rebootProgramm();
     }
 
     /**
@@ -231,10 +226,12 @@ public class MainController implements Initializable {
                 Scene scene = new Scene(root);
                 scene.getStylesheets().addAll(labelInfo.getScene().getStylesheets());
                 ((SettingsController) loader.getController()).setIO(io);
+                ((SettingsController) loader.getController()).setMainController(this);
                 settingswindow.setScene(scene);
                 settingswindow.sizeToScene();
                 settingswindow.setOnCloseRequest(eh -> {
                     settingswindow = null;
+                    ((SettingsController) loader.getController()).onClose();
                 });
                 settingswindow.show();
             } catch (IOException ex) {
@@ -337,10 +334,25 @@ public class MainController implements Initializable {
         return this.io;
     }
 
+    /**
+     *
+     * @return
+     */
+    public ArrayList<ChartData> getChartDatas() {
+        return chartDatas;
+    }
+    
+    /**
+     * 
+     * @return 
+     */
+    public ArrayList<SensorChart> getSensorCharts() {
+        return sensorCharts;
+    }
+
     // -------------- OTHER METHODS --------------------------------------------
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-        chartData = new HashMap<>();
     }
 
     /**
@@ -352,12 +364,12 @@ public class MainController implements Initializable {
     public void startDisplay(List<BaseSensor> sensors) {
         SensorData data = new SensorData();
         ChartData dataTemperature = new ChartData(Data.TEMPERATURE, data);
-        chartData.put(Data.TEMPERATURE, dataTemperature);
+        chartDatas.add(dataTemperature);
         ChartData dataPressure = new ChartData(Data.PRESSURE, data);
-        chartData.put(Data.PRESSURE, dataPressure);
+        chartDatas.add(dataPressure);
         ChartData dataRevolutions = new ChartData(Data.REVOLUTIONS, data);
-        chartData.put(Data.REVOLUTIONS, dataRevolutions);
-        for (ChartData cd : chartData.values()) {
+        chartDatas.add(dataRevolutions);
+        for (ChartData cd : chartDatas) {
             cd.setxMin(0 - Double.valueOf(io.getConfigProp("realtime_timeframe")));
             cd.setxMax(0);
             cd.setxScaleMin(Double.valueOf(io.getConfigProp("realtime_xscalemin")));
@@ -373,17 +385,23 @@ public class MainController implements Initializable {
         chartTemperature.setChartData(dataTemperature, io.getLangpack(), "sec", "°C", Boolean.valueOf(io.getConfigProp("displayPointSymbols")));
         chartPressure.setChartData(dataPressure, io.getLangpack(), "sec", "hPa", Boolean.valueOf(io.getConfigProp("displayPointSymbols")));
         chartRevolutions.setChartData(dataRevolutions, io.getLangpack(), "sec", "RPM", Boolean.valueOf(io.getConfigProp("displayPointSymbols")));
+        sensorCharts.add(chartTemperature);
+        sensorCharts.add(chartPressure);
+        sensorCharts.add(chartRevolutions);
 
         ChartData dataTemperatureSpecific = dataTemperature.clone();
-        chartData.put(Data.TEMPERATURE, dataTemperatureSpecific);
+        chartDatas.add(dataTemperatureSpecific);
         ChartData dataPressureSpecific = dataPressure.clone();
-        chartData.put(Data.PRESSURE, dataPressureSpecific);
+        chartDatas.add(dataPressureSpecific);
         ChartData dataRevolutionsSpecific = dataRevolutions.clone();
-        chartData.put(Data.REVOLUTIONS, dataRevolutionsSpecific);
+        chartDatas.add(dataRevolutionsSpecific);
 
         chartTemperatureSpecific.setChartData(dataTemperatureSpecific, io.getLangpack(), "sec", "°C", Boolean.valueOf(io.getConfigProp("displayPointSymbols")));
         chartPressureSpecific.setChartData(dataPressureSpecific, io.getLangpack(), "sec", "hPa", Boolean.valueOf(io.getConfigProp("displayPointSymbols")));
         chartRevolutionsSpecific.setChartData(dataRevolutionsSpecific, io.getLangpack(), "sec", "RPM", Boolean.valueOf(io.getConfigProp("displayPointSymbols")));
+        sensorCharts.add(chartTemperatureSpecific);
+        sensorCharts.add(chartPressureSpecific);
+        sensorCharts.add(chartRevolutionsSpecific);
 
         checkComboBoxSensors.getItems().setAll(data.getSensorIDs());
 
@@ -407,6 +425,16 @@ public class MainController implements Initializable {
         }
         labelInfo.getScene().getWindow().hide();
         io.closeConnection();
+    }
+
+    public void rebootProgramm() {
+        quitProgramm();
+        SensorMonitor sm = new SensorMonitor();
+        try {
+            sm.start(new Stage());
+        } catch (Exception ex) {
+            Logger.getLogger(MainController.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
 
     /**

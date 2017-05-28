@@ -309,6 +309,7 @@ public class ChartData implements SensorDataChangeListener {
      */
     public void setxMin(double xMin) {
         this.xMin = xMin;
+        notifyListenersOfAxisChange();
     }
 
     /**

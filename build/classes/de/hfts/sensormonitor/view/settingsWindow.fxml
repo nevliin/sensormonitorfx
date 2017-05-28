@@ -57,7 +57,7 @@
             <children>
                 <Label text="%displayedtimeframe"
                        GridPane.rowIndex="0" GridPane.columnIndex="0" />
-                <TextField fx:id="textFieldTimeFrame" editable="false" 
+                <TextField fx:id="textFieldTimeFrame" 
                            GridPane.rowIndex="0" GridPane.columnIndex="1" />
                 <CheckBox text="%display_point_symbols" fx:id="checkBoxDisplayPoints"
                           GridPane.rowIndex="1" GridPane.columnIndex="0" 
@@ -77,7 +77,7 @@
                 <Label fx:id="labelErrorGraphs" 
                        GridPane.rowIndex="5" GridPane.columnIndex="0" 
                        GridPane.columnSpan="2" />
-                <Button text="%save" onAction="#handleSaveButtonGraphs" maxWidth="1000"
+                <Button text="%apply" onAction="#handleApplyButtonGraphs" maxWidth="1000"
                         GridPane.rowIndex="6" GridPane.columnIndex="1" />
             </children>
             <columnConstraints>
