@@ -53,11 +53,11 @@ public class Recording {
                 if (firsttimestamp == null) {
                     firsttimestamp = recording.getTimestamp("TIME");
                 }
-                if (sensors.get(recording.getLong("SENSORID")) == null) {
-                    sensors.put(recording.getLong("SENSORID"), recording.getString("SENSORTYPE"));
-                    temperature_points.put(recording.getLong("SENSORID"), new ArrayList<>());
-                    pressure_points.put(recording.getLong("SENSORID"), new ArrayList<>());
-                    revolutions_points.put(recording.getLong("SENSORID"), new ArrayList<>());
+                if (sensors.get(Long.valueOf(recording.getString("SENSORID"))) == null) {
+                    sensors.put(Long.valueOf(recording.getString("SENSORID")), recording.getString("SENSORTYPE"));
+                    temperature_points.put(Long.valueOf(recording.getString("SENSORID")), new ArrayList<>());
+                    pressure_points.put(Long.valueOf(recording.getString("SENSORID")), new ArrayList<>());
+                    revolutions_points.put(Long.valueOf(recording.getString("SENSORID")), new ArrayList<>());
                 }
 
                 lasttimestamp = recording.getTimestamp("TIME");
@@ -85,9 +85,9 @@ public class Recording {
                 } catch (NullPointerException e) {
                     revolutions.isEmpty(true);
                 }
-                temperature_points.get(recording.getLong("SENSORID")).add(temperature);
-                pressure_points.get(recording.getLong("SENSORID")).add(pressure);
-                revolutions_points.get(recording.getLong("SENSORID")).add(revolutions);
+                temperature_points.get(Long.valueOf(recording.getString("SENSORID"))).add(temperature);
+                pressure_points.get(Long.valueOf(recording.getString("SENSORID"))).add(pressure);
+                revolutions_points.get(Long.valueOf(recording.getString("SENSORID"))).add(revolutions);
 
             }
         } catch (SQLException ex) {

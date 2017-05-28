@@ -73,7 +73,7 @@ public class Recorder implements CeBarRoundObserver<SensorEvent> {
          * @param cbre
          */
         public void recordData(SensorEvent cbre) {
-            String insertstmt = rowid + ", " + Integer.toString((int) cbre.getUniqueSensorIdentifier()) + ", '" + cbre.getSensorTypeCode() + "'";
+            String insertstmt = rowid + ", " + Long.toString(cbre.getUniqueSensorIdentifier()) + ", '" + cbre.getSensorTypeCode() + "'";
             if (recordTemperature) {
                 insertstmt += ", " + Double.toString(cbre.getTemperature());
             } else {
