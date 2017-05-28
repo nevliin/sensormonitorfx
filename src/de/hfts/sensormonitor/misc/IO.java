@@ -479,6 +479,7 @@ public class IO {
      * base.css)
      */
     public void loadAvailableSkins() {
+        ArrayList<String> stylesUncut = new ArrayList<>();
         try {
             URI uri = this.getClass().getResource("/stylesheets").toURI();
             try (FileSystem fileSystem = (uri.getScheme().equals("jar") ? FileSystems.newFileSystem(uri, Collections.<String, Object>emptyMap()) : null)) {
@@ -487,7 +488,7 @@ public class IO {
                     @Override
                     public FileVisitResult visitFile(Path file, BasicFileAttributes attrs) throws IOException {
                         File f = new File(file.toString());
-                        styles.add(f.getName());
+                        stylesUncut.add(f.getName());
                         return FileVisitResult.CONTINUE;
                     }
                 });
@@ -497,7 +498,7 @@ public class IO {
         } catch (URISyntaxException ex) {
             Logger.getLogger(IO.class.getName()).log(Level.SEVERE, null, ex);
         }
-        for (String s : styles) {
+        for (String s : stylesUncut) {
             String abbreviation = s.split("\\.")[0];
             if (!abbreviation.equalsIgnoreCase("base")) {
                 styles.add(abbreviation);

@@ -76,3 +76,15 @@
 .onHover{
     -fx-background-insets: 0, 5;
 }
+
+.button {
+    -fx-font-size: 14;
+}
+
+.textfield {
+    -fx-font-size: 14;
+}
+
+.combobox {
+    -fx-font-size: 14;
+}

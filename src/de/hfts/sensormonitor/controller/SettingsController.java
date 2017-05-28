@@ -17,6 +17,7 @@ import javafx.scene.control.CheckBox;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.Tab;
+import javafx.scene.control.TextField;
 import javafx.scene.layout.StackPane;
 
 /**
@@ -25,8 +26,20 @@ import javafx.scene.layout.StackPane;
  */
 public class SettingsController implements Initializable {
 
-    @FXML private ComboBox comboBoxLanguages;
-    @FXML private CheckBox comboBoxDisplayPoints;
+    @FXML
+    private ComboBox comboBoxLanguages;
+    @FXML
+    private TextField textFieldTimeFrame;
+    @FXML
+    private CheckBox checkBoxDisplayPoints;
+    @FXML
+    private ComboBox comboBoxAppearance;
+    @FXML
+    private Label labelErrorGraphs;
+    @FXML
+    private Label labelErrorLanguage;
+    @FXML
+    private Label labelErrorAppearance;
     private IO io;
 
     @Override
@@ -36,17 +49,23 @@ public class SettingsController implements Initializable {
     public void handleSaveButtonLanguage() {
 
     }
-    
+
     public void handleSaveButtonGraphs() {
-        
+
     }
-    
+
+    public void handleSaveButtonAppearance() {
+
+    }
+
     public void setIO(IO io) {
         this.io = io;
         comboBoxLanguages.setItems(FXCollections.observableArrayList(io.getLanguages()));
         comboBoxLanguages.setValue(new Locale(io.getConfigProp("lang")).getDisplayLanguage(new Locale(io.getConfigProp("lang"))));
-        comboBoxDisplayPoints.setSelected(Boolean.valueOf(io.getConfigProp("displayPointSymbols")));
+        textFieldTimeFrame.setText(io.getConfigProp("realtime_timeframe"));
+        checkBoxDisplayPoints.setSelected(Boolean.valueOf(io.getConfigProp("displayPointSymbols")));
+        io.loadAvailableSkins();
+        comboBoxAppearance.setItems(FXCollections.observableArrayList(io.getStyles()));
+        comboBoxAppearance.setValue(io.getConfigProp("style"));        
     }
-
-
 }
