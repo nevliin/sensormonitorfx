@@ -16,7 +16,15 @@ import java.util.Date;
 public class SensorDataPoint {
 
     // -------------- PUBLIC FIELDS --------------------------------------------
+
+    /**
+     *
+     */
     public double value;
+
+    /**
+     *
+     */
     public Date time;
     
     // -------------- PRIVATE FIELDS -------------------------------------------

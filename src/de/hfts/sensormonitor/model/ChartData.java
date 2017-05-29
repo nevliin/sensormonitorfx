@@ -63,6 +63,7 @@ public class ChartData implements SensorDataChangeListener {
 
     /**
      * Creates new ChartData and sets type
+     * @param type
      */
     public ChartData(Data type) {
         listeners = new ArrayList<>();
@@ -221,6 +222,10 @@ public class ChartData implements SensorDataChangeListener {
         return chartGraphs.get(sensorID);
     }
 
+    /**
+     *
+     * @return
+     */
     public Collection<XYChart.Series<Double, Double>> getSeries() {
         return chartGraphs.values();
     }

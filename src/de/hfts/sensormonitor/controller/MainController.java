@@ -468,7 +468,11 @@ public class MainController implements Initializable {
     }
 
     /**
+<<<<<<< HEAD
      * Restarts the program
+=======
+     *
+>>>>>>> 3aa855858b81f79248ac16a3ff0b7fa9c50aedb0
      */
     public void rebootProgramm() {
         quitProgramm();
