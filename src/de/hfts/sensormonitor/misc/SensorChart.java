@@ -1,5 +1,7 @@
 package de.hfts.sensormonitor.misc;
 
+import com.sun.javafx.charts.Legend;
+import com.sun.javafx.charts.Legend.LegendItem;
 import de.hfts.sensormonitor.controller.EditChartController;
 import de.hfts.sensormonitor.model.*;
 import java.io.IOException;
@@ -10,6 +12,7 @@ import java.util.logging.Logger;
 import javafx.application.Platform;
 import javafx.event.EventHandler;
 import javafx.fxml.FXMLLoader;
+import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.chart.*;
 import javafx.scene.control.*;
@@ -118,6 +121,7 @@ public class SensorChart extends LineChart implements ChartDataChangeListener {
             for (Object d : s.getData()) {
                 XYChart.Data data = (XYChart.Data) d;
                 Tooltip tooltip = new Tooltip(langpack.getString("sensor_id") + ": " + s.getName() + "\n"
+                        + langpack.getString("partTypeCode") + ": " + chartdata.getPartTypeCodes().get(Long.valueOf(s.getName())) + "\n"
                         + langpack.getString("average") + ": " + this.getYAverage(s.getName()) + " " + this.getYAxis().getLabel() + "\n"
                         + langpack.getString("x_value") + ": " + Math.round(Double.valueOf(data.getXValue().toString()) * 100) / 100.0 + " " + this.getXAxis().getLabel() + "\n"
                         + langpack.getString("y_value") + ": " + data.getYValue() + " " + this.getYAxis().getLabel());
@@ -141,9 +145,42 @@ public class SensorChart extends LineChart implements ChartDataChangeListener {
                         }
                     });
                 } catch (NullPointerException ex) {
-
+                    // NO-OP --- catch NullPointerException if SensorChart is not visible yet
                 }
             }
+        }
+    }
+
+    /**
+     * Add tooltips displaying additional information when hovering over the
+     * label identifying the series.
+     */
+    public void installLabelTooltips() {
+        for (LegendItem li : ((Legend) this.getLegend()).getItems()) {
+            Tooltip tooltip = new Tooltip(langpack.getString("sensor_id") + ": " + li.getText() + "\n"
+                    + langpack.getString("average") + ": " + this.getYAverage(li.getText()) + " " + this.getYAxis().getLabel());
+            Tooltip.install(li.getSymbol(), tooltip);
+            /*try {
+                //Adding class on hover
+                
+                li.getSymbol().setOnMouseEntered(new EventHandler<MouseEvent>() {
+                    @Override
+                    public void handle(MouseEvent event) {
+                        tooltip.show(li.getSymbol().getScene().getWindow(), li.getSymbol().getScene().getX() + event.getScreenX() + 10, li.getSymbol().getScene().getX() + event.getScreenY() + 10);
+                    }
+
+                });
+
+                //Removing class on exit
+                li.getSymbol().setOnMouseExited(new EventHandler<MouseEvent>() {
+                    @Override
+                    public void handle(MouseEvent event) {
+                        tooltip.hide();
+                    }
+                });
+            } catch (NullPointerException ex) {
+                // NO-OP --- catch NullPointerException if SensorChart is not visible yet
+            }*/
         }
     }
 

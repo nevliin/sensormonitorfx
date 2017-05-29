@@ -82,6 +82,15 @@ public class SensorData implements CeBarRoundObserver<SensorEvent> {
         });
     }
 
+    public void addSensor(long sensorID, String typeCode) {
+        mapIDTypeCode.put(sensorID, typeCode);
+        sensorIDs.add(Long.toString(sensorID));
+        graphs.get(Data.TEMPERATURE).put(sensorID, new ArrayList<>());
+        graphs.get(Data.PRESSURE).put(sensorID, new ArrayList<>());
+        graphs.get(Data.REVOLUTIONS).put(sensorID, new ArrayList<>());
+        notifyListenersOfDataChange(sensorID);
+    }
+
     // -------------- LISTENER METHODS -----------------------------------------
     /**
      * Add listener implementing DataChangeListener to the SensorChartData
@@ -138,6 +147,10 @@ public class SensorData implements CeBarRoundObserver<SensorEvent> {
      */
     public ObservableList<String> getSensorIDs() {
         return sensorIDs;
+    }
+
+    public Map<Long, String> getMapIDTypeCode() {
+        return mapIDTypeCode;
     }
     
     

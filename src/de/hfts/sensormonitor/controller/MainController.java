@@ -8,12 +8,15 @@ import de.hfts.sensormonitor.model.*;
 import de.hfts.sensormonitor.model.SensorData.Data;
 import java.io.File;
 import java.io.IOException;
+import java.lang.reflect.Field;
 import java.net.URL;
 import java.text.ParseException;
 import java.util.*;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javafx.application.Platform;
 import javafx.collections.FXCollections;
+import javafx.collections.ListChangeListener;
 import javafx.collections.ObservableList;
 import javafx.fxml.*;
 import javafx.scene.*;
@@ -341,10 +344,10 @@ public class MainController implements Initializable {
     public ArrayList<ChartData> getChartDatas() {
         return chartDatas;
     }
-    
+
     /**
-     * 
-     * @return 
+     *
+     * @return
      */
     public ArrayList<SensorChart> getSensorCharts() {
         return sensorCharts;
@@ -403,13 +406,50 @@ public class MainController implements Initializable {
         sensorCharts.add(chartPressureSpecific);
         sensorCharts.add(chartRevolutionsSpecific);
 
-        checkComboBoxSensors.getItems().setAll(data.getSensorIDs());
-
         for (BaseSensor b : sensors) {
-            b.addListener(data);
-            b.addListener(recorder);
-            b.stopMeasure();
+            try {
+                Field fieldID = b.getClass().getSuperclass().getDeclaredField("uniqueId");
+                fieldID.setAccessible(true);
+                long sensorID = (long) fieldID.get(b);
+                Field fieldTypeCode = b.getClass().getSuperclass().getDeclaredField("partTypeCode");
+                fieldTypeCode.setAccessible(true);
+                String typeCode = (String) fieldTypeCode.get(b);
+                data.addSensor(sensorID, typeCode);
+                b.addListener(data);
+                b.addListener(recorder);
+                b.stopMeasure();
+            } catch (NoSuchFieldException ex) {
+                Logger.getLogger(MainController.class.getName()).log(Level.SEVERE, null, ex);
+            } catch (SecurityException ex) {
+                Logger.getLogger(MainController.class.getName()).log(Level.SEVERE, null, ex);
+            } catch (IllegalArgumentException ex) {
+                Logger.getLogger(MainController.class.getName()).log(Level.SEVERE, null, ex);
+            } catch (IllegalAccessException ex) {
+                Logger.getLogger(MainController.class.getName()).log(Level.SEVERE, null, ex);
+            }
         }
+
+        checkComboBoxSensors.getItems().setAll(data.getSensorIDs());
+        checkComboBoxSensors.getCheckModel().checkAll();
+
+        checkComboBoxSensors.getCheckModel().getCheckedItems().addListener(new ListChangeListener() {
+            @Override
+            public void onChanged(ListChangeListener.Change c) {
+                List<String> checkedsensors = new ArrayList<>(checkComboBoxSensors.getCheckModel().getCheckedItems());
+                for (long l : data.getMapIDTypeCode().keySet()) {
+                    if (checkedsensors.contains(Long.toString(l))) {
+                        for (ChartData cd : chartDatas) {
+                            cd.setGraphVisible(l, true);
+                        }
+                    } else {
+                        for (ChartData cd : chartDatas) {
+                            cd.setGraphVisible(l, false);
+                        }
+                    }
+                }
+            }
+        });
+
         for (BaseSensor b : sensors) {
             b.startMeasure();
         }
@@ -427,6 +467,9 @@ public class MainController implements Initializable {
         io.closeConnection();
     }
 
+    /**
+     * Restarts the program
+     */
     public void rebootProgramm() {
         quitProgramm();
         SensorMonitor sm = new SensorMonitor();

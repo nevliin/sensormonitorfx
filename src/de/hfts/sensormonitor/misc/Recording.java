@@ -103,6 +103,7 @@ public class Recording {
             chartDatas.get(d).setxMax((lasttimestamp.getTime() - firsttimestamp.getTime()) / 1000);
             chartDatas.get(d).setxScaleMin(0);
             chartDatas.get(d).setxScaleMax((lasttimestamp.getTime() - firsttimestamp.getTime()) / 1000);
+            chartDatas.get(d).setPartTypeCodes(sensors);
         }
 
         chartDatas.get(Data.TEMPERATURE).setyScaleMax(Double.valueOf(io.getConfigProp("temperature_yscalemax")));

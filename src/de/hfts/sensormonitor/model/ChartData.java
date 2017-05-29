@@ -33,6 +33,7 @@ public class ChartData implements SensorDataChangeListener {
      * Map storing the Series with the SensorID's as keys for easy access
      */
     private HashMap<Long, XYChart.Series<Double, Double>> chartGraphs;
+    private HashMap<Long, String> partTypeCodes = new HashMap<>();
     private SensorData sensorData;
     private Data type;
     private double xScaleMin;
@@ -164,6 +165,7 @@ public class ChartData implements SensorDataChangeListener {
             XYChart.Series<Double, Double> series = new XYChart.Series<>();
             series.setName(Long.toString(sensorID));
             chartGraphs.put(sensorID, series);
+            partTypeCodes.put(sensorID, sensorData.getTypeCode(sensorID));
             Platform.runLater(() -> {
                 lineChartModel.add(series);
             });
@@ -309,7 +311,6 @@ public class ChartData implements SensorDataChangeListener {
      */
     public void setxMin(double xMin) {
         this.xMin = xMin;
-        notifyListenersOfAxisChange();
     }
 
     /**
@@ -375,5 +376,15 @@ public class ChartData implements SensorDataChangeListener {
     public void setType(Data type) {
         this.type = type;
     }
+
+    public HashMap<Long, String> getPartTypeCodes() {
+        return partTypeCodes;
+    }
+
+    public void setPartTypeCodes(HashMap<Long, String> partTypeCodes) {
+        this.partTypeCodes = partTypeCodes;
+    }
+    
+    
 
 }

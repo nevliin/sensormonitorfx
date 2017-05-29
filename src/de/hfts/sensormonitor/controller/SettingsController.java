@@ -74,6 +74,7 @@ public class SettingsController implements Initializable {
         if (!textFieldTimeFrame.getText().equals(io.getConfigProp("realtime_timeframe"))) {
             for (ChartData cd : mainController.getChartDatas()) {
                 cd.setxMin(0 - Integer.valueOf(textFieldTimeFrame.getText()));
+                cd.notifyListenersOfAxisChange();
             }
             io.setConfigProp("realtime_timeframe", textFieldTimeFrame.getText());
             io.saveConfigProperties();

@@ -9,7 +9,9 @@
             <file>file:/I:/WiInfProjekt/sensormonitorfx/src/de/hfts/sensormonitor/controller/RecordingDisplayController.java</file>
             <file>file:/I:/WiInfProjekt/sensormonitorfx/src/de/hfts/sensormonitor/controller/SettingsController.java</file>
             <file>file:/I:/WiInfProjekt/sensormonitorfx/src/de/hfts/sensormonitor/view/recordingDisplay.fxml</file>
+            <file>file:/I:/WiInfProjekt/sensormonitorfx/resources/stylesheets/default.css</file>
             <file>file:/I:/WiInfProjekt/sensormonitorfx/resources/lang/lang_en.properties</file>
+            <file>file:/I:/WiInfProjekt/sensormonitorfx/src/de/hfts/sensormonitor/model/SensorData.java</file>
             <file>file:/I:/WiInfProjekt/sensormonitorfx/src/de/hfts/sensormonitor/controller/RecordingsListController.java</file>
             <file>file:/I:/WiInfProjekt/sensormonitorfx/resources/stylesheets/dark.css</file>
             <file>file:/I:/WiInfProjekt/sensormonitorfx/src/de/hfts/sensormonitor/misc/Recording.java</file>
@@ -20,6 +22,7 @@
             <file>file:/I:/WiInfProjekt/sensormonitorfx/src/de/hfts/sensormonitor/misc/SensorChart.java</file>
             <file>file:/I:/WiInfProjekt/sensormonitorfx/resources/stylesheets/base.css</file>
             <file>file:/I:/WiInfProjekt/sensormonitorfx/src/de/hfts/sensormonitor/view/settingsWindow.fxml</file>
+            <file>file:/I:/WiInfProjekt/sensormonitorfx/src/de/hfts/sensormonitor/controller/EditChartController.java</file>
         </group>
     </open-files>
 </project-private>
