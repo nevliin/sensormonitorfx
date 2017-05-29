@@ -3,23 +3,29 @@
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
-            <file>file:/I:/WiInfProjekt/sensormonitorfx/src/de/hfts/sensormonitor/misc/IO.java</file>
-            <file>file:/I:/WiInfProjekt/sensormonitorfx/resources/lang/lang_de.properties</file>
-            <file>file:/I:/WiInfProjekt/sensormonitorfx/src/de/hfts/sensormonitor/execute/SensorMonitor.java</file>
-            <file>file:/I:/WiInfProjekt/sensormonitorfx/src/de/hfts/sensormonitor/controller/RecordingDisplayController.java</file>
-            <file>file:/I:/WiInfProjekt/sensormonitorfx/src/de/hfts/sensormonitor/controller/SettingsController.java</file>
-            <file>file:/I:/WiInfProjekt/sensormonitorfx/src/de/hfts/sensormonitor/view/recordingDisplay.fxml</file>
-            <file>file:/I:/WiInfProjekt/sensormonitorfx/resources/lang/lang_en.properties</file>
-            <file>file:/I:/WiInfProjekt/sensormonitorfx/src/de/hfts/sensormonitor/controller/RecordingsListController.java</file>
-            <file>file:/I:/WiInfProjekt/sensormonitorfx/resources/stylesheets/dark.css</file>
-            <file>file:/I:/WiInfProjekt/sensormonitorfx/src/de/hfts/sensormonitor/misc/Recording.java</file>
-            <file>file:/I:/WiInfProjekt/sensormonitorfx/resources/defaultconfig/config.properties</file>
-            <file>file:/I:/WiInfProjekt/sensormonitorfx/src/de/hfts/sensormonitor/model/ChartData.java</file>
-            <file>file:/I:/WiInfProjekt/sensormonitorfx/src/de/hfts/sensormonitor/controller/MainController.java</file>
-            <file>file:/I:/WiInfProjekt/sensormonitorfx/src/de/hfts/sensormonitor/view/recordingsListWindow.fxml</file>
-            <file>file:/I:/WiInfProjekt/sensormonitorfx/src/de/hfts/sensormonitor/misc/SensorChart.java</file>
-            <file>file:/I:/WiInfProjekt/sensormonitorfx/resources/stylesheets/base.css</file>
-            <file>file:/I:/WiInfProjekt/sensormonitorfx/src/de/hfts/sensormonitor/view/settingsWindow.fxml</file>
+            <file>file:/C:/WiInfProjekt/sensormonitorfx/src/de/hfts/sensormonitor/exceptions/SensorMonitorException.java</file>
+            <file>file:/C:/WiInfProjekt/sensormonitorfx/src/de/hfts/sensormonitor/model/SensorDataChangeListener.java</file>
+            <file>file:/C:/WiInfProjekt/sensormonitorfx/src/de/hfts/sensormonitor/misc/ExceptionDialog.java</file>
+            <file>file:/C:/WiInfProjekt/sensormonitorfx/src/de/hfts/sensormonitor/exceptions/IllegalYScaleException.java</file>
+            <file>file:/C:/WiInfProjekt/sensormonitorfx/src/de/hfts/sensormonitor/exceptions/IllegalXScaleException.java</file>
+            <file>file:/C:/WiInfProjekt/sensormonitorfx/src/de/hfts/sensormonitor/controller/RecordingDisplayController.java</file>
+            <file>file:/C:/WiInfProjekt/sensormonitorfx/src/de/hfts/sensormonitor/misc/IO.java</file>
+            <file>file:/C:/WiInfProjekt/sensormonitorfx/src/de/hfts/sensormonitor/exceptions/IllegalSensorAmountException.java</file>
+            <file>file:/C:/WiInfProjekt/sensormonitorfx/src/de/hfts/sensormonitor/model/SensorData.java</file>
+            <file>file:/C:/WiInfProjekt/sensormonitorfx/src/de/hfts/sensormonitor/misc/Recorder.java</file>
+            <file>file:/C:/WiInfProjekt/sensormonitorfx/src/de/hfts/sensormonitor/controller/MainController.java</file>
+            <file>file:/C:/WiInfProjekt/sensormonitorfx/src/de/hfts/sensormonitor/controller/EditChartController.java</file>
+            <file>file:/C:/WiInfProjekt/sensormonitorfx/src/de/hfts/sensormonitor/controller/RecordingsListController.java</file>
+            <file>file:/C:/WiInfProjekt/sensormonitorfx/src/de/hfts/sensormonitor/model/ChartDataChangeListener.java</file>
+            <file>file:/C:/WiInfProjekt/sensormonitorfx/src/de/hfts/sensormonitor/controller/SettingsController.java</file>
+            <file>file:/C:/WiInfProjekt/sensormonitorfx/src/de/hfts/sensormonitor/misc/SensorChart.java</file>
+            <file>file:/C:/WiInfProjekt/sensormonitorfx/src/de/hfts/sensormonitor/exceptions/ImportRecordingException.java</file>
+            <file>file:/C:/WiInfProjekt/sensormonitorfx/src/de/hfts/sensormonitor/exceptions/IllegalTableNameException.java</file>
+            <file>file:/C:/WiInfProjekt/sensormonitorfx/src/de/hfts/sensormonitor/execute/SensorMonitor.java</file>
+            <file>file:/C:/WiInfProjekt/sensormonitorfx/src/de/hfts/sensormonitor/view/editChartWindow.fxml</file>
+            <file>file:/C:/WiInfProjekt/sensormonitorfx/src/de/hfts/sensormonitor/model/ChartData.java</file>
+            <file>file:/C:/WiInfProjekt/sensormonitorfx/src/de/hfts/sensormonitor/misc/Recording.java</file>
+            <file>file:/C:/WiInfProjekt/sensormonitorfx/src/de/hfts/sensormonitor/view/mainWindow.fxml</file>
         </group>
     </open-files>
 </project-private>

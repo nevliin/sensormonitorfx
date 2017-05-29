@@ -71,7 +71,12 @@ public class SettingsController implements Initializable {
     }
 
     public void handleApplyButtonGraphs() {
-        if (!textFieldTimeFrame.getText().equals(io.getConfigProp("realtime_timeframe"))) {
+        if (Integer.valueOf(textFieldTimeFrame.getText()) > (0 - Integer.valueOf(io.getConfigProp("realtime_xscalemin")))) {
+            labelErrorGraphs.setText(io.getLangpackString("timeframe_exceeds_bounds"));
+            labelErrorGraphs.setVisible(true);
+            textFieldTimeFrame.setText(io.getConfigProp("realtime_timeframe"));
+        } else if (!textFieldTimeFrame.getText().equals(io.getConfigProp("realtime_timeframe"))) {
+            labelErrorGraphs.setVisible(false);
             for (ChartData cd : mainController.getChartDatas()) {
                 cd.setxMin(0 - Integer.valueOf(textFieldTimeFrame.getText()));
             }
