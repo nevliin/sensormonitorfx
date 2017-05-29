@@ -14,35 +14,54 @@ import java.util.ResourceBundle;
 import javafx.collections.FXCollections;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
-import javafx.scene.Group;
-import javafx.scene.control.CheckBox;
-import javafx.scene.control.ComboBox;
-import javafx.scene.control.Label;
-import javafx.scene.control.Tab;
-import javafx.scene.control.TextField;
-import javafx.scene.layout.StackPane;
+import javafx.scene.control.*;
 
 /**
+ * SettingsController --- FXML Controller for settingsWindow.fxml, állows
+ * changing basic settings for language, graphs and appearance;
  *
  * @author Polarix IT Solutions
  */
 public class SettingsController implements Initializable {
 
+    // -------------- FXML FIELDS ----------------------------------------------
+    /**
+     * ComboBox listing all available languages
+     */
     @FXML
     private ComboBox comboBoxLanguages;
+    /**
+     * TextField displaying the default timeframe for realtime SensorChart's
+     */
     @FXML
     private TextField textFieldTimeFrame;
+    /**
+     * CheckBox showing if points on the realtime SensorChart's are displayed or not
+     */
     @FXML
     private CheckBox checkBoxDisplayPoints;
+    /**
+     * ComboBox listing all available styles
+     */
     @FXML
     private ComboBox comboBoxAppearance;
+    /**
+     * Label for displaying errors and notices upon applying the settings for graphs
+     */
     @FXML
     private Label labelErrorGraphs;
+    /**
+     * Label for displaying errors and notices upon saving the settings for language
+     */
     @FXML
     private Label labelErrorLanguage;
+    /**
+     * Label for displaying errors and notices upon saving th3 settings for appearance
+     */
     @FXML
     private Label labelErrorAppearance;
 
+    // -------------- PRIVATE FIELDS -------------------------------------------
     private IO io;
     private MainController mainController;
     private boolean isLanguageRebootNecessary = false;
@@ -51,10 +70,10 @@ public class SettingsController implements Initializable {
     private String currentLanguage;
     private String currentAppearance;
 
-    @Override
-    public void initialize(URL location, ResourceBundle resources) {
-    }
-
+    // -------------- FXML HANDLERS --------------------------------------------
+    /**
+     *
+     */
     public void handleSaveButtonLanguage() {
         if (((String) comboBoxLanguages.getValue()).equals(currentLanguage)) {
             labelErrorLanguage.setVisible(false);
@@ -70,6 +89,9 @@ public class SettingsController implements Initializable {
         }
     }
 
+    /**
+     *
+     */
     public void handleApplyButtonGraphs() {
         if (Integer.valueOf(textFieldTimeFrame.getText()) > (0 - Integer.valueOf(io.getConfigProp("realtime_xscalemin")))) {
             labelErrorGraphs.setText(io.getLangpackString("timeframe_exceeds_bounds"));
@@ -92,6 +114,9 @@ public class SettingsController implements Initializable {
         }
     }
 
+    /**
+     *
+     */
     public void handleSaveButtonAppearance() {
         if (((String) comboBoxAppearance.getValue()).equals(currentAppearance)) {
             labelErrorAppearance.setVisible(false);
@@ -107,6 +132,17 @@ public class SettingsController implements Initializable {
         }
     }
 
+    // -------------- OTHER METHODS --------------------------------------------    
+    @Override
+    public void initialize(URL location, ResourceBundle resources) {
+    }
+
+    /**
+     * Set the global variable io and apply the data retrieved from it to the
+     * ComboBoxes, TextFields and CheckBoxes of the window
+     *
+     * @param io
+     */
     public void setIO(IO io) {
         this.io = io;
         comboBoxLanguages.setItems(FXCollections.observableArrayList(io.getLanguages().keySet()));
@@ -120,13 +156,22 @@ public class SettingsController implements Initializable {
         comboBoxAppearance.setValue(currentAppearance);
     }
 
-    public void setMainController(MainController mc) {
-        this.mainController = mc;
-    }
-
+    /**
+     * Check if the changes in the settings require a reboot and execute it if
+     * necessary
+     */
     public void onClose() {
         if (isAppearanceRebootNecessary || isLanguageRebootNecessary) {
             mainController.rebootProgramm();
         }
+    }
+
+    // -------------- GETTERS & SETTERS ----------------------------------------
+    /**
+     *
+     * @param mc
+     */
+    public void setMainController(MainController mc) {
+        this.mainController = mc;
     }
 }

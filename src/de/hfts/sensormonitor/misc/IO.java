@@ -444,7 +444,6 @@ public class IO {
      * Get a hashmap of the available language packs with the corresponding
      * Locale
      *
-     * @return
      */
     public void loadAvailableLanguages() {
         ArrayList<String> langs = new ArrayList<>();

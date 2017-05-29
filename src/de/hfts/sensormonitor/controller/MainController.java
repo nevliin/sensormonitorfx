@@ -427,6 +427,9 @@ public class MainController implements Initializable {
         io.closeConnection();
     }
 
+    /**
+     *
+     */
     public void rebootProgramm() {
         quitProgramm();
         SensorMonitor sm = new SensorMonitor();

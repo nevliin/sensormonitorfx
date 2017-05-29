@@ -59,6 +59,7 @@ public class SensorChart extends LineChart implements ChartDataChangeListener {
      * @param xAxisTitle
      * @param yAxisTitle
      * @param langpack
+     * @param createSymbols
      */
     public void setChartData(ChartData chartData, ResourceBundle langpack, String xAxisTitle, String yAxisTitle, boolean createSymbols) {
         this.chartdata = chartData;
