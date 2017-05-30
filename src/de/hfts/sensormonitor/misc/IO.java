@@ -497,6 +497,7 @@ public class IO {
         } catch (URISyntaxException ex) {
             Logger.getLogger(IO.class.getName()).log(Level.SEVERE, null, ex);
         }
+        styles.clear();
         for (String s : stylesUncut) {
             String abbreviation = s.split("\\.")[0];
             if (!abbreviation.equalsIgnoreCase("base")) {

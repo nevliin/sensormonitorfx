@@ -6,15 +6,10 @@
 package de.hfts.sensormonitor.misc;
 
 import de.hfts.sensormonitor.exceptions.IllegalTableNameException;
-import de.hfts.sensormonitor.exceptions.IllegalXScaleException;
-import de.hfts.sensormonitor.exceptions.IllegalYScaleException;
-import de.hfts.sensormonitor.exceptions.ImportRecordingException;
-import de.hfts.sensormonitor.exceptions.SensorMonitorException;
+import de.hfts.sensormonitor.exceptions.*;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Path;
 import java.sql.SQLException;
 import java.text.ParseException;
 import java.util.Locale;

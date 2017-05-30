@@ -150,7 +150,7 @@ public class MainController implements Initializable {
 
     // -------------- FXML HANDLERS -------------------------------------------------    
     /**
-     *
+     * Handle clicking the MenuItem "Quit", part of the Menu "File"
      */
     public void handleMenuItemQuit() {
         quitProgramm();
@@ -158,14 +158,14 @@ public class MainController implements Initializable {
     }
 
     /**
-     *
+     * Handle clicking the MenuItem "Reboot", part of the Menu "File"
      */
     public void handleMenuItemReboot() {
         rebootProgramm();
     }
 
     /**
-     *
+     * Handle clicking the MenuItem "Import recording", part of the Menu "Recordings"
      */
     public void handleMenuItemImportRecording() {
         FileChooser fs = new FileChooser();
@@ -183,7 +183,7 @@ public class MainController implements Initializable {
     }
 
     /**
-     *
+     * Handle clicking the MenuItem "Show all", part of the Menu "Recordings"
      */
     public void handleMenuItemShowAll() {
         if (recordingswindow == null) {
@@ -210,14 +210,22 @@ public class MainController implements Initializable {
     }
 
     /**
-     *
+     * Handle clicking the MenuItem "Delete all", part of the Menu "Recordings"
      */
     public void handleMenuItemDeleteAll() {
+        Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+        alert.setTitle(io.getLangpackString("delete_all"));
+        alert.setHeaderText("");
+        alert.setContentText(io.getLangpackString("confirm_delete_all_recordings"));
 
+        Optional<ButtonType> result = alert.showAndWait();
+        if (result.get() == ButtonType.OK) {
+            io.dropAllTables();
+        }
     }
 
     /**
-     *
+     * Handle clicking the MenuItem "Settings", part of the Menu "Help"
      */
     public void handleMenuItemSettings() {
         io.loadAvailableLanguages();
@@ -246,7 +254,7 @@ public class MainController implements Initializable {
     }
 
     /**
-     *
+     * Handle clicking the Button "Start recording"
      */
     public void handleButtonStartRecording() {
         recorder.startRecording();
@@ -255,7 +263,7 @@ public class MainController implements Initializable {
     }
 
     /**
-     *
+     * Handle clicking the Button "Stop recording"
      */
     public void handleButtonStopRecording() {
         recorder.stopRecording();
@@ -264,7 +272,7 @@ public class MainController implements Initializable {
     }
 
     /**
-     *
+     * Handle clicking the CheckBox "Temperature"
      */
     public void handleCheckBoxTemperature() {
         if (checkBoxTemperature.isSelected()) {
@@ -275,7 +283,7 @@ public class MainController implements Initializable {
     }
 
     /**
-     *
+     * Handle clicking the CheckBox "Pressure"
      */
     public void handleCheckBoxPressure() {
         if (checkBoxPressure.isSelected()) {
@@ -286,7 +294,7 @@ public class MainController implements Initializable {
     }
 
     /**
-     *
+     * Handle clicking the CheckBox "Revolutions"
      */
     public void handleCheckBoxRevolutions() {
         if (checkBoxRevolutions.isSelected()) {
@@ -321,7 +329,6 @@ public class MainController implements Initializable {
     }
 
     /**
-     *
      * @param io
      */
     public void setIo(IO io) {
@@ -366,45 +373,8 @@ public class MainController implements Initializable {
      */
     public void startDisplay(List<BaseSensor> sensors) {
         SensorData data = new SensorData();
-        ChartData dataTemperature = new ChartData(Data.TEMPERATURE, data);
-        chartDatas.add(dataTemperature);
-        ChartData dataPressure = new ChartData(Data.PRESSURE, data);
-        chartDatas.add(dataPressure);
-        ChartData dataRevolutions = new ChartData(Data.REVOLUTIONS, data);
-        chartDatas.add(dataRevolutions);
-        for (ChartData cd : chartDatas) {
-            cd.setxMin(0 - Double.valueOf(io.getConfigProp("realtime_timeframe")));
-            cd.setxMax(0);
-            cd.setxScaleMin(Double.valueOf(io.getConfigProp("realtime_xscalemin")));
-            cd.setxScaleMax(Double.valueOf(io.getConfigProp("realtime_xscalemax")));
-        }
-        dataTemperature.setyScaleMax(Double.valueOf(io.getConfigProp("temperature_yscalemax")));
-        dataTemperature.setyScaleMin(Double.valueOf(io.getConfigProp("temperature_yscalemin")));
-        dataPressure.setyScaleMax(Double.valueOf(io.getConfigProp("pressure_yscalemax")));
-        dataPressure.setyScaleMin(Double.valueOf(io.getConfigProp("pressure_yscalemin")));
-        dataRevolutions.setyScaleMax(Double.valueOf(io.getConfigProp("revolutions_yscalemax")));
-        dataRevolutions.setyScaleMin(Double.valueOf(io.getConfigProp("revolutions_yscalemin")));
-
-        chartTemperature.setChartData(dataTemperature, io.getLangpack(), "sec", "°C", Boolean.valueOf(io.getConfigProp("displayPointSymbols")));
-        chartPressure.setChartData(dataPressure, io.getLangpack(), "sec", "hPa", Boolean.valueOf(io.getConfigProp("displayPointSymbols")));
-        chartRevolutions.setChartData(dataRevolutions, io.getLangpack(), "sec", "RPM", Boolean.valueOf(io.getConfigProp("displayPointSymbols")));
-        sensorCharts.add(chartTemperature);
-        sensorCharts.add(chartPressure);
-        sensorCharts.add(chartRevolutions);
-
-        ChartData dataTemperatureSpecific = dataTemperature.clone();
-        chartDatas.add(dataTemperatureSpecific);
-        ChartData dataPressureSpecific = dataPressure.clone();
-        chartDatas.add(dataPressureSpecific);
-        ChartData dataRevolutionsSpecific = dataRevolutions.clone();
-        chartDatas.add(dataRevolutionsSpecific);
-
-        chartTemperatureSpecific.setChartData(dataTemperatureSpecific, io.getLangpack(), "sec", "°C", Boolean.valueOf(io.getConfigProp("displayPointSymbols")));
-        chartPressureSpecific.setChartData(dataPressureSpecific, io.getLangpack(), "sec", "hPa", Boolean.valueOf(io.getConfigProp("displayPointSymbols")));
-        chartRevolutionsSpecific.setChartData(dataRevolutionsSpecific, io.getLangpack(), "sec", "RPM", Boolean.valueOf(io.getConfigProp("displayPointSymbols")));
-        sensorCharts.add(chartTemperatureSpecific);
-        sensorCharts.add(chartPressureSpecific);
-        sensorCharts.add(chartRevolutionsSpecific);
+        setUpCharts(data);
+        setUpTables(data);
 
         for (BaseSensor b : sensors) {
             try {
@@ -454,6 +424,55 @@ public class MainController implements Initializable {
             b.startMeasure();
         }
     }
+    
+    /**
+     * 
+     */
+    public void setUpCharts(SensorData data) {
+                ChartData dataTemperature = new ChartData(Data.TEMPERATURE, data);
+        chartDatas.add(dataTemperature);
+        ChartData dataPressure = new ChartData(Data.PRESSURE, data);
+        chartDatas.add(dataPressure);
+        ChartData dataRevolutions = new ChartData(Data.REVOLUTIONS, data);
+        chartDatas.add(dataRevolutions);
+        for (ChartData cd : chartDatas) {
+            cd.setxMin(0 - Double.valueOf(io.getConfigProp("realtime_timeframe")));
+            cd.setxMax(0);
+            cd.setxScaleMin(Double.valueOf(io.getConfigProp("realtime_xscalemin")));
+            cd.setxScaleMax(Double.valueOf(io.getConfigProp("realtime_xscalemax")));
+        }
+        dataTemperature.setyScaleMax(Double.valueOf(io.getConfigProp("temperature_yscalemax")));
+        dataTemperature.setyScaleMin(Double.valueOf(io.getConfigProp("temperature_yscalemin")));
+        dataPressure.setyScaleMax(Double.valueOf(io.getConfigProp("pressure_yscalemax")));
+        dataPressure.setyScaleMin(Double.valueOf(io.getConfigProp("pressure_yscalemin")));
+        dataRevolutions.setyScaleMax(Double.valueOf(io.getConfigProp("revolutions_yscalemax")));
+        dataRevolutions.setyScaleMin(Double.valueOf(io.getConfigProp("revolutions_yscalemin")));
+
+        chartTemperature.setChartData(dataTemperature, io.getLangpack(), "sec", "°C", Boolean.valueOf(io.getConfigProp("displayPointSymbols")));
+        chartPressure.setChartData(dataPressure, io.getLangpack(), "sec", "hPa", Boolean.valueOf(io.getConfigProp("displayPointSymbols")));
+        chartRevolutions.setChartData(dataRevolutions, io.getLangpack(), "sec", "RPM", Boolean.valueOf(io.getConfigProp("displayPointSymbols")));
+        sensorCharts.add(chartTemperature);
+        sensorCharts.add(chartPressure);
+        sensorCharts.add(chartRevolutions);
+
+        ChartData dataTemperatureSpecific = dataTemperature.clone();
+        chartDatas.add(dataTemperatureSpecific);
+        ChartData dataPressureSpecific = dataPressure.clone();
+        chartDatas.add(dataPressureSpecific);
+        ChartData dataRevolutionsSpecific = dataRevolutions.clone();
+        chartDatas.add(dataRevolutionsSpecific);
+
+        chartTemperatureSpecific.setChartData(dataTemperatureSpecific, io.getLangpack(), "sec", "°C", Boolean.valueOf(io.getConfigProp("displayPointSymbols")));
+        chartPressureSpecific.setChartData(dataPressureSpecific, io.getLangpack(), "sec", "hPa", Boolean.valueOf(io.getConfigProp("displayPointSymbols")));
+        chartRevolutionsSpecific.setChartData(dataRevolutionsSpecific, io.getLangpack(), "sec", "RPM", Boolean.valueOf(io.getConfigProp("displayPointSymbols")));
+        sensorCharts.add(chartTemperatureSpecific);
+        sensorCharts.add(chartPressureSpecific);
+        sensorCharts.add(chartRevolutionsSpecific);
+    }
+    
+    public void setUpTables(SensorData data) {
+        
+    }
 
     /**
      * Shuts down the program safely by deleting a possibly running recording
@@ -468,11 +487,7 @@ public class MainController implements Initializable {
     }
 
     /**
-<<<<<<< HEAD
      * Restarts the program
-=======
-     *
->>>>>>> 3aa855858b81f79248ac16a3ff0b7fa9c50aedb0
      */
     public void rebootProgramm() {
         quitProgramm();
