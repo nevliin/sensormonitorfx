@@ -25,9 +25,10 @@ import static org.junit.Assert.*;
  */
 public class EditChartControllerTest {
 
-    EditChartController ecc;
+    static EditChartController ecc;
 
-    public EditChartControllerTest() {
+    @BeforeClass
+    public static void setUpClass() {
         ecc = new EditChartController();
         ChartData cd = new ChartData(SensorData.Data.TEMPERATURE);
         cd.setxScaleMin(-50);
@@ -37,16 +38,12 @@ public class EditChartControllerTest {
         ecc.chartData = cd;
     }
 
-    @BeforeClass
-    public static void setUpClass() {
-    }
-
     @AfterClass
     public static void tearDownClass() {
     }
 
     @Before
-    public void setUp() {                
+    public void setUp() {
         SensorMonitorException.langpack = ResourceBundle.getBundle("lang.lang", new Locale("en"));
     }
 

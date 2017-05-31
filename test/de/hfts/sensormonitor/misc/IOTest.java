@@ -32,7 +32,8 @@ public class IOTest {
     static IO io;
     static String oldname;
 
-    public IOTest() {
+    @BeforeClass
+    public static void setUpClass() {
         io = new IO();
         try {
             io.connectDB();
@@ -43,18 +44,14 @@ public class IOTest {
         }
     }
 
-    @BeforeClass
-    public static void setUpClass() {
-    }
-
     @AfterClass
-    public static void tearDownClass() {        
+    public static void tearDownClass() {
         new File("a0c1b1f7cfe1e904368.csv").delete();
         io.dropTable(oldname);
     }
 
     @Before
-    public void setUp() {        
+    public void setUp() {
         SensorMonitorException.langpack = ResourceBundle.getBundle("lang.lang", new Locale("en"));
     }
 

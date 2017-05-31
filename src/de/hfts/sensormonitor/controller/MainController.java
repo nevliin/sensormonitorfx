@@ -144,6 +144,7 @@ public class MainController implements Initializable {
 
     private ArrayList<ChartData> chartDatas = new ArrayList<>();
     private ArrayList<SensorChart> sensorCharts = new ArrayList<>();
+    private ArrayList<TableView> tableViews = new ArrayList<>();
     private List<BaseSensor> sensors;
 
     boolean isDBConnected;
@@ -165,7 +166,8 @@ public class MainController implements Initializable {
     }
 
     /**
-     * Handle clicking the MenuItem "Import recording", part of the Menu "Recordings"
+     * Handle clicking the MenuItem "Import recording", part of the Menu
+     * "Recordings"
      */
     public void handleMenuItemImportRecording() {
         FileChooser fs = new FileChooser();
@@ -373,9 +375,6 @@ public class MainController implements Initializable {
      */
     public void startDisplay(List<BaseSensor> sensors) {
         SensorData data = new SensorData();
-        setUpCharts(data);
-        setUpTables(data);
-
         for (BaseSensor b : sensors) {
             try {
                 Field fieldID = b.getClass().getSuperclass().getDeclaredField("uniqueId");
@@ -385,16 +384,22 @@ public class MainController implements Initializable {
                 fieldTypeCode.setAccessible(true);
                 String typeCode = (String) fieldTypeCode.get(b);
                 data.addSensor(sensorID, typeCode);
+            } catch (NoSuchFieldException | SecurityException | IllegalArgumentException | IllegalAccessException ex) {
+                Logger.getLogger(MainController.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
+
+        setUpCharts(data);
+        setUpTables(data);
+
+        for (BaseSensor b : sensors) {
+            try {
                 b.addListener(data);
                 b.addListener(recorder);
                 b.stopMeasure();
-            } catch (NoSuchFieldException ex) {
-                Logger.getLogger(MainController.class.getName()).log(Level.SEVERE, null, ex);
             } catch (SecurityException ex) {
                 Logger.getLogger(MainController.class.getName()).log(Level.SEVERE, null, ex);
             } catch (IllegalArgumentException ex) {
-                Logger.getLogger(MainController.class.getName()).log(Level.SEVERE, null, ex);
-            } catch (IllegalAccessException ex) {
                 Logger.getLogger(MainController.class.getName()).log(Level.SEVERE, null, ex);
             }
         }
@@ -424,12 +429,12 @@ public class MainController implements Initializable {
             b.startMeasure();
         }
     }
-    
+
     /**
-     * 
+     *
      */
     public void setUpCharts(SensorData data) {
-                ChartData dataTemperature = new ChartData(Data.TEMPERATURE, data);
+        ChartData dataTemperature = new ChartData(Data.TEMPERATURE, data);
         chartDatas.add(dataTemperature);
         ChartData dataPressure = new ChartData(Data.PRESSURE, data);
         chartDatas.add(dataPressure);
@@ -469,9 +474,21 @@ public class MainController implements Initializable {
         sensorCharts.add(chartPressureSpecific);
         sensorCharts.add(chartRevolutionsSpecific);
     }
-    
+
     public void setUpTables(SensorData data) {
-        
+        data.getSensorIDs();
+        tableViews.add(tableViewTemperature);
+        tableViews.add(tableViewPressure);
+        tableViews.add(tableViewRevolutions);
+        for(TableView tv : tableViews) {
+            for(long sensorID : data.getMapIDTypeCode().keySet()) {
+                TableColumn tc = new TableColumn(Long.toString(sensorID));
+                TableColumn tc_time = new TableColumn(io.getLangpackString("time"));
+                TableColumn tc_value = new TableColumn(io.getLangpackString("value"));
+                tc.getColumns().addAll(tc_time, tc_value);
+                tv.getColumns().add(tc);
+            }
+        }
     }
 
     /**

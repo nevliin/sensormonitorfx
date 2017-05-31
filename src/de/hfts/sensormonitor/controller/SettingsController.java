@@ -56,7 +56,7 @@ public class SettingsController implements Initializable {
     @FXML
     private Label labelErrorLanguage;
     /**
-     * Label for displaying errors and notices upon saving th3 settings for appearance
+     * Label for displaying errors and notices upon saving the settings for appearance
      */
     @FXML
     private Label labelErrorAppearance;
