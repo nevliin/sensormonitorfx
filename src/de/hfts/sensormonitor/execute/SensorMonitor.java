@@ -18,18 +18,25 @@ import javafx.scene.layout.BorderPane;
 import javafx.stage.Stage;
 
 /**
- * SensorMonitor --- Starts the applications by loading Properties and the mainWindow
+ * SensorMonitor --- Starts the applications by loading Properties and the
+ * mainWindow
+ *
  * @author Polarix IT Solutions
  */
 public class SensorMonitor extends Application {
 
+    static PrintStream originalOut;
+
     /**
      * Creates the IO and loads resources
+     *
      * @param stage
-     * @throws Exception 
+     * @throws Exception
      */
     @Override
     public void start(Stage stage) throws Exception {
+
+        originalOut = System.out;
         boolean isDBConnected = true;
         // Create the IO, connect to the DB and load the sensors
         IO io = new IO();
@@ -52,12 +59,13 @@ public class SensorMonitor extends Application {
         URL url = getClass().getClassLoader().getResource("images/logo_rose_marble.png");
         Image image = new Image(url.toExternalForm());
         stage.getIcons().add(image);
-        
+
         loadMainWindow(io, stage, sensors, isDBConnected);
     }
 
     /**
      * Load mainWindow.fxml and pass parameters to the MainWindowController
+     *
      * @param io
      * @param stage
      * @param sensors
@@ -87,7 +95,7 @@ public class SensorMonitor extends Application {
                 System.exit(0);
             });
             stage.show();
-            
+
             // Start displaying sensor data
             ((MainController) loader.getController()).startDisplay(sensors);
         } catch (IOException ex) {
@@ -107,12 +115,16 @@ public class SensorMonitor extends Application {
     /**
      * Disables System.out
      */
-    public void disableOutput() {
+    public static void disableOutput() {
         System.setOut(new PrintStream(new OutputStream() {
             @Override
             public void write(int b) throws IOException {
                 // NO-OP
             }
         }));
+    }
+
+    public static void enableOutput() {
+        System.setOut(originalOut);
     }
 }

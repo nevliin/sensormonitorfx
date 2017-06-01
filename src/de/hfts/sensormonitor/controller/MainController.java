@@ -15,6 +15,7 @@ import java.util.*;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javafx.application.Platform;
+import javafx.beans.property.ReadOnlyObjectWrapper;
 import javafx.collections.FXCollections;
 import javafx.collections.ListChangeListener;
 import javafx.collections.ObservableList;
@@ -144,7 +145,8 @@ public class MainController implements Initializable {
 
     private ArrayList<ChartData> chartDatas = new ArrayList<>();
     private ArrayList<SensorChart> sensorCharts = new ArrayList<>();
-    private ArrayList<TableView> tableViews = new ArrayList<>();
+    private HashMap<Data, TableView> tableViews = new HashMap<>();
+    private HashMap<Data, TableData> tableDatas = new HashMap<>();
     private List<BaseSensor> sensors;
 
     boolean isDBConnected;
@@ -475,19 +477,45 @@ public class MainController implements Initializable {
         sensorCharts.add(chartRevolutionsSpecific);
     }
 
-    public void setUpTables(SensorData data) {
-        data.getSensorIDs();
-        tableViews.add(tableViewTemperature);
-        tableViews.add(tableViewPressure);
-        tableViews.add(tableViewRevolutions);
-        for(TableView tv : tableViews) {
-            for(long sensorID : data.getMapIDTypeCode().keySet()) {
+    public void setUpTables(SensorData sensorData) {
+        tableViews.put(Data.TEMPERATURE, tableViewTemperature);
+        tableViews.put(Data.PRESSURE, tableViewPressure);
+        tableViews.put(Data.REVOLUTIONS, tableViewRevolutions);
+        tableDatas.put(Data.TEMPERATURE, new TableData(Data.TEMPERATURE, sensorData));
+        tableDatas.put(Data.PRESSURE, new TableData(Data.PRESSURE, sensorData));
+        tableDatas.put(Data.REVOLUTIONS, new TableData(Data.REVOLUTIONS, sensorData));
+        for (Data data : tableViews.keySet()) {
+            tableViews.get(data).setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY);
+            int counter = 0;
+            for (long sensorID : sensorData.getMapIDTypeCode().keySet()) {
                 TableColumn tc = new TableColumn(Long.toString(sensorID));
-                TableColumn tc_time = new TableColumn(io.getLangpackString("time"));
-                TableColumn tc_value = new TableColumn(io.getLangpackString("value"));
+                TableColumn<ObservableList<Double>, Double> tc_time = new TableColumn(io.getLangpackString("time"));
+                TableColumn<ObservableList<Double>, Double> tc_value = new TableColumn(io.getLangpackString("value"));
+                final int counterFixed = counter;
+                tc_time.setCellValueFactory(param -> {
+                    Double d = null;
+                    try {
+                        d = param.getValue().get(counterFixed);
+                    } catch (IndexOutOfBoundsException e) {
+                        d = Double.MAX_VALUE;
+                    }
+                    return new ReadOnlyObjectWrapper<>(d);
+                });
+                tc_value.setCellValueFactory(param -> {
+                    Double d = null;
+                    try {
+                        d = param.getValue().get(counterFixed+1);
+                    } catch (IndexOutOfBoundsException e) {
+                        d = Double.MAX_VALUE;
+                    }
+                    return new ReadOnlyObjectWrapper<>(d);
+                });
+                counter += 2;
                 tc.getColumns().addAll(tc_time, tc_value);
-                tv.getColumns().add(tc);
+                tableViews.get(data).getColumns().add(tc);
+                tableDatas.get(data).addSensor(sensorID);
             }
+            tableViews.get(data).setItems(tableDatas.get(data).getData());
         }
     }
 

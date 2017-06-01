@@ -7,6 +7,8 @@ package de.hfts.sensormonitor.model;
 
 import com.sun.javafx.collections.ObservableListWrapper;
 import de.hft.ss17.cebarround.*;
+import de.hfts.sensormonitor.execute.SensorMonitor;
+import de.hfts.sensormonitor.misc.TimeTests;
 import java.util.*;
 import javafx.application.Platform;
 import javafx.collections.ObservableList;
@@ -18,6 +20,8 @@ import javafx.collections.ObservableList;
  * @author Polarix IT Solutions
  */
 public class SensorData implements CeBarRoundObserver<SensorEvent> {
+    
+    long oldTime = 0;
 
     // -------------- PUBLIC ENUMERATIONS --------------------------------------
     /**
@@ -42,8 +46,8 @@ public class SensorData implements CeBarRoundObserver<SensorEvent> {
     // -------------- PRIVATE FIELDS -------------------------------------------
     private List<SensorDataChangeListener> listeners = new ArrayList<>();
     private ObservableList<String> sensorIDs = new ObservableListWrapper<>(new ArrayList<String>());
-    private Map<Long, String> mapIDTypeCode = new HashMap<>();
-    private Map<Data, Map<Long, ArrayList<SensorDataPoint>>> graphs = new HashMap<>();
+    private Map<Long, String> mapIDTypeCode = new LinkedHashMap<>();
+    private Map<Data, Map<Long, ArrayList<SensorDataPoint>>> graphs = new LinkedHashMap<>();
 
     // -------------- CONSTRUCTORS ---------------------------------------------
     /**
@@ -64,6 +68,7 @@ public class SensorData implements CeBarRoundObserver<SensorEvent> {
      */
     @Override
     public void sensorDataEventListener(SensorEvent cbre) {
+        TimeTests.startTime = new Date().getTime();
         Platform.runLater(() -> {
             // Create new ArrayList's and save the TypeCode if the SensorID is unknown
             if (!mapIDTypeCode.keySet().contains(cbre.getUniqueSensorIdentifier())) {
@@ -79,7 +84,11 @@ public class SensorData implements CeBarRoundObserver<SensorEvent> {
             graphs.get(Data.REVOLUTIONS).get(cbre.getUniqueSensorIdentifier()).add(0, new SensorDataPoint(cbre.getRevolutions(), cbre.getDate()));
 
             notifyListenersOfDataChange(cbre.getUniqueSensorIdentifier());
+            SensorMonitor.enableOutput();
+            System.out.println(new Date().getTime() - TimeTests.startTime);
+            SensorMonitor.disableOutput();
         });
+        
     }
 
     public void addSensor(long sensorID, String typeCode) {
