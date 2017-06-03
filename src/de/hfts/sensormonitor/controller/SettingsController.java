@@ -8,6 +8,7 @@ package de.hfts.sensormonitor.controller;
 import de.hfts.sensormonitor.misc.IO;
 import de.hfts.sensormonitor.misc.SensorChart;
 import de.hfts.sensormonitor.model.ChartData;
+import de.hfts.sensormonitor.model.TableData;
 import java.net.URL;
 import java.util.Locale;
 import java.util.ResourceBundle;
@@ -36,7 +37,8 @@ public class SettingsController implements Initializable {
     @FXML
     private TextField textFieldTimeFrame;
     /**
-     * CheckBox showing if points on the realtime SensorChart's are displayed or not
+     * CheckBox showing if points on the realtime SensorChart's are displayed or
+     * not
      */
     @FXML
     private CheckBox checkBoxDisplayPoints;
@@ -46,17 +48,20 @@ public class SettingsController implements Initializable {
     @FXML
     private ComboBox comboBoxAppearance;
     /**
-     * Label for displaying errors and notices upon applying the settings for graphs
+     * Label for displaying errors and notices upon applying the settings for
+     * graphs
      */
     @FXML
     private Label labelErrorGraphs;
     /**
-     * Label for displaying errors and notices upon saving the settings for language
+     * Label for displaying errors and notices upon saving the settings for
+     * language
      */
     @FXML
     private Label labelErrorLanguage;
     /**
-     * Label for displaying errors and notices upon saving the settings for appearance
+     * Label for displaying errors and notices upon saving the settings for
+     * appearance
      */
     @FXML
     private Label labelErrorAppearance;
@@ -66,7 +71,7 @@ public class SettingsController implements Initializable {
     private MainController mainController;
     private boolean isLanguageRebootNecessary = false;
     private boolean isAppearanceRebootNecessary = false;
-
+    
     private String currentLanguage;
     private String currentAppearance;
 
@@ -102,6 +107,9 @@ public class SettingsController implements Initializable {
             for (ChartData cd : mainController.getChartDatas()) {
                 cd.setxMin(0 - Integer.valueOf(textFieldTimeFrame.getText()));
                 cd.notifyListenersOfAxisChange();
+            }
+            for (TableData td : mainController.getTableDatas().values()) {
+                td.setMinTime(0 - Integer.valueOf(textFieldTimeFrame.getText()));
             }
             io.setConfigProp("realtime_timeframe", textFieldTimeFrame.getText());
             io.saveConfigProperties();

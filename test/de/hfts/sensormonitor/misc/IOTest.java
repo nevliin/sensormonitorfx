@@ -13,6 +13,7 @@ import java.io.IOException;
 import java.sql.SQLException;
 import java.text.ParseException;
 import java.util.Locale;
+import java.util.Properties;
 import java.util.ResourceBundle;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -78,6 +79,17 @@ public class IOTest {
         } catch (IOException | IllegalTableNameException | ParseException ex) {
             Logger.getLogger(IOTest.class.getName()).log(Level.SEVERE, null, ex);
         }
+    }
+
+    @Test(expected = IllegalConfigurationException.class)
+    public void testValidatingPropertiesWithDifferentKeys() throws IllegalConfigurationException {
+        Properties check = new Properties();
+        check.setProperty("1", "test");
+        check.setProperty("2", "test");
+        Properties template = new Properties();
+        check.setProperty("1", "test");
+        check.setProperty("3", "test");
+        io.validateProperties(check, template);
     }
 
 }

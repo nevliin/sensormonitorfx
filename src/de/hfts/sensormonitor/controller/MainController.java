@@ -363,6 +363,10 @@ public class MainController implements Initializable {
     public ArrayList<SensorChart> getSensorCharts() {
         return sensorCharts;
     }
+    
+    public HashMap<Data, TableData> getTableDatas() {
+        return tableDatas;
+    }
 
     // -------------- OTHER METHODS --------------------------------------------
     @Override
@@ -477,6 +481,10 @@ public class MainController implements Initializable {
         sensorCharts.add(chartRevolutionsSpecific);
     }
 
+    /**
+     * 
+     * @param sensorData 
+     */
     public void setUpTables(SensorData sensorData) {
         tableViews.put(Data.TEMPERATURE, tableViewTemperature);
         tableViews.put(Data.PRESSURE, tableViewPressure);
@@ -486,6 +494,7 @@ public class MainController implements Initializable {
         tableDatas.put(Data.REVOLUTIONS, new TableData(Data.REVOLUTIONS, sensorData));
         for (Data data : tableViews.keySet()) {
             tableViews.get(data).setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY);
+            tableDatas.get(data).setMinTime(0-Double.valueOf(io.getConfigProp("realtime_timeframe")));
             int counter = 0;
             for (long sensorID : sensorData.getMapIDTypeCode().keySet()) {
                 TableColumn tc = new TableColumn(Long.toString(sensorID));

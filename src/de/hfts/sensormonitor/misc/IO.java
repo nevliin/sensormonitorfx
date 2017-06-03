@@ -59,6 +59,10 @@ public class IO {
      *
      */
     private final SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy HH:mm:ss.SSS");
+    /**
+     *
+     */
+    public final static Logger LOGGER = Logger.getLogger("");
 
     // -------------- CONSTRUCTORS ---------------------------------------------
     /**
@@ -66,6 +70,8 @@ public class IO {
      * it doesn't exist yet.
      */
     public IO() {
+
+        SensorMonitorException.langpack = ResourceBundle.getBundle("lang.lang", new Locale("en"));
 
         String currentUsersHomeDir = System.getProperty("user.home");
 
@@ -91,8 +97,22 @@ public class IO {
         try {
             FileInputStream stream = new FileInputStream(currentUsersHomeDir + File.separator + ".sensormonitor" + File.separator + "config.properties");
             configProp.load(stream);
+            InputStream stream2 = this.getClass().getClassLoader().getResourceAsStream("defaultconfig/config.properties");
+            Properties templateProp = new Properties();
+            templateProp.load(stream2);
+            try {
+                validateProperties(configProp, templateProp);
+            } catch (IllegalConfigurationException ex) {
+                new ExceptionDialog(ex.getMessage(), null);
+                InputStream stream3 = this.getClass().getClassLoader().getResourceAsStream("defaultconfig/config.properties");
+                try {
+                    configProp.load(stream3);
+                } catch (IOException ex1) {
+                    Logger.getLogger(IO.class.getName()).log(Level.SEVERE, null, ex1);
+                }
+                isPropertiesExistant = false;
+            }
         } catch (FileNotFoundException ex) {
-            Logger.getLogger(IO.class.getName()).log(Level.SEVERE, null, ex);
             InputStream stream = this.getClass().getClassLoader().getResourceAsStream("defaultconfig/config.properties");
             try {
                 configProp.load(stream);
@@ -135,6 +155,12 @@ public class IO {
             } else {
                 System.exit(0);
             }
+        }
+        try {
+            FileHandler fileHd = new FileHandler(System.getProperty("user.home") + File.separator + ".sensormonitor" + File.separator + "log_%g.txt", 1024 * 1024 * 1024, 8, true);
+            LOGGER.addHandler(fileHd);
+        } catch (IOException | SecurityException ex) {
+            Logger.getLogger(IO.class.getName()).log(Level.SEVERE, null, ex);
         }
         this.langpack = ResourceBundle.getBundle("lang.lang", new Locale(getConfigProp("lang")));
     }
@@ -600,4 +626,28 @@ public class IO {
         }
         in.close();
     }
+
+    // -------------- OTHER METHODS --------------------------------------------
+    /**
+     *
+     * @param check
+     * @param template
+     * @throws de.hfts.sensormonitor.exceptions.IllegalConfigurationException
+     */
+    public static void validateProperties(Properties check, Properties template) throws IllegalConfigurationException {
+        List<String> checkKeys = new ArrayList<>();
+        for (Object o : check.keySet()) {
+            checkKeys.add(o.toString());
+        }
+        List<String> templateKeys = new ArrayList<>();
+        for (Object o : template.keySet()) {
+            templateKeys.add(o.toString());
+        }
+        Collections.sort(checkKeys);
+        Collections.sort(templateKeys);
+        if (!checkKeys.equals(templateKeys)) {
+            throw new IllegalConfigurationException();
+        }
+    }
+
 }

@@ -35,7 +35,9 @@ public class SensorMonitor extends Application {
      */
     @Override
     public void start(Stage stage) throws Exception {
-
+        
+        
+        
         originalOut = System.out;
         boolean isDBConnected = true;
         // Create the IO, connect to the DB and load the sensors
@@ -124,6 +126,9 @@ public class SensorMonitor extends Application {
         }));
     }
 
+    /**
+     * Enables System.out
+     */
     public static void enableOutput() {
         System.setOut(originalOut);
     }

@@ -19,11 +19,20 @@ import javafx.collections.ObservableList;
 import javafx.scene.chart.XYChart;
 
 /**
+ * TableData --- Converts data from the SensorData to Lists and stores it,
+ * provides the model for TableViews
  *
  * @author Polarix IT Solutions
  */
 public class TableData implements SensorDataChangeListener {
 
+    /**
+     * Utility for rounding numbers to a certain amount of places
+     *
+     * @param value
+     * @param places
+     * @return
+     */
     public static double round(double value, int places) {
         if (places < 0) {
             throw new IllegalArgumentException();
@@ -34,6 +43,10 @@ public class TableData implements SensorDataChangeListener {
         return bd.doubleValue();
     }
 
+    /**
+     * TableDataPoint --- Stores time as a double relative to the last
+     * SensorEvent and the value of the SensorEvent
+     */
     class TableDataPoint {
 
         public double time;
@@ -51,17 +64,29 @@ public class TableData implements SensorDataChangeListener {
     }
 
     private int maxColumn = 0;
+    private double minTime;
+
     private LinkedHashMap<Long, Integer> columnIDs = new LinkedHashMap<>();
     private ObservableList<ObservableList<Double>> data = new ObservableListWrapper<>(new ArrayList<>());
     private Data type;
     private SensorData sensorData;
 
+    /**
+     * Standard Constructor
+     *
+     * @param type
+     * @param sensorData
+     */
     public TableData(Data type, SensorData sensorData) {
         this.type = type;
         this.sensorData = sensorData;
         sensorData.addListener(this);
     }
 
+    /**
+     *
+     * @param sensorID
+     */
     public void addSensor(long sensorID) {
         columnIDs.put(sensorID, maxColumn);
         maxColumn += 2;
@@ -72,6 +97,12 @@ public class TableData implements SensorDataChangeListener {
         setPointsToData(sensorData.getPoints(type, sensorID), data, columnIDs.get(sensorID));
     }
 
+    /**
+     *
+     * @param points
+     * @param observList
+     * @param columnId
+     */
     public void setPointsToData(List<SensorDataPoint> points, List<ObservableList<Double>> observList, int columnId) {
         double lastTime = 0;
         Date lastPoint = null;
@@ -100,8 +131,28 @@ public class TableData implements SensorDataChangeListener {
         }
     }
 
+    /**
+     *
+     * @return
+     */
     public ObservableList<ObservableList<Double>> getData() {
         return data;
+    }
+
+    /**
+     *
+     * @return
+     */
+    public double getMinTime() {
+        return minTime;
+    }
+
+    /**
+     *
+     * @param minTime
+     */
+    public void setMinTime(double minTime) {
+        this.minTime = minTime;
     }
 
 }
