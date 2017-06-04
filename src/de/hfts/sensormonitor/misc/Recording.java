@@ -42,7 +42,6 @@ public class Recording {
     /**
      * Creates Recording, converts the given ResultSet into multiple ChartData's, sets their attributes and stores them
      * @param recording
-     * @param io
      */
     public Recording(ResultSet recording) {
         HashMap<Long, List<SensorDataPoint>> temperature_points = new HashMap<>();

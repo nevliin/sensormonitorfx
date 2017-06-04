@@ -85,6 +85,11 @@ public class SensorData implements CeBarRoundObserver<SensorEvent> {
         
     }
 
+    /**
+     *
+     * @param sensorID
+     * @param typeCode
+     */
     public void addSensor(long sensorID, String typeCode) {
         mapIDTypeCode.put(sensorID, typeCode);
         sensorIDs.add(Long.toString(sensorID));
@@ -152,6 +157,10 @@ public class SensorData implements CeBarRoundObserver<SensorEvent> {
         return sensorIDs;
     }
 
+    /**
+     *
+     * @return
+     */
     public Map<Long, String> getMapIDTypeCode() {
         return mapIDTypeCode;
     }

@@ -8,11 +8,14 @@ import java.io.*;
 import java.net.URL;
 import java.sql.SQLException;
 import java.util.List;
+import java.util.Optional;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
+import javafx.scene.control.Alert;
+import javafx.scene.control.ButtonType;
 import javafx.scene.image.Image;
 import javafx.scene.layout.BorderPane;
 import javafx.stage.Stage;
@@ -35,9 +38,7 @@ public class SensorMonitor extends Application {
      */
     @Override
     public void start(Stage stage) throws Exception {
-        
-        
-        
+
         originalOut = System.out;
         boolean isDBConnected = true;
         // Create the IO, connect to the DB and load the sensors
@@ -83,7 +84,7 @@ public class SensorMonitor extends Application {
             BorderPane root = (BorderPane) loader.load();
 
             // Pass parameters to the controller
-            ((MainController) loader.getController()).setIsDBConnected(isDBConnected);
+            ((MainController) loader.getController()).setDBConnected(isDBConnected);
 
             // Create the scene and add it to the stage
             Scene scene = new Scene(root);
@@ -92,8 +93,21 @@ public class SensorMonitor extends Application {
             stage.setTitle("CeBarRoundMonitor");
             stage.setMaximized(true);
             stage.setOnCloseRequest(eh -> {
-                ((MainController) loader.getController()).quitProgramm();
-                System.exit(0);
+                Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+                alert.setHeaderText("");
+                alert.setContentText(IO.getLangpackString("quit_confirmation"));
+
+                Optional<ButtonType> result = alert.showAndWait();
+                if (result.get() == ButtonType.OK) {
+                    try {
+                        ((MainController) loader.getController()).quitProgramm();
+                    } catch (Exception ex) {
+                        // NO-OP - prevents that the application can not be closed due to any kind of exception
+                    }
+                    System.exit(0);
+                } else {
+                    eh.consume();
+                }
             });
             stage.show();
 

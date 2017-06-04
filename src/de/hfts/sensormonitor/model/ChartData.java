@@ -382,10 +382,18 @@ public class ChartData implements SensorDataChangeListener {
         this.type = type;
     }
 
+    /**
+     *
+     * @return
+     */
     public HashMap<Long, String> getPartTypeCodes() {
         return partTypeCodes;
     }
 
+    /**
+     *
+     * @param partTypeCodes
+     */
     public void setPartTypeCodes(HashMap<Long, String> partTypeCodes) {
         this.partTypeCodes = partTypeCodes;
     }

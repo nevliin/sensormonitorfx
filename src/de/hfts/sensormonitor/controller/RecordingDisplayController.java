@@ -15,6 +15,7 @@ import java.util.ResourceBundle;
 import javafx.collections.ListChangeListener;
 import javafx.fxml.*;
 import javafx.scene.chart.LineChart;
+import javafx.scene.control.Label;
 import org.controlsfx.control.CheckComboBox;
 
 /**
@@ -34,6 +35,8 @@ public class RecordingDisplayController implements Initializable {
     private SensorChart chartRevolutions;
     @FXML
     private CheckComboBox checkComboBoxSensors;
+    @FXML
+    private Label labelInfo;
 
     // -------------- PRIVATE FIELDS -------------------------------------------
     private Recording recording;
@@ -47,13 +50,13 @@ public class RecordingDisplayController implements Initializable {
         langpack = resources;
     }
 
-    // -------------- GETTERS & SETTERS ----------------------------------------
     /**
-     *
+     * Sets the recording of the tab, adds data to the CheckComboBox, Label and SensorChart's.
      * @param recording
      */
     public void setRecording(Recording recording) {
         this.recording = recording;
+        labelInfo.setText(recording.getFirsttimestamp().toString() + " - " + recording.getLasttimestamp().toString());
         chartTemperature.setChartData(recording.getChartData(Data.TEMPERATURE), langpack, "sec", "°C", true);
         chartDatas.add(recording.getChartData(Data.TEMPERATURE));
         sensorCharts.add(chartTemperature);

@@ -146,7 +146,6 @@ public class MainController implements Initializable {
     private ArrayList<SensorChart> sensorCharts = new ArrayList<>();
     private HashMap<Data, TableView> tableViews = new HashMap<>();
     private HashMap<Data, TableData> tableDatas = new HashMap<>();
-    private List<BaseSensor> sensors;
 
     boolean isDBConnected;
 
@@ -320,7 +319,7 @@ public class MainController implements Initializable {
      *
      * @param isDBConnected
      */
-    public void setIsDBConnected(boolean isDBConnected) {
+    public void setDBConnected(boolean isDBConnected) {
         this.isDBConnected = isDBConnected;
         if (isDBConnected) {
             menuRecordings.setDisable(false);
@@ -347,6 +346,10 @@ public class MainController implements Initializable {
         return sensorCharts;
     }
 
+    /**
+     *
+     * @return
+     */
     public HashMap<Data, TableData> getTableDatas() {
         return tableDatas;
     }
@@ -357,8 +360,9 @@ public class MainController implements Initializable {
     }
 
     /**
-     * Creates SensorData and connects ChartData, SensorChart and the sensors to
-     * it. Starts receiving data from the sensors when done.
+     * Creates SensorData and retrieves the SensorIDs from the sensors. Calls
+     * setUpCharts() and setUpTables(). Starts receiving data from the sensors
+     * when done.
      *
      * @param sensors
      */
@@ -421,7 +425,10 @@ public class MainController implements Initializable {
     }
 
     /**
+     * Sets up the ChartDatas and SensorCharts with configuration from IO and
+     * connects them.
      *
+     * @param data
      */
     public void setUpCharts(SensorData data) {
         ChartData dataTemperature = new ChartData(Data.TEMPERATURE, data);
@@ -466,6 +473,8 @@ public class MainController implements Initializable {
     }
 
     /**
+     * Sets up the TableViews and TableDatas with configuration from IO and
+     * connects them.
      *
      * @param sensorData
      */

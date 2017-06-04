@@ -24,10 +24,13 @@ import javafx.scene.control.*;
  */
 public class EditChartController implements Initializable {
 
+    // -------------- PACKAGE PRIVATE FIELDS -----------------------------------
     /**
      * ChartData of the related SensorChart
      */
     ChartData chartData;
+
+    // -------------- FXML FIELDS ----------------------------------------------
     /**
      * Title of the window, naming the related SensorChart
      */
@@ -59,6 +62,7 @@ public class EditChartController implements Initializable {
     @FXML
     private CheckBox checkBoxAutorange;
 
+    // -------------- OTHER METHODS --------------------------------------------
     /**
      * Initializes the controller class.
      *
@@ -96,49 +100,6 @@ public class EditChartController implements Initializable {
         textFieldXMax.setText(xMax);
         textFieldYMin.setText(yMin);
         textFieldYMax.setText(yMax);
-    }
-
-    /**
-     * Handles the "Cancel" button by hiding the window
-     */
-    public void handleCancelButton() {
-        textFieldXMax.getScene().getWindow().hide();
-    }
-
-    /**
-     * Handles the "Save" button by updating the bounds with the given values
-     * and handling possibly thrown exceptions.
-     */
-    public void handleSaveButton() {
-        try {
-            String ymin = textFieldYMin.getText();
-            String ymax = textFieldYMax.getText();
-            if(checkBoxAutorange.isSelected()) {
-                ymin = "AUTO";
-                ymax = "AUTO";
-            }
-            updateBounds(textFieldXMin.getText(), textFieldXMax.getText(), ymin, ymax);
-        } catch (IllegalXScaleException ex) {
-            Logger.getLogger(EditChartController.class.getName()).log(Level.SEVERE, null, ex);
-            new ExceptionDialog(ex.getMessage(), null);
-        } catch (IllegalYScaleException ex) {
-            Logger.getLogger(EditChartController.class.getName()).log(Level.SEVERE, null, ex);
-            new ExceptionDialog(ex.getMessage(), null);
-        }
-    }
-
-    /**
-     * Handles actions on the Autoranging checkbox by enabling/disabling the
-     * textfields for manually setting it
-     */
-    public void handleCheckBoxAutoRanging() {
-        if(checkBoxAutorange.isSelected()) {
-            textFieldYMin.setDisable(true);
-            textFieldYMax.setDisable(true);
-        } else {            
-            textFieldYMin.setDisable(false);
-            textFieldYMax.setDisable(false);
-        }
     }
 
     /**
@@ -201,6 +162,50 @@ public class EditChartController implements Initializable {
 
         if (isXScaleValid && isYScaleValid) {
             textFieldXMax.getScene().getWindow().hide();
+        }
+    }
+
+    // -------------- FXML HANDLERS --------------------------------------------
+    /**
+     * Handles the "Cancel" button by hiding the window
+     */
+    public void handleCancelButton() {
+        textFieldXMax.getScene().getWindow().hide();
+    }
+
+    /**
+     * Handles the "Save" button by updating the bounds with the given values
+     * and handling possibly thrown exceptions.
+     */
+    public void handleSaveButton() {
+        try {
+            String ymin = textFieldYMin.getText();
+            String ymax = textFieldYMax.getText();
+            if (checkBoxAutorange.isSelected()) {
+                ymin = "AUTO";
+                ymax = "AUTO";
+            }
+            updateBounds(textFieldXMin.getText(), textFieldXMax.getText(), ymin, ymax);
+        } catch (IllegalXScaleException ex) {
+            Logger.getLogger(EditChartController.class.getName()).log(Level.SEVERE, null, ex);
+            new ExceptionDialog(ex.getMessage(), null);
+        } catch (IllegalYScaleException ex) {
+            Logger.getLogger(EditChartController.class.getName()).log(Level.SEVERE, null, ex);
+            new ExceptionDialog(ex.getMessage(), null);
+        }
+    }
+
+    /**
+     * Handles actions on the Autoranging checkbox by enabling/disabling the
+     * textfields for manually setting it
+     */
+    public void handleCheckBoxAutoRanging() {
+        if (checkBoxAutorange.isSelected()) {
+            textFieldYMin.setDisable(true);
+            textFieldYMax.setDisable(true);
+        } else {
+            textFieldYMin.setDisable(false);
+            textFieldYMax.setDisable(false);
         }
     }
 }

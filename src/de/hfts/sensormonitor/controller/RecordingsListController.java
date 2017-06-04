@@ -5,10 +5,15 @@
  */
 package de.hfts.sensormonitor.controller;
 
+import de.hfts.sensormonitor.misc.ExceptionDialog;
 import de.hfts.sensormonitor.misc.IO;
 import java.io.File;
+import java.io.IOException;
 import java.net.URL;
+import java.sql.SQLException;
 import java.util.*;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javafx.collections.FXCollections;
 import javafx.fxml.*;
 import javafx.scene.control.*;
@@ -43,7 +48,7 @@ public class RecordingsListController implements Initializable {
 
     // -------------- FXML HANDLERS --------------------------------------------
     /**
-     *
+     * Handle clicking the button "Display recording"
      */
     public void handleButtonDisplayRecording() {
         List<String> selectedrecordings = recordingsList.getSelectionModel().getSelectedItems();
@@ -53,7 +58,7 @@ public class RecordingsListController implements Initializable {
     }
 
     /**
-     *
+     * Handle clicking the button "Delete recording"
      */
     public void handleButtonDeleteRecording() {
         List<String> selectedrecordings = recordingsList.getSelectionModel().getSelectedItems();
@@ -65,7 +70,7 @@ public class RecordingsListController implements Initializable {
     }
 
     /**
-     *
+     * Handle clicking the button "Export recording"
      */
     public void handleButtonExportRecording() {
         DirectoryChooser directoryChooser = new DirectoryChooser();
@@ -75,10 +80,17 @@ public class RecordingsListController implements Initializable {
         File dir = directoryChooser.showDialog(null);
 
         if (dir != null) {
-            List<String> selectedrecordings = recordingsList.getSelectionModel().getSelectedItems();
-            for (String recording : selectedrecordings) {
-                IO.exportRecording(recording, dir.getAbsolutePath());
-            }
+            Thread t = new Thread(() -> {
+                List<String> selectedrecordings = recordingsList.getSelectionModel().getSelectedItems();
+                for (String recording : selectedrecordings) {
+                    try {
+                        IO.exportRecording(recording, dir.getAbsolutePath());
+                    } catch (IOException | SQLException ex) {
+                        new ExceptionDialog(IO.getLangpackString("error_exportrecording") + ": " + recording, null);
+                    }
+                }
+            });
+            t.start();
         }
     }
 

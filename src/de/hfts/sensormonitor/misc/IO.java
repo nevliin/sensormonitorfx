@@ -547,32 +547,26 @@ public class IO {
      * @param recordingname
      * @param exportpath
      */
-    public static void exportRecording(String recordingname, String exportpath) {
+    public static void exportRecording(String recordingname, String exportpath) throws IOException, SQLException {
         exportpath += "/" + recordingname + ".csv";
         FileWriter writer;
-        try {
-            writer = new FileWriter(exportpath);
-            StringBuilder sb = new StringBuilder();
-            ResultSet rs = loadRecording(recordingname);
-            while (rs.next()) {
-                for (int i = 1; i <= rs.getMetaData().getColumnCount(); i++) {
-                    if (rs.getMetaData().getColumnName(i).equalsIgnoreCase("SENSORTYPE")) {
-                        sb.append("'" + rs.getString(i) + "'");
-                        sb.append(';');
-                    } else {
-                        sb.append(rs.getString(i));
-                        sb.append(';');
-                    }
+        writer = new FileWriter(exportpath);
+        StringBuilder sb = new StringBuilder();
+        ResultSet rs = loadRecording(recordingname);
+        while (rs.next()) {
+            for (int i = 1; i <= rs.getMetaData().getColumnCount(); i++) {
+                if (rs.getMetaData().getColumnName(i).equalsIgnoreCase("SENSORTYPE")) {
+                    sb.append("'" + rs.getString(i) + "'");
+                    sb.append(';');
+                } else {
+                    sb.append(rs.getString(i));
+                    sb.append(';');
                 }
-                sb.append('\n');
             }
-            writer.write(sb.toString());
-            writer.close();
-        } catch (IOException ex) {
-            Logger.getLogger(IO.class.getName()).log(Level.SEVERE, null, ex);
-        } catch (SQLException ex) {
-            Logger.getLogger(IO.class.getName()).log(Level.SEVERE, null, ex);
+            sb.append('\n');
         }
+        writer.write(sb.toString());
+        writer.close();
     }
 
     /**

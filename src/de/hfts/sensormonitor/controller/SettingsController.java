@@ -154,7 +154,6 @@ public class SettingsController implements Initializable {
      * Set the global variable io and apply the data retrieved from it to the
      * ComboBoxes, TextFields and CheckBoxes of the window
      *
-     * @param io
      */
     public void setUpData() {
         comboBoxLanguages.setItems(FXCollections.observableArrayList(IO.getLanguages().keySet()));
