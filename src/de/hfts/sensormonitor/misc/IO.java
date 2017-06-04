@@ -56,13 +56,9 @@ public class IO {
      */
     private Statement stat;
     /**
-     *
+     * Format for SensorEvent dates
      */
     private final SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy HH:mm:ss.SSS");
-    /**
-     *
-     */
-    public final static Logger LOGGER = Logger.getLogger("");
 
     // -------------- CONSTRUCTORS ---------------------------------------------
     /**
@@ -155,12 +151,6 @@ public class IO {
             } else {
                 System.exit(0);
             }
-        }
-        try {
-            FileHandler fileHd = new FileHandler(System.getProperty("user.home") + File.separator + ".sensormonitor" + File.separator + "log_%g.txt", 1024 * 1024 * 1024, 8, true);
-            LOGGER.addHandler(fileHd);
-        } catch (IOException | SecurityException ex) {
-            Logger.getLogger(IO.class.getName()).log(Level.SEVERE, null, ex);
         }
         this.langpack = ResourceBundle.getBundle("lang.lang", new Locale(getConfigProp("lang")));
     }
@@ -392,7 +382,7 @@ public class IO {
         try {
             conn.close();
             stat.close();
-        } catch (SQLException ex) {
+        } catch (SQLException | NullPointerException ex) {
             Logger.getLogger(IO.class.getName()).log(Level.SEVERE, null, ex);
         }
     }

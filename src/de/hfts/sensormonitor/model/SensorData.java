@@ -7,8 +7,6 @@ package de.hfts.sensormonitor.model;
 
 import com.sun.javafx.collections.ObservableListWrapper;
 import de.hft.ss17.cebarround.*;
-import de.hfts.sensormonitor.execute.SensorMonitor;
-import de.hfts.sensormonitor.misc.TimeTests;
 import java.util.*;
 import javafx.application.Platform;
 import javafx.collections.ObservableList;
@@ -68,7 +66,6 @@ public class SensorData implements CeBarRoundObserver<SensorEvent> {
      */
     @Override
     public void sensorDataEventListener(SensorEvent cbre) {
-        TimeTests.startTime = new Date().getTime();
         Platform.runLater(() -> {
             // Create new ArrayList's and save the TypeCode if the SensorID is unknown
             if (!mapIDTypeCode.keySet().contains(cbre.getUniqueSensorIdentifier())) {
@@ -84,9 +81,6 @@ public class SensorData implements CeBarRoundObserver<SensorEvent> {
             graphs.get(Data.REVOLUTIONS).get(cbre.getUniqueSensorIdentifier()).add(0, new SensorDataPoint(cbre.getRevolutions(), cbre.getDate()));
 
             notifyListenersOfDataChange(cbre.getUniqueSensorIdentifier());
-            SensorMonitor.enableOutput();
-            System.out.println(new Date().getTime() - TimeTests.startTime);
-            SensorMonitor.disableOutput();
         });
         
     }

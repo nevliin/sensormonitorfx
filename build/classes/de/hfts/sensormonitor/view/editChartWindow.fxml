@@ -30,15 +30,19 @@
                GridPane.columnIndex="2" GridPane.rowIndex="3" />
         <TextField fx:id="textFieldYMax"
                    GridPane.columnIndex="3" GridPane.rowIndex="3" />
+        <CheckBox fx:id="checkBoxAutorange"
+                  text="%autorange_yaxis" onAction="#handleCheckBoxAutoRanging" 
+                  GridPane.columnIndex="0" GridPane.rowIndex="4" 
+                  GridPane.columnSpan="4" />
         <Separator orientation="HORIZONTAL" 
-                   GridPane.columnIndex="0" GridPane.rowIndex="4" 
+                   GridPane.columnIndex="0" GridPane.rowIndex="5" 
                    GridPane.columnSpan="4" />
         <Button text="%cancel" onAction="#handleCancelButton" 
-                GridPane.columnIndex="0" GridPane.rowIndex="5"
+                GridPane.columnIndex="0" GridPane.rowIndex="6"
                 GridPane.columnSpan="2" >                       
         </Button>
         <Button text="%save" onAction="#handleSaveButton" 
-                GridPane.columnIndex="2" GridPane.rowIndex="5"
+                GridPane.columnIndex="2" GridPane.rowIndex="6"
                 GridPane.columnSpan="2" >                       
         </Button>
     </children>

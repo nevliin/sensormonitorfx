@@ -27,6 +27,11 @@ public class SettingsController implements Initializable {
 
     // -------------- FXML FIELDS ----------------------------------------------
     /**
+     * TabPane containing all settings tabs
+     */
+    @FXML
+    private TabPane Settings;
+    /**
      * ComboBox listing all available languages
      */
     @FXML
@@ -71,7 +76,7 @@ public class SettingsController implements Initializable {
     private MainController mainController;
     private boolean isLanguageRebootNecessary = false;
     private boolean isAppearanceRebootNecessary = false;
-    
+
     private String currentLanguage;
     private String currentAppearance;
 

@@ -11,12 +11,9 @@ import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.util.ArrayList;
 import java.util.Date;
-import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
-import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
-import javafx.scene.chart.XYChart;
 
 /**
  * TableData --- Converts data from the SensorData to Lists and stores it,
@@ -41,26 +38,6 @@ public class TableData implements SensorDataChangeListener {
         BigDecimal bd = new BigDecimal(value);
         bd = bd.setScale(places, RoundingMode.HALF_UP);
         return bd.doubleValue();
-    }
-
-    /**
-     * TableDataPoint --- Stores time as a double relative to the last
-     * SensorEvent and the value of the SensorEvent
-     */
-    class TableDataPoint {
-
-        public double time;
-        public double value;
-
-        public TableDataPoint(double time, double value) {
-            this.time = time;
-            this.value = value;
-        }
-
-        public TableDataPoint() {
-
-        }
-
     }
 
     private int maxColumn = 0;

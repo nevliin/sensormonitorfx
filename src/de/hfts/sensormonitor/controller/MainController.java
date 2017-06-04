@@ -140,8 +140,8 @@ public class MainController implements Initializable {
     private IO io;
     private Recorder recorder;
 
-    private Stage recordingswindow;
-    private Stage settingswindow;
+    Stage recordingswindow;
+    Stage settingswindow;
 
     private ArrayList<ChartData> chartDatas = new ArrayList<>();
     private ArrayList<SensorChart> sensorCharts = new ArrayList<>();

@@ -10,6 +10,7 @@ import de.hfts.sensormonitor.exceptions.*;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.text.ParseException;
 import java.util.Locale;
@@ -32,6 +33,7 @@ public class IOTest {
 
     static IO io;
     static String oldname;
+    static String testTableName;
 
     @BeforeClass
     public static void setUpClass() {
@@ -49,6 +51,7 @@ public class IOTest {
     public static void tearDownClass() {
         new File("a0c1b1f7cfe1e904368.csv").delete();
         io.dropTable(oldname);
+        io.dropTable(testTableName);
     }
 
     @Before
@@ -87,9 +90,41 @@ public class IOTest {
         check.setProperty("1", "test");
         check.setProperty("2", "test");
         Properties template = new Properties();
-        check.setProperty("1", "test");
-        check.setProperty("3", "test");
+        template.setProperty("1", "test");
+        template.setProperty("3", "test");
         io.validateProperties(check, template);
+    }
+
+    @Test(expected = IllegalConfigurationException.class)
+    public void testValidatingPropertiesWithDifferentAmountsOfKeys() throws IllegalConfigurationException {
+        Properties check = new Properties();
+        check.setProperty("1", "test");
+        check.setProperty("2", "test");
+        Properties template = new Properties();
+        template.setProperty("1", "test");
+        template.setProperty("2", "test");
+        template.setProperty("3", "test");
+        io.validateProperties(check, template);
+    }
+
+    @Test
+    public void testValidatingPropertiesWithSimilarKeys() throws IllegalConfigurationException {
+        Properties check = new Properties();
+        check.setProperty("1", "test");
+        check.setProperty("2", "test");
+        Properties template = new Properties();
+        template.setProperty("1", "test");
+        template.setProperty("2", "test");
+        io.validateProperties(check, template);
+    }
+    
+    @Test 
+    public void testCreatingGenericTable() {
+        testTableName = io.createGenericTable();
+        ResultSet rs = io.loadRecording(testTableName);
+        if(rs == null) {
+            fail();
+        }
     }
 
 }
