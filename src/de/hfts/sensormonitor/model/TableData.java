@@ -23,25 +23,10 @@ import javafx.collections.ObservableList;
  */
 public class TableData implements SensorDataChangeListener {
 
-    /**
-     * Utility for rounding numbers to a certain amount of places
-     *
-     * @param value
-     * @param places
-     * @return
-     */
-    public static double round(double value, int places) {
-        if (places < 0) {
-            throw new IllegalArgumentException();
-        }
-
-        BigDecimal bd = new BigDecimal(value);
-        bd = bd.setScale(places, RoundingMode.HALF_UP);
-        return bd.doubleValue();
-    }
-
     private int maxColumn = 0;
     private double minTime;
+
+    private ArrayList<TableDataChangeListener> listeners = new ArrayList<>();
 
     private LinkedHashMap<Long, Integer> columnIDs = new LinkedHashMap<>();
     private ObservableList<ObservableList<Double>> data = new ObservableListWrapper<>(new ArrayList<>());
@@ -72,6 +57,7 @@ public class TableData implements SensorDataChangeListener {
     @Override
     public void dataChanged(long sensorID) {
         setPointsToData(sensorData.getPoints(type, sensorID), data, columnIDs.get(sensorID));
+        notifyListenersOfDataChange();
     }
 
     /**
@@ -92,16 +78,18 @@ public class TableData implements SensorDataChangeListener {
                 time = lastTime - (time / 1000);
                 time = round(time, 3);
             }
-            try {
-                observList.get(i).set(columnId, time);
-                observList.get(i).set(columnId + 1, p.value);
-            } catch (IndexOutOfBoundsException e) {
-                observList.add(i, new ObservableListWrapper<>(new ArrayList<Double>()));
-                for (int j = 0; j < maxColumn; j++) {
-                    observList.get(i).add(null);
+            if (time >= minTime) {
+                try {
+                    observList.get(i).set(columnId, time);
+                    observList.get(i).set(columnId + 1, p.value);
+                } catch (IndexOutOfBoundsException e) {
+                    observList.add(i, new ObservableListWrapper<>(new ArrayList<Double>()));
+                    for (int j = 0; j < maxColumn-2; j++) {
+                        observList.get(i).add(null);
+                    }
+                    observList.get(i).add(columnId, time);
+                    observList.get(i).add(columnId + 1, p.value);
                 }
-                observList.get(i).add(columnId, time);
-                observList.get(i).add(columnId + 1, p.value);
             }
             lastPoint = p.time;
             lastTime = time;
@@ -130,6 +118,53 @@ public class TableData implements SensorDataChangeListener {
      */
     public void setMinTime(double minTime) {
         this.minTime = minTime;
+    }
+
+    /**
+     * Utility for rounding numbers to a certain amount of places
+     *
+     * @param value
+     * @param places
+     * @return
+     */
+    public static double round(double value, int places) {
+        if (places < 0) {
+            throw new IllegalArgumentException();
+        }
+
+        BigDecimal bd = new BigDecimal(value);
+        bd = bd.setScale(places, RoundingMode.HALF_UP);
+        return bd.doubleValue();
+    }
+
+    // -------------- LISTENER METHODS -----------------------------------------
+    /**
+     * Add listener implementing DataChangeListener to the SensorChartData
+     *
+     * @param toAdd Object to be notified of changes
+     */
+    public void addListener(TableDataChangeListener toAdd) {
+        listeners.add(toAdd);
+    }
+
+    /**
+     * Remove listener from the list
+     *
+     * @param toRemove Object to remove from the listeners
+     */
+    public void removeListener(TableDataChangeListener toRemove) {
+        listeners.remove(toRemove);
+    }
+
+    /**
+     * Notifies all listeners of a change in the graph axis
+     *
+     *
+     */
+    public void notifyListenersOfDataChange() {
+        for (TableDataChangeListener dcl : listeners) {
+            dcl.dataChanged();
+        }
     }
 
 }

@@ -1,5 +1,7 @@
 package de.hfts.sensormonitor.controller;
 
+import viewelements.SensorTable;
+import viewelements.SensorChart;
 import de.hft.ss17.cebarround.BaseSensor;
 import de.hfts.sensormonitor.exceptions.*;
 import de.hfts.sensormonitor.execute.SensorMonitor;
@@ -95,7 +97,7 @@ public class MainController implements Initializable {
      * TableView in the specific Tab displaying the exact values of the Sensors
      */
     @FXML
-    private TableView tableViewTemperature;
+    private SensorTable tableViewTemperature;
     /**
      * SensorChart in the specific Tab displaying temperature info of the
      * sensors
@@ -106,7 +108,7 @@ public class MainController implements Initializable {
      * TableView in the specific Tab displaying the exact values of the Sensors
      */
     @FXML
-    private TableView tableViewPressure;
+    private SensorTable tableViewPressure;
     /**
      * SensorChart in the specific Tab displaying temperature info of the
      * sensors
@@ -117,7 +119,7 @@ public class MainController implements Initializable {
      * TableView in the specific Tab displaying the exact values of the Sensors
      */
     @FXML
-    private TableView tableViewRevolutions;
+    private SensorTable tableViewRevolutions;
     /**
      * CheckBox for toggling the recording of the temperature data of the
      * sensors
@@ -144,7 +146,7 @@ public class MainController implements Initializable {
 
     private ArrayList<ChartData> chartDatas = new ArrayList<>();
     private ArrayList<SensorChart> sensorCharts = new ArrayList<>();
-    private HashMap<Data, TableView> tableViews = new HashMap<>();
+    private HashMap<Data, SensorTable> tableViews = new HashMap<>();
     private HashMap<Data, TableData> tableDatas = new HashMap<>();
 
     boolean isDBConnected;
@@ -488,6 +490,7 @@ public class MainController implements Initializable {
         for (Data data : tableViews.keySet()) {
             tableViews.get(data).setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY);
             tableDatas.get(data).setMinTime(0 - Double.valueOf(IO.getConfigProp("realtime_timeframe")));
+            tableDatas.get(data).addListener(tableViews.get(data));
             int counter = 0;
             for (long sensorID : sensorData.getMapIDTypeCode().keySet()) {
                 TableColumn tc = new TableColumn(Long.toString(sensorID));

@@ -5,6 +5,7 @@
  */
 package de.hfts.sensormonitor.controller;
 
+import viewelements.SensorChart;
 import de.hfts.sensormonitor.misc.*;
 import de.hfts.sensormonitor.model.ChartData;
 import de.hfts.sensormonitor.model.SensorData.Data;

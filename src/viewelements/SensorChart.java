@@ -1,4 +1,4 @@
-package de.hfts.sensormonitor.misc;
+package viewelements;
 
 import com.sun.javafx.charts.Legend;
 import com.sun.javafx.charts.Legend.LegendItem;

@@ -8,6 +8,7 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 <?import de.hfts.sensormonitor.misc.SensorChart?>
+<?import de.hfts.sensormonitor.misc.SensorTable?>
 <?import org.controlsfx.control.CheckComboBox?>
 
 
@@ -117,7 +118,7 @@
                                            GridPane.columnIndex="0" GridPane.rowIndex="2"
                                            title="%temperature">
                                 </SensorChart>
-                                <TableView fx:id="tableViewTemperature" 
+                                <SensorTable fx:id="tableViewTemperature" 
                                     GridPane.columnIndex="1" GridPane.rowIndex="2" />
                             </children>
                             <columnConstraints>
@@ -143,7 +144,7 @@
                                            GridPane.columnIndex="0" GridPane.rowIndex="2"
                                            title="%temperature">
                                 </SensorChart>
-                                <TableView fx:id="tableViewPressure" 
+                                <SensorTable fx:id="tableViewPressure" 
                                     GridPane.columnIndex="1" GridPane.rowIndex="2" />
                             </children>
                             <columnConstraints>
@@ -169,7 +170,7 @@
                                            GridPane.columnIndex="0" GridPane.rowIndex="2"
                                            title="%temperature">
                                 </SensorChart>
-                                <TableView fx:id="tableViewRevolutions" 
+                                <SensorTable fx:id="tableViewRevolutions" 
                                     GridPane.columnIndex="1" GridPane.rowIndex="2" />
                             </children>
                             <columnConstraints>
