@@ -44,7 +44,7 @@ public class Recording {
      * @param recording
      * @param io
      */
-    public Recording(ResultSet recording, IO io) {
+    public Recording(ResultSet recording) {
         HashMap<Long, List<SensorDataPoint>> temperature_points = new HashMap<>();
         HashMap<Long, List<SensorDataPoint>> pressure_points = new HashMap<>();
         HashMap<Long, List<SensorDataPoint>> revolutions_points = new HashMap<>();
@@ -106,12 +106,12 @@ public class Recording {
             chartDatas.get(d).setPartTypeCodes(sensors);
         }
 
-        chartDatas.get(Data.TEMPERATURE).setyScaleMax(Double.valueOf(io.getConfigProp("temperature_yscalemax")));
-        chartDatas.get(Data.TEMPERATURE).setyScaleMin(Double.valueOf(io.getConfigProp("temperature_yscalemin")));
-        chartDatas.get(Data.PRESSURE).setyScaleMax(Double.valueOf(io.getConfigProp("pressure_yscalemax")));
-        chartDatas.get(Data.PRESSURE).setyScaleMin(Double.valueOf(io.getConfigProp("pressure_yscalemin")));
-        chartDatas.get(Data.REVOLUTIONS).setyScaleMax(Double.valueOf(io.getConfigProp("revolutions_yscalemax")));
-        chartDatas.get(Data.REVOLUTIONS).setyScaleMin(Double.valueOf(io.getConfigProp("revolutions_yscalemin")));
+        chartDatas.get(Data.TEMPERATURE).setyScaleMax(Double.valueOf(IO.getConfigProp("temperature_yscalemax")));
+        chartDatas.get(Data.TEMPERATURE).setyScaleMin(Double.valueOf(IO.getConfigProp("temperature_yscalemin")));
+        chartDatas.get(Data.PRESSURE).setyScaleMax(Double.valueOf(IO.getConfigProp("pressure_yscalemax")));
+        chartDatas.get(Data.PRESSURE).setyScaleMin(Double.valueOf(IO.getConfigProp("pressure_yscalemin")));
+        chartDatas.get(Data.REVOLUTIONS).setyScaleMax(Double.valueOf(IO.getConfigProp("revolutions_yscalemax")));
+        chartDatas.get(Data.REVOLUTIONS).setyScaleMin(Double.valueOf(IO.getConfigProp("revolutions_yscalemin")));
 
         for (long l : temperature_points.keySet()) {
             chartDatas.get(Data.TEMPERATURE).addGraphToChart(l, temperature_points.get(l));

@@ -72,7 +72,6 @@ public class SettingsController implements Initializable {
     private Label labelErrorAppearance;
 
     // -------------- PRIVATE FIELDS -------------------------------------------
-    private IO io;
     private MainController mainController;
     private boolean isLanguageRebootNecessary = false;
     private boolean isAppearanceRebootNecessary = false;
@@ -88,14 +87,14 @@ public class SettingsController implements Initializable {
         if (((String) comboBoxLanguages.getValue()).equals(currentLanguage)) {
             labelErrorLanguage.setVisible(false);
             isLanguageRebootNecessary = false;
-            io.setConfigProp("lang", io.getLanguages().get(((String) comboBoxLanguages.getValue())));
-            io.saveConfigProperties();
+            IO.setConfigProp("lang", IO.getLanguages().get(((String) comboBoxLanguages.getValue())));
+            IO.saveConfigProperties();
         } else {
-            labelErrorLanguage.setText(io.getLangpackString("applied_upon_closing"));
+            labelErrorLanguage.setText(IO.getLangpackString("applied_upon_closing"));
             labelErrorLanguage.setVisible(true);
             isLanguageRebootNecessary = true;
-            io.setConfigProp("lang", io.getLanguages().get(((String) comboBoxLanguages.getValue())));
-            io.saveConfigProperties();
+            IO.setConfigProp("lang", IO.getLanguages().get(((String) comboBoxLanguages.getValue())));
+            IO.saveConfigProperties();
         }
     }
 
@@ -103,11 +102,11 @@ public class SettingsController implements Initializable {
      *
      */
     public void handleApplyButtonGraphs() {
-        if (Integer.valueOf(textFieldTimeFrame.getText()) > (0 - Integer.valueOf(io.getConfigProp("realtime_xscalemin")))) {
-            labelErrorGraphs.setText(io.getLangpackString("timeframe_exceeds_bounds"));
+        if (Integer.valueOf(textFieldTimeFrame.getText()) > (0 - Integer.valueOf(IO.getConfigProp("realtime_xscalemin")))) {
+            labelErrorGraphs.setText(IO.getLangpackString("timeframe_exceeds_bounds"));
             labelErrorGraphs.setVisible(true);
-            textFieldTimeFrame.setText(io.getConfigProp("realtime_timeframe"));
-        } else if (!textFieldTimeFrame.getText().equals(io.getConfigProp("realtime_timeframe"))) {
+            textFieldTimeFrame.setText(IO.getConfigProp("realtime_timeframe"));
+        } else if (!textFieldTimeFrame.getText().equals(IO.getConfigProp("realtime_timeframe"))) {
             labelErrorGraphs.setVisible(false);
             for (ChartData cd : mainController.getChartDatas()) {
                 cd.setxMin(0 - Integer.valueOf(textFieldTimeFrame.getText()));
@@ -116,15 +115,15 @@ public class SettingsController implements Initializable {
             for (TableData td : mainController.getTableDatas().values()) {
                 td.setMinTime(0 - Integer.valueOf(textFieldTimeFrame.getText()));
             }
-            io.setConfigProp("realtime_timeframe", textFieldTimeFrame.getText());
-            io.saveConfigProperties();
+            IO.setConfigProp("realtime_timeframe", textFieldTimeFrame.getText());
+            IO.saveConfigProperties();
         }
-        if (checkBoxDisplayPoints.isSelected() != Boolean.valueOf(io.getConfigProp("displayPointSymbols"))) {
+        if (checkBoxDisplayPoints.isSelected() != Boolean.valueOf(IO.getConfigProp("displayPointSymbols"))) {
             for (SensorChart sc : mainController.getSensorCharts()) {
                 sc.setCreateSymbols(checkBoxDisplayPoints.isSelected());
             }
-            io.setConfigProp("displayPointSymbols", Boolean.toString(checkBoxDisplayPoints.isSelected()));
-            io.saveConfigProperties();
+            IO.setConfigProp("displayPointSymbols", Boolean.toString(checkBoxDisplayPoints.isSelected()));
+            IO.saveConfigProperties();
         }
     }
 
@@ -135,14 +134,14 @@ public class SettingsController implements Initializable {
         if (((String) comboBoxAppearance.getValue()).equals(currentAppearance)) {
             labelErrorAppearance.setVisible(false);
             isAppearanceRebootNecessary = false;
-            io.setConfigProp("style", ((String) comboBoxAppearance.getValue()));
-            io.saveConfigProperties();
+            IO.setConfigProp("style", ((String) comboBoxAppearance.getValue()));
+            IO.saveConfigProperties();
         } else {
-            labelErrorAppearance.setText(io.getLangpackString("applied_upon_closing"));
+            labelErrorAppearance.setText(IO.getLangpackString("applied_upon_closing"));
             labelErrorAppearance.setVisible(true);
             isAppearanceRebootNecessary = true;
-            io.setConfigProp("style", ((String) comboBoxAppearance.getValue()));
-            io.saveConfigProperties();
+            IO.setConfigProp("style", ((String) comboBoxAppearance.getValue()));
+            IO.saveConfigProperties();
         }
     }
 
@@ -157,16 +156,15 @@ public class SettingsController implements Initializable {
      *
      * @param io
      */
-    public void setIO(IO io) {
-        this.io = io;
-        comboBoxLanguages.setItems(FXCollections.observableArrayList(io.getLanguages().keySet()));
-        currentLanguage = new Locale(io.getConfigProp("lang")).getDisplayLanguage(new Locale(io.getConfigProp("lang")));
+    public void setUpData() {
+        comboBoxLanguages.setItems(FXCollections.observableArrayList(IO.getLanguages().keySet()));
+        currentLanguage = new Locale(IO.getConfigProp("lang")).getDisplayLanguage(new Locale(IO.getConfigProp("lang")));
         comboBoxLanguages.setValue(currentLanguage);
-        textFieldTimeFrame.setText(io.getConfigProp("realtime_timeframe"));
-        checkBoxDisplayPoints.setSelected(Boolean.valueOf(io.getConfigProp("displayPointSymbols")));
-        io.loadAvailableSkins();
-        comboBoxAppearance.setItems(FXCollections.observableArrayList(io.getStyles()));
-        currentAppearance = io.getConfigProp("style");
+        textFieldTimeFrame.setText(IO.getConfigProp("realtime_timeframe"));
+        checkBoxDisplayPoints.setSelected(Boolean.valueOf(IO.getConfigProp("displayPointSymbols")));
+        IO.loadAvailableSkins();
+        comboBoxAppearance.setItems(FXCollections.observableArrayList(IO.getStyles()));
+        currentAppearance = IO.getConfigProp("style");
         comboBoxAppearance.setValue(currentAppearance);
     }
 

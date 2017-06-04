@@ -41,20 +41,20 @@ public class SensorMonitor extends Application {
         originalOut = System.out;
         boolean isDBConnected = true;
         // Create the IO, connect to the DB and load the sensors
-        IO io = new IO();
-        SensorMonitorException.langpack = io.getLangpack();
+        IO.loadConfiguration();
+        SensorMonitorException.langpack = IO.getLangpack();
         try {
-            io.connectDB();
+            IO.connectDB();
         } catch (ClassNotFoundException | SQLException e) {
             isDBConnected = false;
-            new ExceptionDialog(io.getLangpackString("exception_databaseconnect"), null);
+            new ExceptionDialog(IO.getLangpackString("exception_databaseconnect"), null);
         }
         List<BaseSensor> sensors = null;
         try {
-            sensors = io.loadSensors();
+            sensors = IO.loadSensors();
             disableOutput();
         } catch (IllegalSensorAmountException e) {
-            new ExceptionDialog(io.getLangpackString("exception_illegalsensoramount"), null);
+            new ExceptionDialog(e.getMessage(), null);
             System.exit(0);
         }
         // Set the icon of the application
@@ -62,7 +62,7 @@ public class SensorMonitor extends Application {
         Image image = new Image(url.toExternalForm());
         stage.getIcons().add(image);
 
-        loadMainWindow(io, stage, sensors, isDBConnected);
+        loadMainWindow(stage, sensors, isDBConnected);
     }
 
     /**
@@ -73,22 +73,21 @@ public class SensorMonitor extends Application {
      * @param sensors
      * @param isDBConnected
      */
-    private void loadMainWindow(IO io, Stage stage, List<BaseSensor> sensors, boolean isDBConnected) {
+    private void loadMainWindow(Stage stage, List<BaseSensor> sensors, boolean isDBConnected) {
         try {
             // Load the FXML file and save it as root
             FXMLLoader loader = new FXMLLoader();
             URL url = this.getClass().getClassLoader().getResource("de/hfts/sensormonitor/view/mainWindow.fxml");
             loader.setLocation(url);
-            loader.setResources(io.getLangpack());
+            loader.setResources(IO.getLangpack());
             BorderPane root = (BorderPane) loader.load();
 
             // Pass parameters to the controller
-            ((MainController) loader.getController()).setIo(io);
             ((MainController) loader.getController()).setIsDBConnected(isDBConnected);
 
             // Create the scene and add it to the stage
             Scene scene = new Scene(root);
-            scene.getStylesheets().addAll(io.getStyleSheet("base"), io.getStyleSheet(io.getConfigProp("style")));
+            scene.getStylesheets().addAll(IO.getStyleSheet("base"), IO.getStyleSheet(IO.getConfigProp("style")));
             stage.setScene(scene);
             stage.setTitle("CeBarRoundMonitor");
             stage.setMaximized(true);

@@ -5,6 +5,7 @@
  */
 package de.hfts.sensormonitor.controller;
 
+import de.hfts.sensormonitor.misc.IO;
 import java.io.File;
 import java.net.URL;
 import java.util.*;
@@ -57,10 +58,10 @@ public class RecordingsListController implements Initializable {
     public void handleButtonDeleteRecording() {
         List<String> selectedrecordings = recordingsList.getSelectionModel().getSelectedItems();
         for (String recording : selectedrecordings) {
-            parentController.getIo().dropTable(recording);
+            IO.dropTable(recording);
         }
         parentController.closeTab(selectedrecordings);
-        recordingsList.setItems(FXCollections.observableArrayList(parentController.getIo().getTables()));
+        recordingsList.setItems(FXCollections.observableArrayList(IO.getTables()));
     }
 
     /**
@@ -68,7 +69,7 @@ public class RecordingsListController implements Initializable {
      */
     public void handleButtonExportRecording() {
         DirectoryChooser directoryChooser = new DirectoryChooser();
-        directoryChooser.setTitle(parentController.getIo().getLangpack().getString("select_export_directory"));
+        directoryChooser.setTitle(IO.getLangpack().getString("select_export_directory"));
         directoryChooser.setInitialDirectory(new File(System.getProperty("user.home")));
 
         File dir = directoryChooser.showDialog(null);
@@ -76,7 +77,7 @@ public class RecordingsListController implements Initializable {
         if (dir != null) {
             List<String> selectedrecordings = recordingsList.getSelectionModel().getSelectedItems();
             for (String recording : selectedrecordings) {
-                parentController.getIo().exportRecording(recording, dir.getAbsolutePath());
+                IO.exportRecording(recording, dir.getAbsolutePath());
             }
         }
     }

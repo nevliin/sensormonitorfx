@@ -25,47 +25,47 @@ public class IO {
     /**
      * List of availables language ResourceBundle's
      */
-    private Map<String, String> languages = new HashMap<>();
+    private static Map<String, String> languages = new HashMap<>();
     /**
      * List of available CSS stylesheets, excluding base.css
      */
-    private List<String> styles = new ArrayList<String>();
+    private static List<String> styles = new ArrayList<String>();
     /**
      * Configuration properties file loaded from the home.dir/.sensormonitor
      */
-    private Properties configProp;
+    private static Properties configProp;
     /**
      * Language ResourceBundle for all texts visible to the user
      */
-    private ResourceBundle langpack;
+    private static ResourceBundle langpack;
 
     /**
      * List of tables in the connected H2 database
      */
-    private List<String> tables = new ArrayList<>();
+    private static List<String> tables = new ArrayList<>();
     /**
      * Template for the columns of tables for recordings
      */
-    private String columns = "(TIME TIMESTAMP NOT NULL, ROWID INT, SENSORID BIGINT NOT NULL, SENSORTYPE CHARACTER(30) NOT NULL, TEMPERATURE INT, PRESSURE INT, REVOLUTIONS INT);";
+    private static String columns = "(TIME TIMESTAMP NOT NULL, ROWID INT, SENSORID BIGINT NOT NULL, SENSORTYPE CHARACTER(30) NOT NULL, TEMPERATURE INT, PRESSURE INT, REVOLUTIONS INT);";
     /**
      * Connection to the H2 embedded database
      */
-    private Connection conn;
+    private static Connection conn;
     /**
      * Statement to execute queries and commands for the database
      */
-    private Statement stat;
+    private static Statement stat;
     /**
      * Format for SensorEvent dates
      */
-    private final SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy HH:mm:ss.SSS");
+    private static final SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy HH:mm:ss.SSS");
 
     // -------------- CONSTRUCTORS ---------------------------------------------
     /**
      * Standard constructor; tries to load the configuration and creates it if
      * it doesn't exist yet.
      */
-    public IO() {
+    public static void loadConfiguration() {
 
         SensorMonitorException.langpack = ResourceBundle.getBundle("lang.lang", new Locale("en"));
 
@@ -93,14 +93,14 @@ public class IO {
         try {
             FileInputStream stream = new FileInputStream(currentUsersHomeDir + File.separator + ".sensormonitor" + File.separator + "config.properties");
             configProp.load(stream);
-            InputStream stream2 = this.getClass().getClassLoader().getResourceAsStream("defaultconfig/config.properties");
+            InputStream stream2 = IO.class.getClassLoader().getResourceAsStream("defaultconfig/config.properties");
             Properties templateProp = new Properties();
             templateProp.load(stream2);
             try {
                 validateProperties(configProp, templateProp);
             } catch (IllegalConfigurationException ex) {
                 new ExceptionDialog(ex.getMessage(), null);
-                InputStream stream3 = this.getClass().getClassLoader().getResourceAsStream("defaultconfig/config.properties");
+                InputStream stream3 = IO.class.getClassLoader().getResourceAsStream("defaultconfig/config.properties");
                 try {
                     configProp.load(stream3);
                 } catch (IOException ex1) {
@@ -109,7 +109,7 @@ public class IO {
                 isPropertiesExistant = false;
             }
         } catch (FileNotFoundException ex) {
-            InputStream stream = this.getClass().getClassLoader().getResourceAsStream("defaultconfig/config.properties");
+            InputStream stream = IO.class.getClassLoader().getResourceAsStream("defaultconfig/config.properties");
             try {
                 configProp.load(stream);
             } catch (IOException ex1) {
@@ -152,7 +152,7 @@ public class IO {
                 System.exit(0);
             }
         }
-        this.langpack = ResourceBundle.getBundle("lang.lang", new Locale(getConfigProp("lang")));
+        langpack = ResourceBundle.getBundle("lang.lang", new Locale(getConfigProp("lang")));
     }
 
     // -------------- GETTERS & SETTERS ----------------------------------------    
@@ -161,8 +161,8 @@ public class IO {
      *
      * @return
      */
-    public List<String> getTables() {
-        return this.tables;
+    public static List<String> getTables() {
+        return tables;
     }
 
     /**
@@ -171,7 +171,7 @@ public class IO {
      * @param key
      * @return
      */
-    public String getConfigProp(String key) {
+    public static String getConfigProp(String key) {
         return configProp.getProperty(key);
     }
 
@@ -181,7 +181,7 @@ public class IO {
      * @param key
      * @param value
      */
-    public void setConfigProp(String key, String value) {
+    public static void setConfigProp(String key, String value) {
         configProp.setProperty(key, value);
     }
 
@@ -190,7 +190,7 @@ public class IO {
      *
      * @return
      */
-    public ResourceBundle getLangpack() {
+    public static ResourceBundle getLangpack() {
         return langpack;
     }
 
@@ -199,8 +199,8 @@ public class IO {
      *
      * @param langpack
      */
-    public void setLangpack(ResourceBundle langpack) {
-        this.langpack = langpack;
+    public static void setLangpack(ResourceBundle langpack) {
+        IO.langpack = langpack;
     }
 
     /**
@@ -209,7 +209,7 @@ public class IO {
      * @param key
      * @return
      */
-    public String getLangpackString(String key) {
+    public static String getLangpackString(String key) {
         return langpack.getString(key);
     }
 
@@ -218,7 +218,7 @@ public class IO {
      *
      * @return
      */
-    public Map<String, String> getLanguages() {
+    public static Map<String, String> getLanguages() {
         return languages;
     }
 
@@ -227,7 +227,7 @@ public class IO {
      *
      * @return
      */
-    public List<String> getStyles() {
+    public static List<String> getStyles() {
         return styles;
     }
 
@@ -239,7 +239,7 @@ public class IO {
      * @throws java.lang.ClassNotFoundException
      * @throws java.sql.SQLException
      */
-    public void connectDB() throws ClassNotFoundException, SQLException {
+    public static void connectDB() throws ClassNotFoundException, SQLException {
         Class.forName("org.h2.Driver");
         conn = DriverManager.getConnection("jdbc:h2:" + getConfigProp("savepath") + "/recordings", "root", "root");
         DatabaseMetaData meta = conn.getMetaData();
@@ -258,7 +258,7 @@ public class IO {
      *
      * @return Name of the table
      */
-    public String createGenericTable() {
+    public static String createGenericTable() {
         boolean flag = true;
         String genericName = null;
         // Create a generic name and make sure a table with that name does not already exist
@@ -287,7 +287,7 @@ public class IO {
      * @param newname
      * @throws IllegalTableNameException
      */
-    public void renameTable(String oldname, String newname) throws IllegalTableNameException {
+    public static void renameTable(String oldname, String newname) throws IllegalTableNameException {
         if (!newname.toUpperCase().matches("[a-zA-Z][a-zA-Z0-9_]{1,30}") || isTableExistant(newname.toUpperCase())) {
             throw new IllegalTableNameException();
         }
@@ -307,7 +307,7 @@ public class IO {
      * @param insertstmt
      * @param timestamp
      */
-    public void saveData(String table, String insertstmt, Timestamp timestamp) {
+    public static void saveData(String table, String insertstmt, Timestamp timestamp) {
         try {
             PreparedStatement ps = conn.prepareStatement("INSERT INTO " + table + " VALUES (?," + insertstmt + ");");
             ps.setTimestamp(1, timestamp);
@@ -323,7 +323,7 @@ public class IO {
      * @param table
      * @return
      */
-    public ResultSet loadRecording(String table) {
+    public static ResultSet loadRecording(String table) {
         ResultSet rs = null;
         try {
             rs = stat.executeQuery("SELECT * FROM " + table);
@@ -336,7 +336,7 @@ public class IO {
     /**
      * Drops all tables in the database
      */
-    public void dropAllTables() {
+    public static void dropAllTables() {
         for (String table : tables) {
             try {
                 stat.execute("DROP TABLE " + table);
@@ -352,7 +352,7 @@ public class IO {
      *
      * @param name
      */
-    public void dropTable(String name) {
+    public static void dropTable(String name) {
         try {
             stat.execute("DROP TABLE " + name);
             tables.remove(name);
@@ -367,7 +367,7 @@ public class IO {
      * @param name
      * @return
      */
-    public boolean isTableExistant(String name) {
+    public static boolean isTableExistant(String name) {
         if (tables.contains(name.toUpperCase())) {
             return true;
         } else {
@@ -378,7 +378,7 @@ public class IO {
     /**
      * Closes the connection to the database
      */
-    public void closeConnection() {
+    public static void closeConnection() {
         try {
             conn.close();
             stat.close();
@@ -393,7 +393,7 @@ public class IO {
      * @param length
      * @return
      */
-    private String generateRandomString(int length) {
+    private static String generateRandomString(int length) {
         String alphabet = "abcdefghijklmnopqrstuvwxyz";
         String result = "";
         Random rand = new Random();
@@ -407,7 +407,7 @@ public class IO {
     /**
      * Saves the config.configProperties
      */
-    public void saveConfigProperties() {
+    public static void saveConfigProperties() {
         try {
             FileOutputStream output = new FileOutputStream(System.getProperty("user.home") + File.separator + ".sensormonitor" + File.separator + "config.properties");
             configProp.store(output, null);
@@ -424,10 +424,10 @@ public class IO {
      * @return List of sensors
      * @throws IllegalSensorAmountException
      */
-    public List<BaseSensor> loadSensors() throws IllegalSensorAmountException {
+    public static List<BaseSensor> loadSensors() throws IllegalSensorAmountException {
         List<BaseSensor> result = new ArrayList<>();
         Properties sensors = new Properties();
-        InputStream stream = this.getClass().getClassLoader().getResourceAsStream("defaultconfig/sensors.properties");
+        InputStream stream = IO.class.getClassLoader().getResourceAsStream("defaultconfig/sensors.properties");
         try {
             sensors.load(stream);
         } catch (IOException ex1) {
@@ -461,10 +461,10 @@ public class IO {
      * Locale
      *
      */
-    public void loadAvailableLanguages() {
+    public static void loadAvailableLanguages() {
         ArrayList<String> langs = new ArrayList<>();
         try {
-            URI uri = this.getClass().getResource("/lang").toURI();
+            URI uri = IO.class.getResource("/lang").toURI();
             try (FileSystem fileSystem = (uri.getScheme().equals("jar") ? FileSystems.newFileSystem(uri, Collections.<String, Object>emptyMap()) : null)) {
                 Path myPath = Paths.get(uri);
                 Files.walkFileTree(myPath, new SimpleFileVisitor<Path>() {
@@ -493,10 +493,10 @@ public class IO {
      * Load a list of the available stylesheets from the JAR (excluding
      * base.css)
      */
-    public void loadAvailableSkins() {
+    public static void loadAvailableSkins() {
         ArrayList<String> stylesUncut = new ArrayList<>();
         try {
-            URI uri = this.getClass().getResource("/stylesheets").toURI();
+            URI uri = IO.class.getResource("/stylesheets").toURI();
             try (FileSystem fileSystem = (uri.getScheme().equals("jar") ? FileSystems.newFileSystem(uri, Collections.<String, Object>emptyMap()) : null)) {
                 Path myPath = Paths.get(uri);
                 Files.walkFileTree(myPath, new SimpleFileVisitor<Path>() {
@@ -528,9 +528,9 @@ public class IO {
      * @param name
      * @return
      */
-    public String getStyleSheet(String name) {
+    public static String getStyleSheet(String name) {
         try {
-            URL url = this.getClass().getClassLoader().getResource("stylesheets/" + name + ".css");
+            URL url = IO.class.getClassLoader().getResource("stylesheets/" + name + ".css");
             return url.toExternalForm();
         } catch (NullPointerException e) {
             setConfigProp("style", "default");
@@ -547,7 +547,7 @@ public class IO {
      * @param recordingname
      * @param exportpath
      */
-    public void exportRecording(String recordingname, String exportpath) {
+    public static void exportRecording(String recordingname, String exportpath) {
         exportpath += "/" + recordingname + ".csv";
         FileWriter writer;
         try {
@@ -584,7 +584,7 @@ public class IO {
      * @throws ParseException
      * @throws ImportRecordingException
      */
-    public void importRecording(File file) throws IllegalTableNameException, IOException, ParseException, ImportRecordingException {
+    public static void importRecording(File file) throws IllegalTableNameException, IOException, ParseException, ImportRecordingException {
         String name = file.getName();
         String[] namesplit = name.split("\\.");
         if (!namesplit[0].toUpperCase().matches("[a-zA-Z][a-zA-Z0-9_]{1,30}") || isTableExistant(namesplit[0].toUpperCase())) {
@@ -612,7 +612,7 @@ public class IO {
                     insertstmt += linesplit[i] + ", ";
                 }
             }
-            this.saveData(namesplit[0], insertstmt, timestamp);
+            saveData(namesplit[0], insertstmt, timestamp);
         }
         in.close();
     }

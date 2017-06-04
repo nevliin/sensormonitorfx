@@ -21,7 +21,6 @@ import javafx.scene.control.TextInputDialog;
 public class Recorder implements CeBarRoundObserver<SensorEvent> {
 
     // -------------- PRIVATE FIELDS -------------------------------------------
-    private IO io;
     /**
      * Current recording; null if none is running
      */
@@ -42,17 +41,14 @@ public class Recorder implements CeBarRoundObserver<SensorEvent> {
          * Generic name of the table in the database before finalizing it
          */
         private String genericName;
-        private IO io;
 
         // -------------- CONSTRUCTOR ------------------------------------------
         /**
          * Creates new LiveRecording
          *
-         * @param io
          */
-        public LiveRecording(IO io) {
-            genericName = io.createGenericTable();
-            this.io = io;
+        public LiveRecording() {
+            genericName = IO.createGenericTable();
             this.rowid = 0;
         }
 
@@ -63,7 +59,7 @@ public class Recorder implements CeBarRoundObserver<SensorEvent> {
          * @throws de.hfts.sensormonitor.exceptions.IllegalTableNameException
          */
         public void finalizeName(String name) throws IllegalTableNameException {
-            io.renameTable(genericName, name);
+            IO.renameTable(genericName, name);
         }
 
         /**
@@ -90,7 +86,7 @@ public class Recorder implements CeBarRoundObserver<SensorEvent> {
                 insertstmt += ", null";
             }
 
-            io.saveData(genericName, insertstmt, new Timestamp(cbre.getDate().getTime()));
+            IO.saveData(genericName, insertstmt, new Timestamp(cbre.getDate().getTime()));
             rowid++;
         }
 
@@ -100,7 +96,7 @@ public class Recorder implements CeBarRoundObserver<SensorEvent> {
          */
         public void saveRecording() {
             if (recording.getRowid() == 0) {
-                io.dropTable(recording.getGenericName());
+                IO.dropTable(recording.getGenericName());
             } else {
                 boolean deleteRecording = false;
                 boolean isNameInvalid = true;
@@ -108,12 +104,12 @@ public class Recorder implements CeBarRoundObserver<SensorEvent> {
                 boolean secondtry = false;
                 do {
                     TextInputDialog dialog = new TextInputDialog();
-                    dialog.setTitle(io.getLangpack().getString("save_recording_title"));
-                    dialog.setContentText(io.getLangpack().getString("save_recording"));
+                    dialog.setTitle(IO.getLangpackString("save_recording_title"));
+                    dialog.setContentText(IO.getLangpackString("save_recording"));
                     if (secondtry) {
-                        dialog.setHeaderText(io.getLangpack().getString("exception_illegaltablename"));
+                        dialog.setHeaderText(IO.getLangpackString("exception_illegaltablename"));
                     } else {
-                        dialog.setHeaderText(io.getLangpack().getString("save_recording_title"));
+                        dialog.setHeaderText(IO.getLangpackString("save_recording_title"));
                     }
                     newname = dialog.showAndWait();
 
@@ -131,7 +127,7 @@ public class Recorder implements CeBarRoundObserver<SensorEvent> {
                     secondtry = true;
                 } while (isNameInvalid);
                 if (deleteRecording) {
-                    io.dropTable(recording.getGenericName());
+                    IO.dropTable(recording.getGenericName());
                 }
             }
             recording = null;
@@ -157,12 +153,10 @@ public class Recorder implements CeBarRoundObserver<SensorEvent> {
 
     // -------------- CONSTRUCTORS ---------------------------------------------
     /**
-     * Standard constructor; requires instance of IO for database connection
+     * Standard constructor
      *
-     * @param io
      */
-    public Recorder(IO io) {
-        this.io = io;
+    public Recorder() {
     }
 
     // -------------- OTHER METHODS --------------------------------------------
@@ -181,7 +175,7 @@ public class Recorder implements CeBarRoundObserver<SensorEvent> {
      * Starts recording the received SensorEvents
      */
     public void startRecording() {
-        recording = new LiveRecording(io);
+        recording = new LiveRecording();
     }
 
     /**
