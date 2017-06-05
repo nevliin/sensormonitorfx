@@ -7,8 +7,8 @@
 <?import javafx.scene.chart.*?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
-<?import de.hfts.sensormonitor.misc.SensorChart?>
-<?import de.hfts.sensormonitor.misc.SensorTable?>
+<?import de.hfts.sensormonitor.viewelements.SensorChart?>
+<?import de.hfts.sensormonitor.viewelements.SensorTable?>
 <?import org.controlsfx.control.CheckComboBox?>
 
 
@@ -25,7 +25,8 @@
                 <MenuItem text="%delete_all" onAction="#handleMenuItemDeleteAll"></MenuItem>  
             </Menu> 
             <Menu text="%help">
-                <MenuItem text="%settings" onAction="#handleMenuItemSettings"></MenuItem>  
+                <MenuItem text="%settings" onAction="#handleMenuItemSettings"></MenuItem>
+                <MenuItem text="%about" onAction="#handleMenuItemAbout"></MenuItem>    
             </Menu> 
         </MenuBar>
     </top>

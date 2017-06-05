@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package viewelements;
+package de.hfts.sensormonitor.viewelements;
 
 import de.hfts.sensormonitor.model.TableDataChangeListener;
 import javafx.collections.ObservableList;

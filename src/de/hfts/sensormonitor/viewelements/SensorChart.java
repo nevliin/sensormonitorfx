@@ -1,4 +1,4 @@
-package viewelements;
+package de.hfts.sensormonitor.viewelements;
 
 import com.sun.javafx.charts.Legend;
 import com.sun.javafx.charts.Legend.LegendItem;
@@ -143,6 +143,9 @@ public class SensorChart extends LineChart implements ChartDataChangeListener {
                         public void handle(MouseEvent event) {
                             data.getNode().getStyleClass().remove("onHover");
                             tooltip.hide();
+                            if(editChartWindow != null) {
+                                editChartWindow.toFront();
+                            }
                         }
                     });
                 } catch (NullPointerException ex) {

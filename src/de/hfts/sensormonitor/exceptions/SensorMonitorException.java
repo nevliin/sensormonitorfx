@@ -8,7 +8,7 @@ import java.util.ResourceBundle;
  *
  * @author Polarix IT Solutions
  */
-public class SensorMonitorException extends Exception {
+public class SensorMonitorException extends RuntimeException {
 
     /**
      * Needs to be set before throwing any exceptions; provides messages for all

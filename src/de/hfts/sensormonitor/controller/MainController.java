@@ -1,7 +1,7 @@
 package de.hfts.sensormonitor.controller;
 
-import viewelements.SensorTable;
-import viewelements.SensorChart;
+import de.hfts.sensormonitor.viewelements.SensorTable;
+import de.hfts.sensormonitor.viewelements.SensorChart;
 import de.hft.ss17.cebarround.BaseSensor;
 import de.hfts.sensormonitor.exceptions.*;
 import de.hfts.sensormonitor.execute.SensorMonitor;
@@ -16,9 +16,7 @@ import java.text.ParseException;
 import java.util.*;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import javafx.application.Platform;
 import javafx.beans.property.ReadOnlyObjectWrapper;
-import javafx.collections.FXCollections;
 import javafx.collections.ListChangeListener;
 import javafx.collections.ObservableList;
 import javafx.fxml.*;
@@ -143,6 +141,7 @@ public class MainController implements Initializable {
 
     Stage recordingswindow;
     Stage settingswindow;
+    Stage aboutwindow;
 
     private ArrayList<ChartData> chartDatas = new ArrayList<>();
     private ArrayList<SensorChart> sensorCharts = new ArrayList<>();
@@ -254,6 +253,23 @@ public class MainController implements Initializable {
             }
         } else {
             settingswindow.toFront();
+        }
+    }
+
+    /**
+     * Handle clicking the MenuItem "About", part of the Menu "Help"
+     */
+    public void handleMenuItemAbout() {
+        if (aboutwindow == null) {
+            settingswindow = new Stage();
+            BorderPane bp = new BorderPane();
+            Scene scene = new Scene(bp);
+            scene.getStylesheets().addAll(labelInfo.getScene().getStylesheets());
+            settingswindow.setScene(scene);
+            settingswindow.sizeToScene();
+            settingswindow.show();
+        } else {
+            aboutwindow.toFront();
         }
     }
 
