@@ -55,8 +55,33 @@ public class SensorChart extends LineChart implements ChartDataChangeListener {
 
     // -------------- GETTERS & SETTERS ----------------------------------------
     /**
+     *
+     * @return
+     */
+    public ChartData getChartData() {
+        return chartdata;
+    }
+
+    /**
+     *
+     * @return
+     */
+    public Stage getEditChartWindow() {
+        return editChartWindow;
+    }
+
+    /**
+     *
+     * @param editChartWindow
+     */
+    public void setEditChartWindow(Stage editChartWindow) {
+        this.editChartWindow = editChartWindow;
+    }
+
+    // -------------- OTHER METHODS --------------------------------------------
+    /**
      * Set the Data model of the SensorChart as well as the language
-     * ResourceBundle and the axis titles.
+     * ResourceBundle and the axis titles. 
      *
      * @param chartData
      * @param xAxisTitle
@@ -93,26 +118,6 @@ public class SensorChart extends LineChart implements ChartDataChangeListener {
     }
 
     /**
-     * Set the SensorChartData of the SensorChart
-     *
-     * @param data
-     */
-    public void setChartData(ChartData data) {
-        chartdata = data;
-        data.addListener(this);
-        updateAxis();
-    }
-
-    /**
-     *
-     * @return
-     */
-    public ChartData getChartData() {
-        return chartdata;
-    }
-
-    // -------------- OTHER METHODS --------------------------------------------
-    /**
      * Add tooltips displaying detailed information to each XY-point on the
      * LineChart. Call this after the nodes have been displayed, only to be used
      * on static data.
@@ -143,7 +148,7 @@ public class SensorChart extends LineChart implements ChartDataChangeListener {
                         public void handle(MouseEvent event) {
                             data.getNode().getStyleClass().remove("onHover");
                             tooltip.hide();
-                            if(editChartWindow != null) {
+                            if (editChartWindow != null) {
                                 editChartWindow.toFront();
                             }
                         }
@@ -237,7 +242,8 @@ public class SensorChart extends LineChart implements ChartDataChangeListener {
                 editChartWindow = null;
             });
 
-            ((EditChartController) loader.getController()).setChartData(chartdata);
+            ((EditChartController) loader.getController()).setChartData(chartdata);            
+            ((EditChartController) loader.getController()).setParentChart(this);
 
             Scene editChartScene = new Scene(root);
             editChartScene.getStylesheets().addAll(this.getScene().getStylesheets());

@@ -7,6 +7,7 @@ package de.hfts.sensormonitor.controller;
 
 import de.hfts.sensormonitor.misc.ExceptionDialog;
 import de.hfts.sensormonitor.misc.IO;
+import de.hfts.sensormonitor.misc.ProgressDialog;
 import java.io.File;
 import java.io.IOException;
 import java.net.URL;
@@ -14,6 +15,7 @@ import java.sql.SQLException;
 import java.util.*;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.fxml.*;
 import javafx.scene.control.*;
@@ -52,9 +54,18 @@ public class RecordingsListController implements Initializable {
      */
     public void handleButtonDisplayRecording() {
         List<String> selectedrecordings = recordingsList.getSelectionModel().getSelectedItems();
-        for (String recording : selectedrecordings) {
-            parentController.displayRecording(recording);
-        }
+        Thread t = new Thread(() -> {
+            Platform.runLater(() -> {
+                ProgressDialog pd = new ProgressDialog(selectedrecordings.size(), IO.getLangpackString("loading_recordings"), IO.getLangpackString("progress_bar"));
+                pd.getScene().getStylesheets().addAll(recordingsList.getStylesheets());
+                for (String recording : selectedrecordings) {
+                    parentController.displayRecording(recording);
+                    pd.progress();
+                }
+                pd.hide();
+            });
+        });
+        t.start();
     }
 
     /**
@@ -81,14 +92,21 @@ public class RecordingsListController implements Initializable {
 
         if (dir != null) {
             Thread t = new Thread(() -> {
-                List<String> selectedrecordings = recordingsList.getSelectionModel().getSelectedItems();
-                for (String recording : selectedrecordings) {
-                    try {
-                        IO.exportRecording(recording, dir.getAbsolutePath());
-                    } catch (IOException | SQLException ex) {
-                        new ExceptionDialog(IO.getLangpackString("error_exportrecording") + ": " + recording, null);
+                Platform.runLater(() -> {
+                    List<String> selectedrecordings = recordingsList.getSelectionModel().getSelectedItems();
+                    ProgressDialog pd = new ProgressDialog(selectedrecordings.size(), IO.getLangpackString("exporting_recordings"), IO.getLangpackString("progress_bar"));
+                    pd.getScene().getStylesheets().addAll(recordingsList.getStylesheets());
+                    for (String recording : selectedrecordings) {
+                        try {
+                            IO.exportRecording(recording, dir.getAbsolutePath());
+                            pd.progress();
+                        } catch (IOException | SQLException ex) {
+                            new ExceptionDialog(IO.getLangpackString("error_exportrecording") + ": " + recording, null);
+                            pd.hide();
+                        }
                     }
-                }
+                    pd.hide();
+                });
             });
             t.start();
         }

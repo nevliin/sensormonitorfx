@@ -7,7 +7,9 @@ package de.hfts.sensormonitor.controller;
 
 import de.hfts.sensormonitor.exceptions.*;
 import de.hfts.sensormonitor.misc.ExceptionDialog;
+import de.hfts.sensormonitor.misc.IO;
 import de.hfts.sensormonitor.model.ChartData;
+import de.hfts.sensormonitor.viewelements.SensorChart;
 import java.net.URL;
 import java.util.ResourceBundle;
 import java.util.logging.Level;
@@ -29,6 +31,10 @@ public class EditChartController implements Initializable {
      * ChartData of the related SensorChart
      */
     ChartData chartData;
+    /**
+     * SensorChart related to the editChartWindow
+     */
+    private SensorChart parentChart;
 
     // -------------- FXML FIELDS ----------------------------------------------
     /**
@@ -82,7 +88,7 @@ public class EditChartController implements Initializable {
      */
     public void setChartData(ChartData chartData) {
         this.chartData = chartData;
-        this.labelTitle.setText(labelTitle.getText() + ": " + chartData.getType().toString());
+        this.labelTitle.setText(labelTitle.getText() + ": " + IO.getLangpackString(chartData.getType().toString().toLowerCase()));
         String xMin = Double.toString(chartData.getxMin());
         String xMax = Double.toString(chartData.getxMax());
         String yMin = Double.toString(chartData.getyMin());
@@ -171,6 +177,7 @@ public class EditChartController implements Initializable {
      */
     public void handleCancelButton() {
         textFieldXMax.getScene().getWindow().hide();
+        parentChart.setEditChartWindow(null);
     }
 
     /**
@@ -186,6 +193,8 @@ public class EditChartController implements Initializable {
                 ymax = "AUTO";
             }
             updateBounds(textFieldXMin.getText(), textFieldXMax.getText(), ymin, ymax);
+            this.labelTitle.getScene().getWindow().hide();
+            parentChart.setEditChartWindow(null);
         } catch (IllegalXScaleException ex) {
             Logger.getLogger(EditChartController.class.getName()).log(Level.SEVERE, null, ex);
             new ExceptionDialog(ex.getMessage(), null);
@@ -207,5 +216,14 @@ public class EditChartController implements Initializable {
             textFieldYMin.setDisable(false);
             textFieldYMax.setDisable(false);
         }
+    }
+
+    // -------------- GETTERS & SETTERS ----------------------------------------
+    /**
+     *
+     * @param sc
+     */
+    public void setParentChart(SensorChart sc) {
+        this.parentChart = sc;
     }
 }

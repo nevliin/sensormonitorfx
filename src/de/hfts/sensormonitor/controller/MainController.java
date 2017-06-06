@@ -261,13 +261,16 @@ public class MainController implements Initializable {
      */
     public void handleMenuItemAbout() {
         if (aboutwindow == null) {
-            settingswindow = new Stage();
+            aboutwindow = new Stage();
             BorderPane bp = new BorderPane();
             Scene scene = new Scene(bp);
             scene.getStylesheets().addAll(labelInfo.getScene().getStylesheets());
-            settingswindow.setScene(scene);
-            settingswindow.sizeToScene();
-            settingswindow.show();
+            aboutwindow.setScene(scene);
+            aboutwindow.sizeToScene();
+            aboutwindow.setOnCloseRequest(eh -> {
+                aboutwindow = null;
+            });
+            aboutwindow.show();
         } else {
             aboutwindow.toFront();
         }
