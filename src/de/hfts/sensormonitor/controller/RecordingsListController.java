@@ -54,18 +54,13 @@ public class RecordingsListController implements Initializable {
      */
     public void handleButtonDisplayRecording() {
         List<String> selectedrecordings = recordingsList.getSelectionModel().getSelectedItems();
-        Thread t = new Thread(() -> {
-            Platform.runLater(() -> {
-                ProgressDialog pd = new ProgressDialog(selectedrecordings.size(), IO.getLangpackString("loading_recordings"), IO.getLangpackString("progress_bar"));
-                pd.getScene().getStylesheets().addAll(recordingsList.getStylesheets());
-                for (String recording : selectedrecordings) {
-                    parentController.displayRecording(recording);
-                    pd.progress();
-                }
-                pd.hide();
-            });
-        });
-        t.start();
+        ProgressDialog pd = new ProgressDialog(selectedrecordings.size(), IO.getLangpackString("loading_recordings"), IO.getLangpackString("progress_bar"));
+        pd.getScene().getStylesheets().addAll(recordingsList.getStylesheets());
+        for (String recording : selectedrecordings) {
+            parentController.displayRecording(recording);
+            pd.progress();
+        }
+        pd.hide();
     }
 
     /**

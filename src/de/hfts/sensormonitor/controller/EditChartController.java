@@ -6,8 +6,7 @@
 package de.hfts.sensormonitor.controller;
 
 import de.hfts.sensormonitor.exceptions.*;
-import de.hfts.sensormonitor.misc.ExceptionDialog;
-import de.hfts.sensormonitor.misc.IO;
+import de.hfts.sensormonitor.misc.*;
 import de.hfts.sensormonitor.model.ChartData;
 import de.hfts.sensormonitor.viewelements.SensorChart;
 import java.net.URL;
@@ -20,7 +19,7 @@ import javafx.scene.control.*;
 
 /**
  * EditChartController --- FXML Controller of editChartWindow.fxml, the window
- * for editing the X- and Y-scale bounds of a SensorChart
+ * for editing the X- and Y-axis bounds of a SensorChart
  *
  * @author Polarix IT Solutions
  */
@@ -91,6 +90,7 @@ public class EditChartController implements Initializable {
         this.labelTitle.setText(labelTitle.getText() + ": " + IO.getLangpackString(chartData.getType().toString().toLowerCase()));
         String xMin = Double.toString(chartData.getxMin());
         String xMax = Double.toString(chartData.getxMax());
+        
         String yMin = Double.toString(chartData.getyMin());
         if (chartData.getyMin() == Double.MAX_VALUE) {
             yMin = "AUTO";
@@ -102,6 +102,7 @@ public class EditChartController implements Initializable {
             yMax = "AUTO";
             textFieldYMax.setDisable(true);
         }
+        
         textFieldXMin.setText(xMin);
         textFieldXMax.setText(xMax);
         textFieldYMin.setText(yMin);

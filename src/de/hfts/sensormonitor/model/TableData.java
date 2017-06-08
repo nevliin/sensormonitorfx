@@ -70,28 +70,34 @@ public class TableData implements SensorDataChangeListener {
         double lastTime = 0;
         Date lastPoint = null;
         for (int i = 0; i < points.size(); i++) {
-            SensorDataPoint p = points.get(i);
+            SensorDataPoint point = points.get(i);
 
             double time = 0;
             if (lastPoint != null) {
-                time = (lastPoint.getTime() - p.time.getTime());
+                time = (lastPoint.getTime() - point.time.getTime());
                 time = lastTime - (time / 1000);
                 time = round(time, 3);
             }
             if (time >= minTime) {
                 try {
                     observList.get(i).set(columnId, time);
-                    observList.get(i).set(columnId + 1, p.value);
+                    observList.get(i).set(columnId + 1, point.value);
                 } catch (IndexOutOfBoundsException e) {
                     observList.add(i, new ObservableListWrapper<>(new ArrayList<Double>()));
-                    for (int j = 0; j < maxColumn-2; j++) {
+                    for (int j = 0; j < maxColumn - 2; j++) {
                         observList.get(i).add(null);
                     }
                     observList.get(i).add(columnId, time);
-                    observList.get(i).add(columnId + 1, p.value);
+                    observList.get(i).add(columnId + 1, point.value);
+                }
+            } else {
+                try {
+                    observList.remove(i);
+                } catch (IndexOutOfBoundsException ex) {
+                    // NO-OP
                 }
             }
-            lastPoint = p.time;
+            lastPoint = point.time;
             lastTime = time;
         }
     }

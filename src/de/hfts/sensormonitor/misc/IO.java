@@ -60,10 +60,277 @@ public class IO {
      */
     private static final SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy HH:mm:ss.SSS");
 
-    // -------------- CONSTRUCTORS ---------------------------------------------
+    // -------------- GETTERS & SETTERS ----------------------------------------    
     /**
-     * Standard constructor; tries to load the configuration and creates it if
-     * it doesn't exist yet.
+     * Returns the list of tables in the database
+     *
+     * @return
+     */
+    public static List<String> getTables() {
+        return tables;
+    }
+
+    /**
+     * Get a config configProperty
+     *
+     * @param key
+     * @return
+     */
+    public static String getConfigProp(String key) {
+        return configProp.getProperty(key);
+    }
+
+    /**
+     * Set a config configProperty
+     *
+     * @param key
+     * @param value
+     */
+    public static void setConfigProp(String key, String value) {
+        configProp.setProperty(key, value);
+    }
+
+    /**
+     * Returns the loaded language ResourceBundle
+     *
+     * @return
+     */
+    public static ResourceBundle getLangpack() {
+        return langpack;
+    }
+
+    /**
+     * Sets the language ResourceBundle
+     *
+     * @param langpack
+     */
+    public static void setLangpack(ResourceBundle langpack) {
+        IO.langpack = langpack;
+    }
+
+    /**
+     * Get a value from the loaded language ResourceBundle
+     *
+     * @param key
+     * @return
+     */
+    public static String getLangpackString(String key) {
+        return langpack.getString(key);
+    }
+
+    /**
+     * Get a list of all available language ResourceBundle's
+     *
+     * @return
+     */
+    public static Map<String, String> getLanguages() {
+        return languages;
+    }
+
+    /**
+     * Get a list of all available stylesheets excluding base.css
+     *
+     * @return
+     */
+    public static List<String> getStyles() {
+        return styles;
+    }
+
+    // -------------- DATABASE METHODS -----------------------------------------
+    /**
+     * Connect to the H2 database located in the folder specified in the
+     * configProperties and get a list of all tables
+     *
+     * @throws java.lang.ClassNotFoundException
+     * @throws java.sql.SQLException
+     */
+    public static void connectDB() throws ClassNotFoundException, SQLException {
+        Class.forName("org.h2.Driver");
+        conn = DriverManager.getConnection("jdbc:h2:" + getConfigProp("savepath") + "/recordings", "root", "root");
+        DatabaseMetaData meta = conn.getMetaData();
+        ResultSet rs = meta.getTables(null, null, null,
+                new String[]{"TABLE"});
+        tables.clear();
+        while (rs.next()) {
+            tables.add(rs.getString("TABLE_NAME"));
+        }
+        rs.close();
+        stat = conn.createStatement();
+
+    }
+
+    /**
+     * Create a new table in the database with a generic name
+     *
+     * @return Name of the table
+     */
+    public static String createGenericTable() {
+        boolean flag = true;
+        String genericName = null;
+        // Create a generic name and make sure a table with that name does not already exist
+        do {
+            genericName = generateRandomString(10);
+            if (!tables.contains(genericName)) {
+                flag = false;
+            }
+        } while (flag);
+
+        // Create the table with SQL
+        try {
+            String exe = "CREATE TABLE " + genericName + " " + columns;
+            stat.execute(exe);
+        } catch (SQLException ex) {
+            Logger.getLogger(IO.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return genericName;
+
+    }
+
+    /**
+     * Rename the specified table (oldname) to newname
+     *
+     * @param oldname
+     * @param newname
+     * @throws IllegalTableNameException
+     */
+    public static void renameTable(String oldname, String newname) throws IllegalTableNameException {
+        if (!newname.toUpperCase().matches("[a-zA-Z][a-zA-Z0-9_]{1,30}") || isTableExistant(newname.toUpperCase())) {
+            throw new IllegalTableNameException();
+        }
+        try {
+            stat.execute("ALTER TABLE " + oldname + " RENAME TO " + newname);
+            tables.add(newname.toUpperCase());
+            tables.remove(oldname.toUpperCase());
+        } catch (SQLException ex) {
+            Logger.getLogger(IO.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+
+    /**
+     * Save recorded data in the specified table
+     *
+     * @param table
+     * @param insertstmt
+     * @param timestamp
+     */
+    public static void saveData(String table, String insertstmt, Timestamp timestamp) {
+        try {
+            PreparedStatement ps = conn.prepareStatement("INSERT INTO " + table + " VALUES (?," + insertstmt + ");");
+            ps.setTimestamp(1, timestamp);
+            ps.execute();
+        } catch (SQLException ex) {
+            Logger.getLogger(IO.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+
+    /**
+     * Loads a table/recording from the database and returns it as ResultSet
+     *
+     * @param table
+     * @return
+     */
+    public static ResultSet loadRecording(String table) {
+        ResultSet rs = null;
+        try {
+            rs = stat.executeQuery("SELECT * FROM " + table);
+        } catch (SQLException ex) {
+            Logger.getLogger(IO.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return rs;
+    }
+
+    /**
+     * Clear the list of database tables, get a list of all tables from the database and add 
+     */
+    public static void reloadTables() {
+        try {
+            tables.clear();
+            DatabaseMetaData meta = conn.getMetaData();
+            ResultSet rs = meta.getTables(null, null, null,
+                    new String[]{"TABLE"});
+            tables.clear();
+            while (rs.next()) {
+                tables.add(rs.getString("TABLE_NAME"));
+            }
+            rs.close();
+        } catch (SQLException ex) {
+            Logger.getLogger(IO.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+
+    /**
+     * Drops all tables in the database
+     */
+    public static void dropAllTables() {
+        for (String table : tables) {
+            try {
+                stat.execute("DROP TABLE " + table);
+            } catch (SQLException ex) {
+                Logger.getLogger(IO.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
+        tables = new ArrayList<>();
+    }
+
+    /**
+     * Drops a specific table in the database
+     *
+     * @param name
+     */
+    public static void dropTable(String name) {
+        try {
+            stat.execute("DROP TABLE " + name);
+            tables.remove(name);
+        } catch (SQLException ex) {
+            Logger.getLogger(IO.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+
+    /**
+     * Returns true if a table with this name exists in the database
+     *
+     * @param name
+     * @return
+     */
+    public static boolean isTableExistant(String name) {
+        if (tables.contains(name.toUpperCase())) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    /**
+     * Closes the connection to the database
+     */
+    public static void closeConnection() {
+        try {
+            conn.close();
+            stat.close();
+        } catch (SQLException | NullPointerException ex) {
+            Logger.getLogger(IO.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+
+    /**
+     * Generate a random String as placeholder name for a table
+     *
+     * @param length
+     * @return
+     */
+    private static String generateRandomString(int length) {
+        String alphabet = "abcdefghijklmnopqrstuvwxyz";
+        String result = "";
+        Random rand = new Random();
+        for (int i = 0; i < length; i++) {
+            result += alphabet.charAt(rand.nextInt(alphabet.length()));
+        }
+        return result;
+    }
+
+    // -------------- PROPERTIES METHODS ---------------------------------------
+    /**
+     * Tries to load the configuration and creates it if it doesn't exist yet.
      */
     public static void loadConfiguration() {
 
@@ -155,255 +422,6 @@ public class IO {
         langpack = ResourceBundle.getBundle("lang.lang", new Locale(getConfigProp("lang")));
     }
 
-    // -------------- GETTERS & SETTERS ----------------------------------------    
-    /**
-     * Returns the list of tables in the database
-     *
-     * @return
-     */
-    public static List<String> getTables() {
-        return tables;
-    }
-
-    /**
-     * Get a config configProperty
-     *
-     * @param key
-     * @return
-     */
-    public static String getConfigProp(String key) {
-        return configProp.getProperty(key);
-    }
-
-    /**
-     * Set a config configProperty
-     *
-     * @param key
-     * @param value
-     */
-    public static void setConfigProp(String key, String value) {
-        configProp.setProperty(key, value);
-    }
-
-    /**
-     * Returns the loaded language ResourceBundle
-     *
-     * @return
-     */
-    public static ResourceBundle getLangpack() {
-        return langpack;
-    }
-
-    /**
-     * Sets the language ResourceBundle
-     *
-     * @param langpack
-     */
-    public static void setLangpack(ResourceBundle langpack) {
-        IO.langpack = langpack;
-    }
-
-    /**
-     * Get a value from the loaded language ResourceBundle
-     *
-     * @param key
-     * @return
-     */
-    public static String getLangpackString(String key) {
-        return langpack.getString(key);
-    }
-
-    /**
-     * Get a list of all available language ResourceBundle's
-     *
-     * @return
-     */
-    public static Map<String, String> getLanguages() {
-        return languages;
-    }
-
-    /**
-     * Get a list of all available stylesheets excluding base.css
-     *
-     * @return
-     */
-    public static List<String> getStyles() {
-        return styles;
-    }
-
-    // -------------- DATABASE METHODS -----------------------------------------
-    /**
-     * Connect to the H2 database located in the folder specified in the
-     * configProperties and get a list of all tables
-     *
-     * @throws java.lang.ClassNotFoundException
-     * @throws java.sql.SQLException
-     */
-    public static void connectDB() throws ClassNotFoundException, SQLException {
-        Class.forName("org.h2.Driver");
-        conn = DriverManager.getConnection("jdbc:h2:" + getConfigProp("savepath") + "/recordings", "root", "root");
-        DatabaseMetaData meta = conn.getMetaData();
-        ResultSet res = meta.getTables(null, null, null,
-                new String[]{"TABLE"});
-        while (res.next()) {
-            tables.add(res.getString("TABLE_NAME"));
-        }
-        res.close();
-        stat = conn.createStatement();
-
-    }
-
-    /**
-     * Create a new table in the database with a generic name
-     *
-     * @return Name of the table
-     */
-    public static String createGenericTable() {
-        boolean flag = true;
-        String genericName = null;
-        // Create a generic name and make sure a table with that name does not already exist
-        do {
-            genericName = generateRandomString(10);
-            if (!tables.contains(genericName)) {
-                flag = false;
-            }
-        } while (flag);
-
-        // Create the table with SQL
-        try {
-            String exe = "CREATE TABLE " + genericName + " " + columns;
-            stat.execute(exe);
-        } catch (SQLException ex) {
-            Logger.getLogger(IO.class.getName()).log(Level.SEVERE, null, ex);
-        }
-        return genericName;
-
-    }
-
-    /**
-     * Rename the specified table (oldname) to newname
-     *
-     * @param oldname
-     * @param newname
-     * @throws IllegalTableNameException
-     */
-    public static void renameTable(String oldname, String newname) throws IllegalTableNameException {
-        if (!newname.toUpperCase().matches("[a-zA-Z][a-zA-Z0-9_]{1,30}") || isTableExistant(newname.toUpperCase())) {
-            throw new IllegalTableNameException();
-        }
-        try {
-            stat.execute("ALTER TABLE " + oldname + " RENAME TO " + newname);
-            tables.add(newname.toUpperCase());
-            tables.remove(oldname.toUpperCase());
-        } catch (SQLException ex) {
-            Logger.getLogger(IO.class.getName()).log(Level.SEVERE, null, ex);
-        }
-    }
-
-    /**
-     * Save recorded data in the specified table
-     *
-     * @param table
-     * @param insertstmt
-     * @param timestamp
-     */
-    public static void saveData(String table, String insertstmt, Timestamp timestamp) {
-        try {
-            PreparedStatement ps = conn.prepareStatement("INSERT INTO " + table + " VALUES (?," + insertstmt + ");");
-            ps.setTimestamp(1, timestamp);
-            ps.execute();
-        } catch (SQLException ex) {
-            Logger.getLogger(IO.class.getName()).log(Level.SEVERE, null, ex);
-        }
-    }
-
-    /**
-     * Loads a table/recording from the database and returns it as ResultSet
-     *
-     * @param table
-     * @return
-     */
-    public static ResultSet loadRecording(String table) {
-        ResultSet rs = null;
-        try {
-            rs = stat.executeQuery("SELECT * FROM " + table);
-        } catch (SQLException ex) {
-            Logger.getLogger(IO.class.getName()).log(Level.SEVERE, null, ex);
-        }
-        return rs;
-    }
-
-    /**
-     * Drops all tables in the database
-     */
-    public static void dropAllTables() {
-        for (String table : tables) {
-            try {
-                stat.execute("DROP TABLE " + table);
-            } catch (SQLException ex) {
-                Logger.getLogger(IO.class.getName()).log(Level.SEVERE, null, ex);
-            }
-        }
-        tables = new ArrayList<>();
-    }
-
-    /**
-     * Drops a specific table in the database
-     *
-     * @param name
-     */
-    public static void dropTable(String name) {
-        try {
-            stat.execute("DROP TABLE " + name);
-            tables.remove(name);
-        } catch (SQLException ex) {
-            Logger.getLogger(IO.class.getName()).log(Level.SEVERE, null, ex);
-        }
-    }
-
-    /**
-     * Returns true if a table with this name exists in the database
-     *
-     * @param name
-     * @return
-     */
-    public static boolean isTableExistant(String name) {
-        if (tables.contains(name.toUpperCase())) {
-            return true;
-        } else {
-            return false;
-        }
-    }
-
-    /**
-     * Closes the connection to the database
-     */
-    public static void closeConnection() {
-        try {
-            conn.close();
-            stat.close();
-        } catch (SQLException | NullPointerException ex) {
-            Logger.getLogger(IO.class.getName()).log(Level.SEVERE, null, ex);
-        }
-    }
-
-    /**
-     * Generate a random String as placeholder name for a table
-     *
-     * @param length
-     * @return
-     */
-    private static String generateRandomString(int length) {
-        String alphabet = "abcdefghijklmnopqrstuvwxyz";
-        String result = "";
-        Random rand = new Random();
-        for (int i = 0; i < length; i++) {
-            result += alphabet.charAt(rand.nextInt(alphabet.length()));
-        }
-        return result;
-    }
-
-    // -------------- PROPERTIES METHODS ---------------------------------------
     /**
      * Saves the config.configProperties
      */

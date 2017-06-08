@@ -16,6 +16,7 @@ public class ExceptionDialog {
 
     /**
      * Creates a JavaFX error alert with the given parameters and displays it
+     * 
      * @param text
      * @param subtext
      */

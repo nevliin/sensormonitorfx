@@ -40,7 +40,6 @@ public class RecordingDisplayController implements Initializable {
     private Label labelInfo;
 
     // -------------- PRIVATE FIELDS -------------------------------------------
-    private Recording recording;
     private ResourceBundle langpack;
     private List<ChartData> chartDatas = new ArrayList<>();
     private List<SensorChart> sensorCharts = new ArrayList<>();
@@ -56,7 +55,6 @@ public class RecordingDisplayController implements Initializable {
      * @param recording
      */
     public void setRecording(Recording recording) {
-        this.recording = recording;
         labelInfo.setText(recording.getFirsttimestamp().toString() + " - " + recording.getLasttimestamp().toString());
         chartTemperature.setChartData(recording.getChartData(Data.TEMPERATURE), langpack, "sec", "°C", true);
         chartDatas.add(recording.getChartData(Data.TEMPERATURE));
@@ -75,15 +73,15 @@ public class RecordingDisplayController implements Initializable {
                 List<String> checkedsensors = new ArrayList<>(checkComboBoxSensors.getCheckModel().getCheckedItems());
                 for (long l : recording.getSensors().keySet()) {
                     if (checkedsensors.contains(l)) {
-                        for (ChartData data : chartDatas) {
-                            data.setGraphVisible(l, true);
+                        for (ChartData cd : chartDatas) {
+                            cd.setGraphVisible(l, true);
                         }
                         for (SensorChart sc : sensorCharts) {
                             sc.installTooltips();
                         }
                     } else {
-                        for (ChartData data : chartDatas) {
-                            data.setGraphVisible(l, false);
+                        for (ChartData cd : chartDatas) {
+                            cd.setGraphVisible(l, false);
                         }
                         for (SensorChart sc : sensorCharts) {
                             sc.installTooltips();
@@ -93,5 +91,4 @@ public class RecordingDisplayController implements Initializable {
             }
         });
     }
-
 }

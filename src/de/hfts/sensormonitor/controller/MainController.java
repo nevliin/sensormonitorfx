@@ -171,10 +171,11 @@ public class MainController implements Initializable {
      * "Recordings"
      */
     public void handleMenuItemImportRecording() {
-        FileChooser fs = new FileChooser();
-        fs.setTitle(IO.getLangpackString("select_csv_file"));
-        fs.setInitialDirectory(new File(System.getProperty("user.home")));
-        File file = fs.showOpenDialog(null);
+        FileChooser fc = new FileChooser();
+        fc.setTitle(IO.getLangpackString("select_csv_file"));
+        fc.setInitialDirectory(new File(System.getProperty("user.home")));
+
+        File file = fc.showOpenDialog(null);
         if (file != null) {
             try {
                 IO.importRecording(file);
@@ -221,8 +222,8 @@ public class MainController implements Initializable {
         alert.setHeaderText("");
         alert.setContentText(IO.getLangpackString("confirm_delete_all_recordings"));
 
-        Optional<ButtonType> result = alert.showAndWait();
-        if (result.get() == ButtonType.OK) {
+        Optional<ButtonType> pressedButton = alert.showAndWait();
+        if (pressedButton.get() == ButtonType.OK) {
             IO.dropAllTables();
         }
     }
@@ -399,7 +400,7 @@ public class MainController implements Initializable {
                 fieldTypeCode.setAccessible(true);
                 String typeCode = (String) fieldTypeCode.get(b);
                 data.addSensor(sensorID, typeCode);
-            } catch (NoSuchFieldException | SecurityException | IllegalArgumentException | IllegalAccessException ex) {
+            } catch (IllegalAccessException | IllegalArgumentException | NoSuchFieldException | SecurityException ex) {
                 Logger.getLogger(MainController.class.getName()).log(Level.SEVERE, null, ex);
             }
         }
@@ -408,15 +409,9 @@ public class MainController implements Initializable {
         setUpTables(data);
 
         for (BaseSensor b : sensors) {
-            try {
-                b.addListener(data);
-                b.addListener(recorder);
-                b.stopMeasure();
-            } catch (SecurityException ex) {
-                Logger.getLogger(MainController.class.getName()).log(Level.SEVERE, null, ex);
-            } catch (IllegalArgumentException ex) {
-                Logger.getLogger(MainController.class.getName()).log(Level.SEVERE, null, ex);
-            }
+            b.addListener(data);
+            b.addListener(recorder);
+            b.stopMeasure();
         }
 
         checkComboBoxSensors.getItems().setAll(data.getSensorIDs());

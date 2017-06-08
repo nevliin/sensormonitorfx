@@ -69,7 +69,6 @@ public class SensorMonitor extends Application {
     /**
      * Load mainWindow.fxml and pass parameters to the MainWindowController
      *
-     * @param io
      * @param stage
      * @param sensors
      * @param isDBConnected

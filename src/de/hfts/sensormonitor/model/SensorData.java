@@ -66,7 +66,7 @@ public class SensorData implements CeBarRoundObserver<SensorEvent> {
      */
     @Override
     public void sensorDataEventListener(SensorEvent cbre) {
-        Platform.runLater(() -> {
+        Platform.runLater(() -> {            
             // Create new ArrayList's and save the TypeCode if the SensorID is unknown
             if (!mapIDTypeCode.keySet().contains(cbre.getUniqueSensorIdentifier())) {
                 mapIDTypeCode.put(cbre.getUniqueSensorIdentifier(), cbre.getSensorTypeCode());
@@ -164,7 +164,11 @@ public class SensorData implements CeBarRoundObserver<SensorEvent> {
     public Map<Long, String> getMapIDTypeCode() {
         return mapIDTypeCode;
     }
+
+    public Map<Data, Map<Long, ArrayList<SensorDataPoint>>> getGraphs() {
+        return graphs;
+    }
     
-    
+        
 
 }
