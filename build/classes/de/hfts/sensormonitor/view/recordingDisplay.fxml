@@ -14,23 +14,25 @@
 <GridPane styleClass="mainGridPane" fx:id="RecordingDisplay" xmlns:fx="http://javafx.com/fxml/1" fx:controller="de.hfts.sensormonitor.controller.RecordingDisplayController">
     <children>
         <CheckComboBox fx:id="checkComboBoxSensors"
-            GridPane.columnIndex="0" GridPane.rowIndex="0" />
+                       GridPane.columnIndex="0" GridPane.rowIndex="0" 
+                       GridPane.columnSpan="2"/>
         <Label fx:id="labelInfo"
-               GridPane.columnIndex="1" GridPane.rowIndex="0" />  
+               GridPane.columnIndex="2" GridPane.rowIndex="0" 
+                GridPane.halignment="RIGHT" />  
         <Separator 
             GridPane.columnIndex="0" GridPane.rowIndex="1"
             GridPane.columnSpan="3" />       
         <SensorChart fx:id="chartTemperature"
-                   GridPane.columnIndex="0" GridPane.rowIndex="2"
-                   title="%temperature">
+                     GridPane.columnIndex="0" GridPane.rowIndex="2"
+                     title="%temperature">
         </SensorChart>
         <SensorChart fx:id="chartPressure"
-                   GridPane.columnIndex="1" GridPane.rowIndex="2"
-                   title="%pressure" >
+                     GridPane.columnIndex="1" GridPane.rowIndex="2"
+                     title="%pressure" >
         </SensorChart>
         <SensorChart fx:id="chartRevolutions"
-                   GridPane.columnIndex="2" GridPane.rowIndex="2"
-                   title="%revolutions" >
+                     GridPane.columnIndex="2" GridPane.rowIndex="2"
+                     title="%revolutions" >
         </SensorChart>              
     </children>
     <columnConstraints>

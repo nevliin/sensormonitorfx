@@ -186,20 +186,20 @@
     -fx-padding: 0.0em; /* 0 */  
 }
 
-.default-color0.chart-series-line { -fx-stroke: #997300; }
-.default-color1.chart-series-line { -fx-stroke: #990000; }
-.default-color2.chart-series-line { -fx-stroke: #002699; }
-.default-color3.chart-series-line { -fx-stroke: #800080; }
-.default-color4.chart-series-line { -fx-stroke: #669900; }
-.default-color5.chart-series-line { -fx-stroke: #aa6600; }
-.default-color6.chart-series-line { -fx-stroke: #cc6600; }
-.default-color8.chart-series-line { -fx-stroke: #ee6600; }
 
-.default-color0.chart-line-symbol { -fx-background-color: #997300, rgba(255, 255, 255, .9); }
-.default-color1.chart-line-symbol { -fx-background-color: #990000, rgba(255, 255, 255, .9); }
-.default-color2.chart-line-symbol { -fx-background-color: #002699, rgba(255, 255, 255, .9); }
-.default-color3.chart-line-symbol { -fx-background-color: #800080, rgba(255, 255, 255, .9); }
-.default-color4.chart-line-symbol { -fx-background-color: #669900, rgba(255, 255, 255, .9); }
-.default-color5.chart-line-symbol { -fx-background-color: #aa6600, rgba(255, 255, 255, .9); }
-.default-color6.chart-line-symbol { -fx-background-color: #cc6600, rgba(255, 255, 255, .9); }
-.default-color7.chart-line-symbol { -fx-background-color: #ee6600, rgba(255, 255, 255, .9); }
+.default-color0.chart-line-symbol { -fx-background-color: #f9d900, rgba(255, 255, 255, .9); }
+.default-color1.chart-line-symbol { -fx-background-color: #a9e200, rgba(255, 255, 255, .9); }
+.default-color2.chart-line-symbol { -fx-background-color: #22bad9, rgba(255, 255, 255, .9); }
+.default-color3.chart-line-symbol { -fx-background-color: #0181e2, rgba(255, 255, 255, .9); }
+.default-color4.chart-line-symbol { -fx-background-color: #2f357f, rgba(255, 255, 255, .9); }
+.default-color5.chart-line-symbol { -fx-background-color: #860061, rgba(255, 255, 255, .9); }
+.default-color6.chart-line-symbol { -fx-background-color: #c62b00, rgba(255, 255, 255, .9); }
+.default-color7.chart-line-symbol { -fx-background-color: #ff5700, rgba(255, 255, 255, .9); }
+.default-color0.chart-series-line { -fx-stroke: #f9d900; }
+.default-color1.chart-series-line { -fx-stroke: #a9e200; }
+.default-color2.chart-series-line { -fx-stroke: #22bad9; }
+.default-color3.chart-series-line { -fx-stroke: #0181e2; }
+.default-color4.chart-series-line { -fx-stroke: #2f357f; }
+.default-color5.chart-series-line { -fx-stroke: #860061; }
+.default-color6.chart-series-line { -fx-stroke: #c62b00; }
+.default-color7.chart-series-line { -fx-stroke: #ff5700; }

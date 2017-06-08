@@ -38,9 +38,10 @@
                         <GridPane fx:id="dataOverview" styleClass="mainGridPane" >
                             <children>
                                 <CheckComboBox fx:id="checkComboBoxSensors"
-                                               GridPane.columnIndex="0" GridPane.rowIndex="0" />
-                                <Label fx:id="labelInfo"
-                                       GridPane.columnIndex="1" GridPane.rowIndex="1" />                                           
+                                               GridPane.columnIndex="0" GridPane.rowIndex="0" 
+                                               GridPane.columnSpan="2"/>
+                                <Button fx:id="buttonMeasuring" text="%stop_measuring" onAction="#handleButtonMeasuring"
+                                       GridPane.columnIndex="2" GridPane.rowIndex="0" GridPane.halignment="RIGHT" />                                           
                                        
                                 <Separator 
                                     GridPane.columnIndex="0" GridPane.rowIndex="1"

@@ -39,10 +39,10 @@ public class MainController implements Initializable {
 
     // -------------- FXML FIELDS ----------------------------------------------
     /**
-     *
+     * Button for starting/stopping measuring the sensor data
      */
     @FXML
-    private Label labelInfo;
+    private Button buttonMeasuring;
     /**
      * Button for starting a recording through the associated Recorder
      */
@@ -148,7 +148,10 @@ public class MainController implements Initializable {
     private HashMap<Data, SensorTable> tableViews = new HashMap<>();
     private HashMap<Data, TableData> tableDatas = new HashMap<>();
 
+    private List<BaseSensor> sensors;
+
     boolean isDBConnected;
+    boolean isMeasuring = false;
 
     // -------------- FXML HANDLERS -------------------------------------------------    
     /**
@@ -198,7 +201,7 @@ public class MainController implements Initializable {
                 ((RecordingsListController) loader.getController()).setParentController(this);
                 recordingswindow = new Stage();
                 Scene scene = new Scene(root);
-                scene.getStylesheets().addAll(labelInfo.getScene().getStylesheets());
+                scene.getStylesheets().addAll(checkComboBoxSensors.getScene().getStylesheets());
                 recordingswindow.setScene(scene);
                 recordingswindow.sizeToScene();
                 recordingswindow.setOnCloseRequest(eh -> {
@@ -239,8 +242,7 @@ public class MainController implements Initializable {
                 TabPane root = (TabPane) loader.load();
                 settingswindow = new Stage();
                 Scene scene = new Scene(root);
-                scene.getStylesheets().addAll(labelInfo.getScene().getStylesheets());
-                ((SettingsController) loader.getController()).setUpData();
+                scene.getStylesheets().addAll(checkComboBoxSensors.getScene().getStylesheets());
                 ((SettingsController) loader.getController()).setMainController(this);
                 settingswindow.setScene(scene);
                 settingswindow.sizeToScene();
@@ -248,7 +250,8 @@ public class MainController implements Initializable {
                     settingswindow = null;
                     ((SettingsController) loader.getController()).onClose();
                 });
-                settingswindow.show();
+                settingswindow.show();                
+                ((SettingsController) loader.getController()).setUpData();
             } catch (IOException ex) {
                 Logger.getLogger(MainController.class.getName()).log(Level.SEVERE, null, ex);
             }
@@ -265,7 +268,7 @@ public class MainController implements Initializable {
             aboutwindow = new Stage();
             BorderPane bp = new BorderPane();
             Scene scene = new Scene(bp);
-            scene.getStylesheets().addAll(labelInfo.getScene().getStylesheets());
+            scene.getStylesheets().addAll(checkComboBoxSensors.getScene().getStylesheets());
             aboutwindow.setScene(scene);
             aboutwindow.sizeToScene();
             aboutwindow.setOnCloseRequest(eh -> {
@@ -325,6 +328,25 @@ public class MainController implements Initializable {
             recorder.setRecordRevolutions(true);
         } else {
             recorder.setRecordRevolutions(false);
+        }
+    }
+
+    /**
+     * Handle clicking the Button "Start measuring"/"Stop measuring"
+     */
+    public void handleButtonMeasuring() {
+        if (isMeasuring) {
+            for (BaseSensor bs : sensors) {
+                bs.stopMeasure();
+            }
+            buttonMeasuring.setText(IO.getLangpackString("start_measuring"));
+            isMeasuring = false;
+        } else {
+            for (BaseSensor bs : sensors) {
+                bs.startMeasure();
+            }
+            buttonMeasuring.setText(IO.getLangpackString("stop_measuring"));
+            isMeasuring = true;
         }
     }
 
@@ -389,6 +411,7 @@ public class MainController implements Initializable {
      * @param sensors
      */
     public void startDisplay(List<BaseSensor> sensors) {
+        this.sensors = sensors;
         recorder = new Recorder();
         SensorData data = new SensorData();
         for (BaseSensor b : sensors) {
@@ -438,6 +461,7 @@ public class MainController implements Initializable {
         for (BaseSensor b : sensors) {
             b.startMeasure();
         }
+        isMeasuring = true;
     }
 
     /**
@@ -546,7 +570,7 @@ public class MainController implements Initializable {
         if (recorder.getRecording() != null) {
             recorder.stopRecording();
         }
-        labelInfo.getScene().getWindow().hide();
+        checkComboBoxSensors.getScene().getWindow().hide();
         IO.closeConnection();
     }
 

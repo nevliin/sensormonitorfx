@@ -33,7 +33,7 @@
                        GridPane.rowIndex="4" GridPane.columnIndex="1" />
                 <Label fx:id="labelErrorLanguage" 
                        GridPane.rowIndex="5" GridPane.columnIndex="0" 
-                       GridPane.columnSpan="2" />
+                       GridPane.columnSpan="2" wrapText="true" />
                 <Button text="%save" onAction="#handleSaveButtonLanguage" maxWidth="1000"
                         GridPane.rowIndex="6" GridPane.columnIndex="1" />
             </children>
