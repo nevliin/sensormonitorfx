@@ -61,6 +61,7 @@ public class RecordingsListController implements Initializable {
             pd.progress();
         }
         pd.hide();
+        IO.LOGGER.info(IO.getLangpackString("recordings_displayed") + ": " + String.join(", ", selectedrecordings));
     }
 
     /**
@@ -71,6 +72,7 @@ public class RecordingsListController implements Initializable {
         for (String recording : selectedrecordings) {
             IO.dropTable(recording);
         }
+        IO.LOGGER.info(IO.getLangpackString("recordings_deleted") + ": " + String.join(", ", selectedrecordings));
         parentController.closeTab(selectedrecordings);
         recordingsList.setItems(FXCollections.observableArrayList(IO.getTables()));
     }
@@ -96,11 +98,13 @@ public class RecordingsListController implements Initializable {
                             IO.exportRecording(recording, dir.getAbsolutePath());
                             pd.progress();
                         } catch (IOException | SQLException ex) {
+                            IO.LOGGER.log(Level.SEVERE, null, ex);
                             new ExceptionDialog(IO.getLangpackString("error_exportrecording") + ": " + recording, null);
                             pd.hide();
                         }
                     }
                     pd.hide();
+                    IO.LOGGER.info(IO.getLangpackString("recordings_exported") + ": " + String.join(", ", selectedrecordings));
                 });
             });
             t.start();

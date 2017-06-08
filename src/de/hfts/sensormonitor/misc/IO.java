@@ -7,7 +7,14 @@ import java.io.*;
 import java.net.*;
 import java.nio.file.*;
 import java.nio.file.attribute.BasicFileAttributes;
-import java.sql.*;
+import java.sql.Connection;
+import java.sql.DatabaseMetaData;
+import java.sql.DriverManager;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
+import java.sql.Timestamp;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.*;
@@ -20,6 +27,9 @@ import javafx.stage.DirectoryChooser;
  * @author Polarix IT Solutions
  */
 public class IO {
+
+    // -------------- PUBLIC FIELDS --------------------------------------------
+    public static Logger LOGGER;
 
     // -------------- PRIVATE FIELDS -------------------------------------------
     /**
@@ -59,6 +69,16 @@ public class IO {
      * Format for SensorEvent dates
      */
     private static final SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy HH:mm:ss.SSS");
+
+    // -------------- INNER CLASSES ------------------------------------
+    static class LogFormatter extends java.util.logging.Formatter {
+
+        @Override
+        public String format(LogRecord record) {
+            return "[" + sdf.format(new Date(record.getMillis())) + "] " + record.getLevel() + ": " + record.getMessage() + "\n";
+        }
+
+    }
 
     // -------------- GETTERS & SETTERS ----------------------------------------    
     /**
@@ -240,7 +260,8 @@ public class IO {
     }
 
     /**
-     * Clear the list of database tables, get a list of all tables from the database and add 
+     * Clear the list of database tables, get a list of all tables from the
+     * database and add
      */
     public static void reloadTables() {
         try {
@@ -304,11 +325,13 @@ public class IO {
      * Closes the connection to the database
      */
     public static void closeConnection() {
-        try {
-            conn.close();
-            stat.close();
-        } catch (SQLException | NullPointerException ex) {
-            Logger.getLogger(IO.class.getName()).log(Level.SEVERE, null, ex);
+        if (conn != null && stat != null) {
+            try {
+                conn.close();
+                stat.close();
+            } catch (SQLException ex) {
+                IO.LOGGER.log(Level.SEVERE, null, ex);
+            }
         }
     }
 
@@ -351,7 +374,9 @@ public class IO {
         // If the directory doesn't exist, create it
         if (!isSensormonitorDirExistant) {
             File folder = new File(currentUsersHomeDir + File.separator + ".sensormonitor");
+            File logfolder = new File(currentUsersHomeDir + File.separator + ".sensormonitor" + File.separator + "logs");
             folder.mkdir();
+            logfolder.mkdir();
         }
 
         // Try to load the configProperties from home.dir/.sensormonitor
@@ -631,6 +656,8 @@ public class IO {
 
     // -------------- OTHER METHODS --------------------------------------------
     /**
+     * Validate that the keys of the properties to check match the keys of the
+     * template properties
      *
      * @param check
      * @param template
@@ -652,4 +679,17 @@ public class IO {
         }
     }
 
+    public static void createLogger() {
+        try {
+            LOGGER = Logger.getLogger("");
+            GregorianCalendar cal = new GregorianCalendar();
+            SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd-HH-mm-ss-SSS");
+            String logfilename = format.format(cal.getTime()) + ".txt";
+            FileHandler fh = new FileHandler(System.getProperty("user.home") + File.separator + ".sensormonitor" + File.separator + "logs" + File.separator + logfilename);
+            fh.setFormatter(new LogFormatter());
+            LOGGER.addHandler(fh);
+        } catch (IOException | SecurityException ex) {
+            Logger.getLogger(IO.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
 }

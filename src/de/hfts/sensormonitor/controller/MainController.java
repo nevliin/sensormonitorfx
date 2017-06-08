@@ -424,7 +424,7 @@ public class MainController implements Initializable {
                 String typeCode = (String) fieldTypeCode.get(b);
                 data.addSensor(sensorID, typeCode);
             } catch (IllegalAccessException | IllegalArgumentException | NoSuchFieldException | SecurityException ex) {
-                Logger.getLogger(MainController.class.getName()).log(Level.SEVERE, null, ex);
+                IO.LOGGER.log(Level.SEVERE, null, ex);
             }
         }
 
@@ -461,6 +461,7 @@ public class MainController implements Initializable {
         for (BaseSensor b : sensors) {
             b.startMeasure();
         }
+        IO.LOGGER.info(IO.getLangpackString("measuring_started"));
         isMeasuring = true;
     }
 
@@ -572,6 +573,7 @@ public class MainController implements Initializable {
         }
         checkComboBoxSensors.getScene().getWindow().hide();
         IO.closeConnection();
+        IO.LOGGER.info(IO.getLangpackString("program_stopped"));
     }
 
     /**
