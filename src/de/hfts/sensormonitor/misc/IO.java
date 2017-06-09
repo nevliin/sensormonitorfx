@@ -29,7 +29,10 @@ import javafx.stage.DirectoryChooser;
 public class IO {
 
     // -------------- PUBLIC FIELDS --------------------------------------------
-    public static Logger LOGGER;
+    /**
+     * Format for SensorEvent dates
+     */
+    public static final SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy HH:mm:ss.SSS");
 
     // -------------- PRIVATE FIELDS -------------------------------------------
     /**
@@ -65,20 +68,6 @@ public class IO {
      * Statement to execute queries and commands for the database
      */
     private static Statement stat;
-    /**
-     * Format for SensorEvent dates
-     */
-    private static final SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy HH:mm:ss.SSS");
-
-    // -------------- INNER CLASSES ------------------------------------
-    static class LogFormatter extends java.util.logging.Formatter {
-
-        @Override
-        public String format(LogRecord record) {
-            return "[" + sdf.format(new Date(record.getMillis())) + "] " + record.getLevel() + ": " + record.getMessage() + "\n";
-        }
-
-    }
 
     // -------------- GETTERS & SETTERS ----------------------------------------    
     /**
@@ -200,7 +189,7 @@ public class IO {
             String exe = "CREATE TABLE " + genericName + " " + columns;
             stat.execute(exe);
         } catch (SQLException ex) {
-            Logger.getLogger(IO.class.getName()).log(Level.SEVERE, null, ex);
+            LogHandler.LOGGER.log(Level.SEVERE, null, ex);
         }
         return genericName;
 
@@ -222,7 +211,7 @@ public class IO {
             tables.add(newname.toUpperCase());
             tables.remove(oldname.toUpperCase());
         } catch (SQLException ex) {
-            Logger.getLogger(IO.class.getName()).log(Level.SEVERE, null, ex);
+            LogHandler.LOGGER.log(Level.SEVERE, null, ex);
         }
     }
 
@@ -239,7 +228,7 @@ public class IO {
             ps.setTimestamp(1, timestamp);
             ps.execute();
         } catch (SQLException ex) {
-            Logger.getLogger(IO.class.getName()).log(Level.SEVERE, null, ex);
+            LogHandler.LOGGER.log(Level.SEVERE, null, ex);
         }
     }
 
@@ -254,7 +243,7 @@ public class IO {
         try {
             rs = stat.executeQuery("SELECT * FROM " + table);
         } catch (SQLException ex) {
-            Logger.getLogger(IO.class.getName()).log(Level.SEVERE, null, ex);
+            LogHandler.LOGGER.log(Level.SEVERE, null, ex);
         }
         return rs;
     }
@@ -275,7 +264,7 @@ public class IO {
             }
             rs.close();
         } catch (SQLException ex) {
-            Logger.getLogger(IO.class.getName()).log(Level.SEVERE, null, ex);
+            LogHandler.LOGGER.log(Level.SEVERE, null, ex);
         }
     }
 
@@ -287,7 +276,7 @@ public class IO {
             try {
                 stat.execute("DROP TABLE " + table);
             } catch (SQLException ex) {
-                Logger.getLogger(IO.class.getName()).log(Level.SEVERE, null, ex);
+                LogHandler.LOGGER.log(Level.SEVERE, null, ex);
             }
         }
         tables = new ArrayList<>();
@@ -303,7 +292,7 @@ public class IO {
             stat.execute("DROP TABLE " + name);
             tables.remove(name);
         } catch (SQLException ex) {
-            Logger.getLogger(IO.class.getName()).log(Level.SEVERE, null, ex);
+            LogHandler.LOGGER.log(Level.SEVERE, null, ex);
         }
     }
 
@@ -330,7 +319,7 @@ public class IO {
                 conn.close();
                 stat.close();
             } catch (SQLException ex) {
-                IO.LOGGER.log(Level.SEVERE, null, ex);
+                LogHandler.LOGGER.log(Level.SEVERE, null, ex);
             }
         }
     }
@@ -354,10 +343,12 @@ public class IO {
     // -------------- PROPERTIES METHODS ---------------------------------------
     /**
      * Tries to load the configuration and creates it if it doesn't exist yet.
+     * IMPORTANT: Do not use IO.LOGGER in this method as it is created only
+     * after loading the configuration
      */
     public static void loadConfiguration() {
 
-        SensorMonitorException.langpack = ResourceBundle.getBundle("lang.lang", new Locale("en"));
+        LogHandler.langpack = ResourceBundle.getBundle("lang.logging", new Locale("en"));
 
         String currentUsersHomeDir = System.getProperty("user.home");
 
@@ -391,7 +382,7 @@ public class IO {
             try {
                 validateProperties(configProp, templateProp);
             } catch (IllegalConfigurationException ex) {
-                new ExceptionDialog(ex.getMessage(), null);
+                new ExceptionDialog(IO.getLangpackString(ex.getExceptionKey()), null);
                 InputStream stream3 = IO.class.getClassLoader().getResourceAsStream("defaultconfig/config.properties");
                 try {
                     configProp.load(stream3);
@@ -435,10 +426,9 @@ public class IO {
                         try {
                             output.close();
                         } catch (IOException e) {
-                            e.printStackTrace();
+                            Logger.getLogger(IO.class.getName()).log(Level.SEVERE, null, e);
                         }
                     }
-
                 }
             } else {
                 System.exit(0);
@@ -455,9 +445,9 @@ public class IO {
             FileOutputStream output = new FileOutputStream(System.getProperty("user.home") + File.separator + ".sensormonitor" + File.separator + "config.properties");
             configProp.store(output, null);
         } catch (FileNotFoundException ex) {
-            Logger.getLogger(IO.class.getName()).log(Level.SEVERE, null, ex);
+            LogHandler.LOGGER.log(Level.SEVERE, null, ex);
         } catch (IOException ex) {
-            Logger.getLogger(IO.class.getName()).log(Level.SEVERE, null, ex);
+            LogHandler.LOGGER.log(Level.SEVERE, null, ex);
         }
     }
 
@@ -474,7 +464,7 @@ public class IO {
         try {
             sensors.load(stream);
         } catch (IOException ex1) {
-            Logger.getLogger(IO.class.getName()).log(Level.SEVERE, null, ex1);
+            LogHandler.LOGGER.log(Level.SEVERE, null, ex1);
         }
         if (Integer.valueOf(sensors.getProperty("sensortyp1")) + Integer.valueOf(sensors.getProperty("sensortyp2")) > 10) {
             throw new IllegalSensorAmountException();
@@ -484,7 +474,7 @@ public class IO {
             try {
                 Thread.sleep(1);
             } catch (InterruptedException ex) {
-                Logger.getLogger(IO.class.getName()).log(Level.SEVERE, null, ex);
+                LogHandler.LOGGER.log(Level.SEVERE, null, ex);
             }
         }
         for (int i = 0; i < Integer.valueOf(sensors.getProperty("sensortyp2")); i++) {
@@ -492,7 +482,7 @@ public class IO {
             try {
                 Thread.sleep(1);
             } catch (InterruptedException ex) {
-                Logger.getLogger(IO.class.getName()).log(Level.SEVERE, null, ex);
+                LogHandler.LOGGER.log(Level.SEVERE, null, ex);
             }
         }
         return result;
@@ -519,10 +509,10 @@ public class IO {
                     }
                 });
             } catch (IOException ex) {
-                Logger.getLogger(IO.class.getName()).log(Level.SEVERE, null, ex);
+                LogHandler.LOGGER.log(Level.SEVERE, null, ex);
             }
         } catch (URISyntaxException ex) {
-            Logger.getLogger(IO.class.getName()).log(Level.SEVERE, null, ex);
+            LogHandler.LOGGER.log(Level.SEVERE, null, ex);
         }
         for (String s : langs) {
             String s1 = s.split("_")[1];
@@ -536,7 +526,7 @@ public class IO {
      * Load a list of the available stylesheets from the JAR (excluding
      * base.css)
      */
-    public static void loadAvailableSkins() {
+    public static void loadAvailableStyles() {
         ArrayList<String> stylesUncut = new ArrayList<>();
         try {
             URI uri = IO.class.getResource("/stylesheets").toURI();
@@ -551,10 +541,10 @@ public class IO {
                     }
                 });
             } catch (IOException ex) {
-                Logger.getLogger(IO.class.getName()).log(Level.SEVERE, null, ex);
+                LogHandler.LOGGER.log(Level.SEVERE, null, ex);
             }
         } catch (URISyntaxException ex) {
-            Logger.getLogger(IO.class.getName()).log(Level.SEVERE, null, ex);
+            LogHandler.LOGGER.log(Level.SEVERE, null, ex);
         }
         styles.clear();
         for (String s : stylesUncut) {
@@ -679,17 +669,4 @@ public class IO {
         }
     }
 
-    public static void createLogger() {
-        try {
-            LOGGER = Logger.getLogger("");
-            GregorianCalendar cal = new GregorianCalendar();
-            SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd-HH-mm-ss-SSS");
-            String logfilename = format.format(cal.getTime()) + ".txt";
-            FileHandler fh = new FileHandler(System.getProperty("user.home") + File.separator + ".sensormonitor" + File.separator + "logs" + File.separator + logfilename);
-            fh.setFormatter(new LogFormatter());
-            LOGGER.addHandler(fh);
-        } catch (IOException | SecurityException ex) {
-            Logger.getLogger(IO.class.getName()).log(Level.SEVERE, null, ex);
-        }
-    }
 }

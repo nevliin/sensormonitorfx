@@ -7,6 +7,7 @@ package de.hfts.sensormonitor.misc;
 
 import de.hft.ss17.cebarround.*;
 import de.hfts.sensormonitor.exceptions.IllegalTableNameException;
+import de.hfts.sensormonitor.exceptions.SensorMonitorException;
 import java.sql.Timestamp;
 import java.util.Optional;
 import java.util.logging.*;
@@ -50,16 +51,7 @@ public class Recorder implements CeBarRoundObserver<SensorEvent> {
         public LiveRecording() {
             genericName = IO.createGenericTable();
             this.rowid = 0;
-        }
-
-        /**
-         * Renames the table related to the recording
-         *
-         * @param name
-         * @throws de.hfts.sensormonitor.exceptions.IllegalTableNameException
-         */
-        public void finalizeName(String name) throws IllegalTableNameException {
-            IO.renameTable(genericName, name);
+            LogHandler.LOGGER.info(LogHandler.getLangpackString("recording_started"));
         }
 
         /**
@@ -95,8 +87,9 @@ public class Recorder implements CeBarRoundObserver<SensorEvent> {
          * name matches the conventions.
          */
         public void saveRecording() {
-            if (recording.getRowid() == 0) {
-                IO.dropTable(recording.getGenericName());
+            recording = null;
+            if (rowid == 0) {
+                IO.dropTable(genericName);
             } else {
                 boolean deleteRecording = false;
                 boolean isNameInvalid = true;
@@ -118,23 +111,25 @@ public class Recorder implements CeBarRoundObserver<SensorEvent> {
                         deleteRecording = true;
                     } else if (newname.get().length() != 0) {
                         try {
-                            recording.finalizeName(newname.get());
+                            IO.renameTable(genericName, newname.get());
+                            LogHandler.LOGGER.info(LogHandler.getLangpackString("recording_finished") + ": " + newname.get());
                             isNameInvalid = false;
                         } catch (IllegalTableNameException ex) {
-                            Logger.getLogger(Recorder.class.getName()).log(Level.SEVERE, null, ex);
+                            LogHandler.LOGGER.log(Level.WARNING, null, ex);
+                            isNameInvalid = true;
                         }
                     }
                     secondtry = true;
                 } while (isNameInvalid);
                 if (deleteRecording) {
-                    IO.dropTable(recording.getGenericName());
+                    IO.dropTable(genericName);
                 }
             }
-            recording = null;
         }
 
         /**
          * Returns the generic name of the table related to the recording
+         *
          * @return
          */
         public String getGenericName() {
@@ -143,6 +138,7 @@ public class Recorder implements CeBarRoundObserver<SensorEvent> {
 
         /**
          * Returns the current rowID in the table
+         *
          * @return
          */
         public int getRowid() {
@@ -183,7 +179,6 @@ public class Recorder implements CeBarRoundObserver<SensorEvent> {
      */
     public void stopRecording() {
         recording.saveRecording();
-        recording = null;
     }
 
     // -------------- GETTERS & SETTERS ----------------------------------------

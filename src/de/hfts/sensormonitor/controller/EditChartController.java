@@ -197,11 +197,11 @@ public class EditChartController implements Initializable {
             this.labelTitle.getScene().getWindow().hide();
             parentChart.setEditChartWindow(null);
         } catch (IllegalXScaleException ex) {
-            Logger.getLogger(EditChartController.class.getName()).log(Level.SEVERE, null, ex);
-            new ExceptionDialog(ex.getMessage(), null);
+            LogHandler.LOGGER.log(Level.SEVERE, null, ex);
+            new ExceptionDialog(IO.getLangpackString("exception_illegalxscale"), null);
         } catch (IllegalYScaleException ex) {
-            Logger.getLogger(EditChartController.class.getName()).log(Level.SEVERE, null, ex);
-            new ExceptionDialog(ex.getMessage(), null);
+            LogHandler.LOGGER.log(Level.SEVERE, null, ex);
+            new ExceptionDialog(IO.getLangpackString("exception_illegalyscale"), null);
         }
     }
 

@@ -1,5 +1,6 @@
 package de.hfts.sensormonitor.exceptions;
 
+import de.hfts.sensormonitor.misc.LogHandler;
 import java.util.ResourceBundle;
 
 /**
@@ -10,25 +11,38 @@ import java.util.ResourceBundle;
  */
 public class SensorMonitorException extends RuntimeException {
 
+    // -------------- PRIVATE FIELDS -------------------------------------------
     /**
-     * Needs to be set before throwing any exceptions; provides messages for all
-     * exceptions
+     * Key of the corresponding exception message; for internationalization
+     * purposes
      */
-    public static ResourceBundle langpack;
+    private String exceptionKey;
 
+    // -------------- CONSTRUCTORS ---------------------------------------------
     /**
-     *
-     * @param exceptionMessage
+     * Creates an exception with the corresponding text from the langpack
+     * 
+     * @param exceptionKey
      */
-    public SensorMonitorException(String exceptionMessage) {
-        super(langpack.getString(exceptionMessage));
+    public SensorMonitorException(String exceptionKey) {
+        super(LogHandler.getLangpackString(exceptionKey));
+        this.exceptionKey = exceptionKey;
     }
 
     /**
-     *
+     * Creates a SensorMonitorException
      */
     public SensorMonitorException() {
         this("exception_sensormonitor");
+    }
+
+    // -------------- GETTERS & SETTERS ----------------------------------------
+    /**
+     * 
+     * @return 
+     */
+    public String getExceptionKey() {
+        return exceptionKey;
     }
 
 }

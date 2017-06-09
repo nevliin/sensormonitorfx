@@ -156,12 +156,13 @@ public class SettingsController implements Initializable {
      *
      */
     public void setUpData() {
+        IO.loadAvailableLanguages();
         comboBoxLanguages.setItems(FXCollections.observableArrayList(IO.getLanguages().keySet()));
         currentLanguage = new Locale(IO.getConfigProp("lang")).getDisplayLanguage(new Locale(IO.getConfigProp("lang")));
         comboBoxLanguages.setValue(currentLanguage);
         textFieldTimeFrame.setText(IO.getConfigProp("realtime_timeframe"));
         checkBoxDisplayPoints.setSelected(Boolean.valueOf(IO.getConfigProp("displayPointSymbols")));
-        IO.loadAvailableSkins();
+        IO.loadAvailableStyles();
         comboBoxAppearance.setItems(FXCollections.observableArrayList(IO.getStyles()));
         currentAppearance = IO.getConfigProp("style");
         comboBoxAppearance.setValue(currentAppearance);

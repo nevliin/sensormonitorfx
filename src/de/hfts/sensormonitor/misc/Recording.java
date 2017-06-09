@@ -90,7 +90,7 @@ public class Recording {
 
             }
         } catch (SQLException ex) {
-            Logger.getLogger(Recording.class.getName()).log(Level.SEVERE, null, ex);
+            LogHandler.LOGGER.log(Level.SEVERE, null, ex);
         }
 
         chartDatas.put(Data.TEMPERATURE, new ChartData(Data.TEMPERATURE));

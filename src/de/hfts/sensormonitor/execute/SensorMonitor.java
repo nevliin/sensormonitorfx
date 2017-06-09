@@ -8,7 +8,9 @@ import java.io.*;
 import java.net.URL;
 import java.sql.SQLException;
 import java.util.List;
+import java.util.Locale;
 import java.util.Optional;
+import java.util.ResourceBundle;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javafx.application.Application;
@@ -41,28 +43,28 @@ public class SensorMonitor extends Application {
 
         originalOut = System.out;
         boolean isDBConnected = true;
-        // Create the IO, connect to the DB and load the sensors
         IO.loadConfiguration();
-        IO.createLogger();
-        IO.LOGGER.info(IO.getLangpackString("program_started"));
-        SensorMonitorException.langpack = IO.getLangpack();
-        IO.LOGGER.info(IO.getLangpackString("program_language") + ": " + IO.getConfigProp("lang"));
+        LogHandler.createLogger();        
+        LogHandler.langpack = ResourceBundle.getBundle("lang.logging", new Locale("en"));
+        LogHandler.LOGGER.info(LogHandler.getLangpackString("program_started"));
+        LogHandler.LOGGER.info(LogHandler.getLangpackString("program_language") + ": " + IO.getConfigProp("lang"));
         try {
             IO.connectDB();
-            IO.LOGGER.info(IO.getLangpackString("database_connected"));
+            LogHandler.LOGGER.info(LogHandler.getLangpackString("database_connected"));
         } catch (ClassNotFoundException | SQLException e) {
             isDBConnected = false;
-            IO.LOGGER.warning(IO.getLangpackString("exception_databaseconnect"));
+            LogHandler.LOGGER.log(Level.SEVERE, null, e);
+            LogHandler.LOGGER.warning(LogHandler.getLangpackString("exception_databaseconnect"));
             new ExceptionDialog(IO.getLangpackString("exception_databaseconnect"), null);
         }
         List<BaseSensor> sensors = null;
         try {
             sensors = IO.loadSensors();
-            IO.LOGGER.info(IO.getLangpackString("sensors_loaded"));
+            LogHandler.LOGGER.info(LogHandler.getLangpackString("sensors_loaded"));
             disableOutput();
         } catch (IllegalSensorAmountException e) {
-            IO.LOGGER.severe(e.getMessage());
-            new ExceptionDialog(e.getMessage(), null);
+            LogHandler.LOGGER.severe(e.getMessage());
+            new ExceptionDialog(IO.getLangpackString(e.getExceptionKey()), null);
             System.exit(0);
         }
         // Set the icon of the application
@@ -109,7 +111,7 @@ public class SensorMonitor extends Application {
                         ((MainController) loader.getController()).quitProgramm();
                     } catch (Exception ex) {
                         // NO-OP - prevents that the application can not be closed due to any kind of exception
-                        IO.LOGGER.log(Level.SEVERE, null, ex);
+                        LogHandler.LOGGER.log(Level.SEVERE, null, ex);
                     }
                     System.exit(0);
                 } else {
@@ -117,12 +119,12 @@ public class SensorMonitor extends Application {
                 }
             });
             stage.show();
-            IO.LOGGER.info(IO.getLangpackString("application_window_shown"));
+            LogHandler.LOGGER.info(LogHandler.getLangpackString("application_window_shown"));
 
             // Start displaying sensor data
             ((MainController) loader.getController()).startDisplay(sensors);
         } catch (IOException ex) {
-            IO.LOGGER.log(Level.SEVERE, null, ex);
+            LogHandler.LOGGER.log(Level.SEVERE, null, ex);
         }
     }
 

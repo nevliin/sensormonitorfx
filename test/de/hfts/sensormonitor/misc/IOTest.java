@@ -31,15 +31,14 @@ import static org.junit.Assert.*;
  */
 public class IOTest {
 
-    static IO io;
     static String oldname;
     static String testTableName;
 
     @BeforeClass
     public static void setUpClass() {
-        io = new IO();
+        IO.loadConfiguration();
         try {
-            io.connectDB();
+            IO.connectDB();
         } catch (ClassNotFoundException ex) {
             Logger.getLogger(IOTest.class.getName()).log(Level.SEVERE, null, ex);
         } catch (SQLException ex) {
@@ -50,13 +49,13 @@ public class IOTest {
     @AfterClass
     public static void tearDownClass() {
         new File("a0c1b1f7cfe1e904368.csv").delete();
-        io.dropTable(oldname);
-        io.dropTable(testTableName);
+        IO.dropTable(oldname);
+        IO.dropTable(testTableName);
     }
 
     @Before
     public void setUp() {
-        SensorMonitorException.langpack = ResourceBundle.getBundle("lang.lang", new Locale("en"));
+        LogHandler.langpack = ResourceBundle.getBundle("lang.lang", new Locale("en"));
     }
 
     @After
@@ -65,8 +64,8 @@ public class IOTest {
 
     @Test(expected = IllegalTableNameException.class)
     public void testRenamingTableWithIllegalName() throws IllegalTableNameException {
-        oldname = io.createGenericTable();
-        io.renameTable(oldname, "2");
+        oldname = IO.createGenericTable();
+        IO.renameTable(oldname, "2");
     }
 
     @Test(expected = ImportRecordingException.class)
@@ -78,7 +77,7 @@ public class IOTest {
             sb.append("2017-05-21 22:50:10.348;0;925800402;'CeBarRound-5.1.3';21;4997; \n");
             fw.write(sb.toString());
             fw.close();
-            io.importRecording(new File("a0c1b1f7cfe1e904368.csv"));
+            IO.importRecording(new File("a0c1b1f7cfe1e904368.csv"));
         } catch (IOException | IllegalTableNameException | ParseException ex) {
             Logger.getLogger(IOTest.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -92,7 +91,7 @@ public class IOTest {
         Properties template = new Properties();
         template.setProperty("1", "test");
         template.setProperty("3", "test");
-        io.validateProperties(check, template);
+        IO.validateProperties(check, template);
     }
 
     @Test(expected = IllegalConfigurationException.class)
@@ -104,7 +103,7 @@ public class IOTest {
         template.setProperty("1", "test");
         template.setProperty("2", "test");
         template.setProperty("3", "test");
-        io.validateProperties(check, template);
+        IO.validateProperties(check, template);
     }
 
     @Test
@@ -115,13 +114,13 @@ public class IOTest {
         Properties template = new Properties();
         template.setProperty("1", "test");
         template.setProperty("2", "test");
-        io.validateProperties(check, template);
+        IO.validateProperties(check, template);
     }
     
     @Test 
     public void testCreatingGenericTable() {
-        testTableName = io.createGenericTable();
-        ResultSet rs = io.loadRecording(testTableName);
+        testTableName = IO.createGenericTable();
+        ResultSet rs = IO.loadRecording(testTableName);
         if(rs == null) {
             fail();
         }

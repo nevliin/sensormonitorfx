@@ -5,8 +5,10 @@
  */
 package de.hfts.sensormonitor.controller;
 
+import de.hfts.sensormonitor.exceptions.SensorMonitorException;
 import de.hfts.sensormonitor.misc.ExceptionDialog;
 import de.hfts.sensormonitor.misc.IO;
+import de.hfts.sensormonitor.misc.LogHandler;
 import de.hfts.sensormonitor.misc.ProgressDialog;
 import java.io.File;
 import java.io.IOException;
@@ -61,7 +63,7 @@ public class RecordingsListController implements Initializable {
             pd.progress();
         }
         pd.hide();
-        IO.LOGGER.info(IO.getLangpackString("recordings_displayed") + ": " + String.join(", ", selectedrecordings));
+        LogHandler.LOGGER.info(LogHandler.getLangpackString("recordings_displayed") + ": " + String.join(", ", selectedrecordings));
     }
 
     /**
@@ -72,7 +74,7 @@ public class RecordingsListController implements Initializable {
         for (String recording : selectedrecordings) {
             IO.dropTable(recording);
         }
-        IO.LOGGER.info(IO.getLangpackString("recordings_deleted") + ": " + String.join(", ", selectedrecordings));
+        LogHandler.LOGGER.info(LogHandler.getLangpackString("recordings_deleted") + ": " + String.join(", ", selectedrecordings));
         parentController.closeTab(selectedrecordings);
         recordingsList.setItems(FXCollections.observableArrayList(IO.getTables()));
     }
@@ -98,13 +100,13 @@ public class RecordingsListController implements Initializable {
                             IO.exportRecording(recording, dir.getAbsolutePath());
                             pd.progress();
                         } catch (IOException | SQLException ex) {
-                            IO.LOGGER.log(Level.SEVERE, null, ex);
+                            LogHandler.LOGGER.log(Level.SEVERE, null, ex);
                             new ExceptionDialog(IO.getLangpackString("error_exportrecording") + ": " + recording, null);
                             pd.hide();
                         }
                     }
                     pd.hide();
-                    IO.LOGGER.info(IO.getLangpackString("recordings_exported") + ": " + String.join(", ", selectedrecordings));
+                    LogHandler.LOGGER.info(LogHandler.getLangpackString("recordings_exported") + ": " + String.join(", ", selectedrecordings));
                 });
             });
             t.start();

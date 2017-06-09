@@ -183,8 +183,10 @@ public class MainController implements Initializable {
             try {
                 IO.importRecording(file);
                 displayRecording(file.getName().split("\\.")[0].toUpperCase());
-            } catch (IOException | ParseException | ImportRecordingException | IllegalTableNameException ex) {
+            } catch (IOException | ParseException ex) {
                 new ExceptionDialog(ex.getMessage(), null);
+            } catch (ImportRecordingException | IllegalTableNameException ex) {
+                new ExceptionDialog(IO.getLangpackString(ex.getExceptionKey()), null);
             }
         }
     }
@@ -209,7 +211,7 @@ public class MainController implements Initializable {
                 });
                 recordingswindow.show();
             } catch (IOException ex) {
-                Logger.getLogger(MainController.class.getName()).log(Level.SEVERE, null, ex);
+                LogHandler.LOGGER.log(Level.SEVERE, null, ex);
             }
         } else {
             recordingswindow.toFront();
@@ -235,7 +237,6 @@ public class MainController implements Initializable {
      * Handle clicking the MenuItem "Settings", part of the Menu "Help"
      */
     public void handleMenuItemSettings() {
-        IO.loadAvailableLanguages();
         if (settingswindow == null) {
             try {
                 FXMLLoader loader = new FXMLLoader(this.getClass().getClassLoader().getResource("de/hfts/sensormonitor/view/settingsWindow.fxml"), IO.getLangpack());
@@ -253,7 +254,7 @@ public class MainController implements Initializable {
                 settingswindow.show();                
                 ((SettingsController) loader.getController()).setUpData();
             } catch (IOException ex) {
-                Logger.getLogger(MainController.class.getName()).log(Level.SEVERE, null, ex);
+                LogHandler.LOGGER.log(Level.SEVERE, null, ex);
             }
         } else {
             settingswindow.toFront();
@@ -341,12 +342,14 @@ public class MainController implements Initializable {
             }
             buttonMeasuring.setText(IO.getLangpackString("start_measuring"));
             isMeasuring = false;
+            LogHandler.LOGGER.info(LogHandler.getLangpackString("measuring_stopped"));
         } else {
             for (BaseSensor bs : sensors) {
                 bs.startMeasure();
             }
             buttonMeasuring.setText(IO.getLangpackString("stop_measuring"));
-            isMeasuring = true;
+            isMeasuring = true;            
+            LogHandler.LOGGER.info(LogHandler.getLangpackString("measuring_started"));
         }
     }
 
@@ -424,7 +427,7 @@ public class MainController implements Initializable {
                 String typeCode = (String) fieldTypeCode.get(b);
                 data.addSensor(sensorID, typeCode);
             } catch (IllegalAccessException | IllegalArgumentException | NoSuchFieldException | SecurityException ex) {
-                IO.LOGGER.log(Level.SEVERE, null, ex);
+                LogHandler.LOGGER.log(Level.SEVERE, null, ex);
             }
         }
 
@@ -461,7 +464,7 @@ public class MainController implements Initializable {
         for (BaseSensor b : sensors) {
             b.startMeasure();
         }
-        IO.LOGGER.info(IO.getLangpackString("measuring_started"));
+        LogHandler.LOGGER.info(LogHandler.getLangpackString("measuring_started"));
         isMeasuring = true;
     }
 
@@ -573,7 +576,7 @@ public class MainController implements Initializable {
         }
         checkComboBoxSensors.getScene().getWindow().hide();
         IO.closeConnection();
-        IO.LOGGER.info(IO.getLangpackString("program_stopped"));
+        LogHandler.LOGGER.info(LogHandler.getLangpackString("program_stopped"));
     }
 
     /**
@@ -585,7 +588,8 @@ public class MainController implements Initializable {
         try {
             sm.start(new Stage());
         } catch (Exception ex) {
-            Logger.getLogger(MainController.class.getName()).log(Level.SEVERE, null, ex);
+            // NO-OP - catch any exception preventing the program from rebooting
+            LogHandler.LOGGER.log(Level.SEVERE, null, ex);
         }
     }
 
@@ -632,7 +636,7 @@ public class MainController implements Initializable {
             tab.setClosable(true);
             mainTabPane.getTabs().add(tab);
         } catch (IOException ex) {
-            Logger.getLogger(MainController.class.getName()).log(Level.SEVERE, null, ex);
+            LogHandler.LOGGER.log(Level.SEVERE, null, ex);
         }
     }
 }

@@ -8,6 +8,7 @@ package de.hfts.sensormonitor.controller;
 import de.hfts.sensormonitor.exceptions.IllegalXScaleException;
 import de.hfts.sensormonitor.exceptions.IllegalYScaleException;
 import de.hfts.sensormonitor.exceptions.SensorMonitorException;
+import de.hfts.sensormonitor.misc.LogHandler;
 import de.hfts.sensormonitor.model.ChartData;
 import de.hfts.sensormonitor.model.SensorData;
 import java.util.Locale;
@@ -44,7 +45,7 @@ public class EditChartControllerTest {
 
     @Before
     public void setUp() {
-        SensorMonitorException.langpack = ResourceBundle.getBundle("lang.lang", new Locale("en"));
+        LogHandler.langpack = ResourceBundle.getBundle("lang.lang", new Locale("en"));
     }
 
     @After
