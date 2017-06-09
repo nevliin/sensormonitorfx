@@ -76,15 +76,9 @@ public class RecordingDisplayController implements Initializable {
                         for (ChartData cd : chartDatas) {
                             cd.setGraphVisible(l, true);
                         }
-                        for (SensorChart sc : sensorCharts) {
-                            sc.installTooltips();
-                        }
                     } else {
                         for (ChartData cd : chartDatas) {
                             cd.setGraphVisible(l, false);
-                        }
-                        for (SensorChart sc : sensorCharts) {
-                            sc.installTooltips();
                         }
                     }
                 }
