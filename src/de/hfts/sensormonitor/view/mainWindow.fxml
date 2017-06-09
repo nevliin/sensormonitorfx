@@ -14,21 +14,24 @@
 
 <BorderPane xmlns:fx="http://javafx.com/fxml/1" fx:controller="de.hfts.sensormonitor.controller.MainController">
     <top>
-        <MenuBar>
-            <Menu text="%file">
-                <MenuItem text="%quit" onAction="#handleMenuItemQuit"></MenuItem>
-                <MenuItem text="%reboot" onAction="#handleMenuItemReboot"></MenuItem>  
-            </Menu> 
-            <Menu fx:id="menuRecordings" text="%recordings">
-                <MenuItem text="%import_recording" onAction="#handleMenuItemImportRecording"></MenuItem>
-                <MenuItem text="%show_all" onAction="#handleMenuItemShowAll"></MenuItem>
-                <MenuItem text="%delete_all" onAction="#handleMenuItemDeleteAll"></MenuItem>  
-            </Menu> 
-            <Menu text="%help">
-                <MenuItem text="%settings" onAction="#handleMenuItemSettings"></MenuItem>
-                <MenuItem text="%about" onAction="#handleMenuItemAbout"></MenuItem>    
-            </Menu> 
-        </MenuBar>
+        <HBox>
+            <MenuBar>
+                <Menu text="%file">
+                    <MenuItem text="%quit" onAction="#handleMenuItemQuit"></MenuItem>
+                    <MenuItem text="%reboot" onAction="#handleMenuItemReboot"></MenuItem>  
+                </Menu> 
+                <Menu fx:id="menuRecordings" text="%recordings">
+                    <MenuItem text="%import_recording" onAction="#handleMenuItemImportRecording"></MenuItem>
+                    <MenuItem text="%show_all" onAction="#handleMenuItemShowAll"></MenuItem>
+                    <MenuItem text="%delete_all" onAction="#handleMenuItemDeleteAll"></MenuItem>  
+                </Menu> 
+                <Menu text="%help">
+                    <MenuItem text="%settings" onAction="#handleMenuItemSettings"></MenuItem>
+                    <MenuItem text="%about" onAction="#handleMenuItemAbout"></MenuItem>    
+                </Menu> 
+            </MenuBar>        
+            <Label fx:id="labelConnectionMode" />    
+        </HBox>
     </top>
     <center>
         <TabPane fx:id="mainTabPane" tabClosingPolicy="ALL_TABS" >
@@ -41,22 +44,22 @@
                                                GridPane.columnIndex="0" GridPane.rowIndex="0" 
                                                GridPane.columnSpan="2"/>
                                 <Button fx:id="buttonMeasuring" text="%stop_measuring" onAction="#handleButtonMeasuring"
-                                       GridPane.columnIndex="2" GridPane.rowIndex="0" GridPane.halignment="RIGHT" />                                           
+                                        GridPane.columnIndex="2" GridPane.rowIndex="0" GridPane.halignment="RIGHT" />                                           
                                        
                                 <Separator 
                                     GridPane.columnIndex="0" GridPane.rowIndex="1"
                                     GridPane.columnSpan="3" />       
                                 <SensorChart fx:id="chartTemperature"
-                                           GridPane.columnIndex="0" GridPane.rowIndex="2"
-                                           title="%temperature">
+                                             GridPane.columnIndex="0" GridPane.rowIndex="2"
+                                             title="%temperature">
                                 </SensorChart>
                                 <SensorChart fx:id="chartPressure"
-                                           GridPane.columnIndex="1" GridPane.rowIndex="2"
-                                           title="%pressure" >
+                                             GridPane.columnIndex="1" GridPane.rowIndex="2"
+                                             title="%pressure" >
                                 </SensorChart>
                                 <SensorChart fx:id="chartRevolutions"
-                                           GridPane.columnIndex="2" GridPane.rowIndex="2"
-                                           title="%revolutions" >
+                                             GridPane.columnIndex="2" GridPane.rowIndex="2"
+                                             title="%revolutions" >
                                 </SensorChart>
                                 <GridPane fx:id="recordingControls" 
                                           GridPane.columnIndex="0" GridPane.rowIndex="4"
@@ -73,17 +76,17 @@
                                             text="%recording_selection"
                                             GridPane.columnIndex="2" GridPane.rowIndex="0" />
                                         <CheckBox fx:id="checkBoxTemperature"
-                                            text="%temperature" onAction="#handleCheckBoxTemperature" 
-                                            GridPane.columnIndex="3" GridPane.rowIndex="0" 
-                                            selected="true" />
+                                                  text="%temperature" onAction="#handleCheckBoxTemperature" 
+                                                  GridPane.columnIndex="3" GridPane.rowIndex="0" 
+                                                  selected="true" />
                                         <CheckBox fx:id="checkBoxPressure"
-                                            text="%pressure" onAction="#handleCheckBoxPressure" 
-                                            GridPane.columnIndex="4" GridPane.rowIndex="0" 
-                                            selected="true" />
+                                                  text="%pressure" onAction="#handleCheckBoxPressure" 
+                                                  GridPane.columnIndex="4" GridPane.rowIndex="0" 
+                                                  selected="true" />
                                         <CheckBox fx:id="checkBoxRevolutions"
-                                            text="%revolutions" onAction="#handleCheckBoxRevolutions" 
-                                            GridPane.columnIndex="5" GridPane.rowIndex="0" 
-                                            selected="true" />
+                                                  text="%revolutions" onAction="#handleCheckBoxRevolutions" 
+                                                  GridPane.columnIndex="5" GridPane.rowIndex="0" 
+                                                  selected="true" />
                                     </children>
                                     <columnConstraints>
                                         <ColumnConstraints hgrow="ALWAYS"/> 
@@ -117,11 +120,11 @@
                                     GridPane.columnIndex="0" GridPane.rowIndex="1"
                                     GridPane.columnSpan="2" />       
                                 <SensorChart fx:id="chartTemperatureSpecific"
-                                           GridPane.columnIndex="0" GridPane.rowIndex="2"
-                                           title="%temperature">
+                                             GridPane.columnIndex="0" GridPane.rowIndex="2"
+                                             title="%temperature">
                                 </SensorChart>
                                 <SensorTable fx:id="tableViewTemperature" 
-                                    GridPane.columnIndex="1" GridPane.rowIndex="2" />
+                                             GridPane.columnIndex="1" GridPane.rowIndex="2" />
                             </children>
                             <columnConstraints>
                                 <ColumnConstraints hgrow="ALWAYS" percentWidth="50" />
@@ -143,11 +146,11 @@
                                     GridPane.columnIndex="0" GridPane.rowIndex="1"
                                     GridPane.columnSpan="2" />       
                                 <SensorChart fx:id="chartPressureSpecific"
-                                           GridPane.columnIndex="0" GridPane.rowIndex="2"
-                                           title="%temperature">
+                                             GridPane.columnIndex="0" GridPane.rowIndex="2"
+                                             title="%temperature">
                                 </SensorChart>
                                 <SensorTable fx:id="tableViewPressure" 
-                                    GridPane.columnIndex="1" GridPane.rowIndex="2" />
+                                             GridPane.columnIndex="1" GridPane.rowIndex="2" />
                             </children>
                             <columnConstraints>
                                 <ColumnConstraints hgrow="ALWAYS" percentWidth="50" />
@@ -169,11 +172,11 @@
                                     GridPane.columnIndex="0" GridPane.rowIndex="1"
                                     GridPane.columnSpan="2" />       
                                 <SensorChart fx:id="chartRevolutionsSpecific"
-                                           GridPane.columnIndex="0" GridPane.rowIndex="2"
-                                           title="%temperature">
+                                             GridPane.columnIndex="0" GridPane.rowIndex="2"
+                                             title="%temperature">
                                 </SensorChart>
                                 <SensorTable fx:id="tableViewRevolutions" 
-                                    GridPane.columnIndex="1" GridPane.rowIndex="2" />
+                                             GridPane.columnIndex="1" GridPane.rowIndex="2" />
                             </children>
                             <columnConstraints>
                                 <ColumnConstraints hgrow="ALWAYS" percentWidth="50" />

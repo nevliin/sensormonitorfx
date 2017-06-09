@@ -55,7 +55,7 @@ public class SensorMonitor extends Application {
             isDBConnected = false;
             LogHandler.LOGGER.log(Level.SEVERE, null, e);
             LogHandler.LOGGER.warning(LogHandler.getLangpackString("exception_databaseconnect"));
-            new ExceptionDialog(IO.getLangpackString("exception_databaseconnect"), null);
+            new ExceptionDialog(IO.getLangpackString("db_connect_error"), null);
         }
         List<BaseSensor> sensors = null;
         try {
