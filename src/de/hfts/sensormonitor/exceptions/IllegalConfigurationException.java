@@ -6,8 +6,8 @@
 package de.hfts.sensormonitor.exceptions;
 
 /**
- * ImportRecordingException --- Exception thrown when an imported CSV-file doesn't match the requirements for
- * exported recordings, such as the amount of columns.
+ * ImportRecordingException --- Exception thrown when the found
+ * config.properties does not match the required configuration
  *
  * @author Polarix IT Solutions
  */

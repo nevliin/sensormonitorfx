@@ -20,7 +20,6 @@
             <file>file:/I:/WiInfProjekt/sensormonitorfx/src/de/hfts/sensormonitor/view/settingsWindow.fxml</file>
             <file>file:/I:/WiInfProjekt/sensormonitorfx/src/de/hfts/sensormonitor/controller/EditChartController.java</file>
             <file>file:/I:/WiInfProjekt/sensormonitorfx/resources/lang/logging_en.properties</file>
-            <file>file:/I:/WiInfProjekt/sensormonitorfx/src/de/hfts/sensormonitor/misc/IO.java</file>
             <file>file:/I:/WiInfProjekt/sensormonitorfx/test/de/hfts/sensormonitor/controller/EditChartControllerTest.java</file>
             <file>file:/I:/WiInfProjekt/sensormonitorfx/src/de/hfts/sensormonitor/model/ChartDataChangeListener.java</file>
             <file>file:/I:/WiInfProjekt/sensormonitorfx/src/de/hfts/sensormonitor/controller/SettingsController.java</file>
@@ -40,6 +39,7 @@
             <file>file:/I:/WiInfProjekt/sensormonitorfx/src/de/hfts/sensormonitor/view/recordingsListWindow.fxml</file>
             <file>file:/I:/WiInfProjekt/sensormonitorfx/resources/stylesheets/base.css</file>
             <file>file:/I:/WiInfProjekt/sensormonitorfx/resources/images/logo_rose_marble.png</file>
+            <file>file:/I:/WiInfProjekt/sensormonitorfx/src/de/hfts/sensormonitor/misc/IOUtils.java</file>
             <file>file:/I:/WiInfProjekt/sensormonitorfx/src/de/hfts/sensormonitor/model/TableDataChangeListener.java</file>
             <file>file:/I:/WiInfProjekt/sensormonitorfx/src/de/hfts/sensormonitor/viewelements/SensorTable.java</file>
         </group>
