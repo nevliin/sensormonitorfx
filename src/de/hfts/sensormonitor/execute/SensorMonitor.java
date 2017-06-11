@@ -33,7 +33,7 @@ public class SensorMonitor extends Application {
     static PrintStream originalOut;
 
     /**
-     * Creates the IO and loads resources
+     * Creates the IOUtils and loads resources
      *
      * @param stage
      * @throws Exception
@@ -43,28 +43,28 @@ public class SensorMonitor extends Application {
 
         originalOut = System.out;
         boolean isDBConnected = true;
-        IO.loadConfiguration();
+        IOUtils.loadConfiguration();
         LogHandler.createLogger();        
         LogHandler.langpack = ResourceBundle.getBundle("lang.logging", new Locale("en"));
         LogHandler.LOGGER.info(LogHandler.getLangpackString("program_started"));
-        LogHandler.LOGGER.info(LogHandler.getLangpackString("program_language") + ": " + IO.getConfigProp("lang"));
+        LogHandler.LOGGER.info(LogHandler.getLangpackString("program_language") + ": " + IOUtils.getConfigProp("lang"));
         try {
-            IO.connectDB();
+            IOUtils.connectDB();
             LogHandler.LOGGER.info(LogHandler.getLangpackString("database_connected"));
         } catch (ClassNotFoundException | SQLException e) {
             isDBConnected = false;
             LogHandler.LOGGER.log(Level.SEVERE, null, e);
             LogHandler.LOGGER.warning(LogHandler.getLangpackString("exception_databaseconnect"));
-            new ExceptionDialog(IO.getLangpackString("db_connect_error"), null);
+            new ExceptionDialog(IOUtils.getLangpackString("db_connect_error"), null);
         }
         List<BaseSensor> sensors = null;
         try {
-            sensors = IO.loadSensors();
+            sensors = IOUtils.loadSensors();
             LogHandler.LOGGER.info(LogHandler.getLangpackString("sensors_loaded"));
             disableOutput();
         } catch (IllegalSensorAmountException e) {
             LogHandler.LOGGER.severe(e.getMessage());
-            new ExceptionDialog(IO.getLangpackString(e.getExceptionKey()), null);
+            new ExceptionDialog(IOUtils.getLangpackString(e.getExceptionKey()), null);
             System.exit(0);
         }
         // Set the icon of the application
@@ -88,7 +88,7 @@ public class SensorMonitor extends Application {
             FXMLLoader loader = new FXMLLoader();
             URL url = this.getClass().getClassLoader().getResource("de/hfts/sensormonitor/view/mainWindow.fxml");
             loader.setLocation(url);
-            loader.setResources(IO.getLangpack());
+            loader.setResources(IOUtils.getLangpack());
             BorderPane root = (BorderPane) loader.load();
 
             // Pass parameters to the controller
@@ -96,14 +96,14 @@ public class SensorMonitor extends Application {
 
             // Create the scene and add it to the stage
             Scene scene = new Scene(root);
-            scene.getStylesheets().addAll(IO.getStyleSheet("base"), IO.getStyleSheet(IO.getConfigProp("style")));
+            scene.getStylesheets().addAll(IOUtils.getStyleSheet("base"), IOUtils.getStyleSheet(IOUtils.getConfigProp("style")));
             stage.setScene(scene);
             stage.setTitle("CeBarRoundMonitor");
             stage.setMaximized(true);
             stage.setOnCloseRequest(eh -> {
                 Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
                 alert.setHeaderText("");
-                alert.setContentText(IO.getLangpackString("quit_confirmation"));
+                alert.setContentText(IOUtils.getLangpackString("quit_confirmation"));
 
                 Optional<ButtonType> result = alert.showAndWait();
                 if (result.get() == ButtonType.OK) {

@@ -50,9 +50,9 @@ public class LogHandler {
                 StringWriter sw = new StringWriter();
                 record.getThrown().printStackTrace(new PrintWriter(sw));
                 String stacktrace = sw.toString();
-                return "[" + IO.sdf.format(new Date(record.getMillis())) + "] " + record.getLevel() + ": " + stacktrace + "\n";
+                return "[" + IOUtils.sdf.format(new Date(record.getMillis())) + "] " + record.getLevel() + ": " + stacktrace + "\n";
             } else {
-                return "[" + IO.sdf.format(new Date(record.getMillis())) + "] " + record.getLevel() + ": " + record.getMessage() + "\n";
+                return "[" + IOUtils.sdf.format(new Date(record.getMillis())) + "] " + record.getLevel() + ": " + record.getMessage() + "\n";
             }
         }
 
@@ -72,7 +72,7 @@ public class LogHandler {
             fh.setFormatter(new LogFormatter());
             LOGGER.addHandler(fh);
         } catch (IOException | SecurityException ex) {
-            Logger.getLogger(IO.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(IOUtils.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
 

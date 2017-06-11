@@ -22,11 +22,11 @@ import java.util.logging.*;
 import javafx.stage.DirectoryChooser;
 
 /**
- * IO --- Handle all input/output actions, both from the JAR itself and the OS
+ * IOUtils --- Handle all input/output actions, both from the JAR itself and the OS
  *
  * @author Polarix IT Solutions
  */
-public class IO {
+public class IOUtils {
 
     // -------------- PUBLIC FIELDS --------------------------------------------
     /**
@@ -114,7 +114,7 @@ public class IO {
      * @param langpack
      */
     public static void setLangpack(ResourceBundle langpack) {
-        IO.langpack = langpack;
+        IOUtils.langpack = langpack;
     }
 
     /**
@@ -343,8 +343,8 @@ public class IO {
     // -------------- PROPERTIES METHODS ---------------------------------------
     /**
      * Tries to load the configuration and creates it if it doesn't exist yet.
-     * IMPORTANT: Do not use IO.LOGGER in this method as it is created only
-     * after loading the configuration
+     * IMPORTANT: Do not use IOUtils.LOGGER in this method as it is created only
+ after loading the configuration
      */
     public static void loadConfiguration() {
 
@@ -376,31 +376,31 @@ public class IO {
         try {
             FileInputStream stream = new FileInputStream(currentUsersHomeDir + File.separator + ".sensormonitor" + File.separator + "config.properties");
             configProp.load(stream);
-            InputStream stream2 = IO.class.getClassLoader().getResourceAsStream("defaultconfig/config.properties");
+            InputStream stream2 = IOUtils.class.getClassLoader().getResourceAsStream("defaultconfig/config.properties");
             Properties templateProp = new Properties();
             templateProp.load(stream2);
             try {
                 validateProperties(configProp, templateProp);
             } catch (IllegalConfigurationException ex) {
-                new ExceptionDialog(IO.getLangpackString(ex.getExceptionKey()), null);
-                InputStream stream3 = IO.class.getClassLoader().getResourceAsStream("defaultconfig/config.properties");
+                new ExceptionDialog(IOUtils.getLangpackString(ex.getExceptionKey()), null);
+                InputStream stream3 = IOUtils.class.getClassLoader().getResourceAsStream("defaultconfig/config.properties");
                 try {
                     configProp.load(stream3);
                 } catch (IOException ex1) {
-                    Logger.getLogger(IO.class.getName()).log(Level.SEVERE, null, ex1);
+                    Logger.getLogger(IOUtils.class.getName()).log(Level.SEVERE, null, ex1);
                 }
                 isPropertiesExistant = false;
             }
         } catch (FileNotFoundException ex) {
-            InputStream stream = IO.class.getClassLoader().getResourceAsStream("defaultconfig/config.properties");
+            InputStream stream = IOUtils.class.getClassLoader().getResourceAsStream("defaultconfig/config.properties");
             try {
                 configProp.load(stream);
             } catch (IOException ex1) {
-                Logger.getLogger(IO.class.getName()).log(Level.SEVERE, null, ex1);
+                Logger.getLogger(IOUtils.class.getName()).log(Level.SEVERE, null, ex1);
             }
             isPropertiesExistant = false;
         } catch (IOException ex) {
-            Logger.getLogger(IO.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(IOUtils.class.getName()).log(Level.SEVERE, null, ex);
         }
 
         // If the configProperties file does not exist...
@@ -420,13 +420,13 @@ public class IO {
                     output = new FileOutputStream(currentUsersHomeDir + File.separator + ".sensormonitor" + File.separator + "config.properties");
                     configProp.store(output, null);
                 } catch (IOException ex) {
-                    Logger.getLogger(IO.class.getName()).log(Level.SEVERE, null, ex);
+                    Logger.getLogger(IOUtils.class.getName()).log(Level.SEVERE, null, ex);
                 } finally {
                     if (output != null) {
                         try {
                             output.close();
                         } catch (IOException e) {
-                            Logger.getLogger(IO.class.getName()).log(Level.SEVERE, null, e);
+                            Logger.getLogger(IOUtils.class.getName()).log(Level.SEVERE, null, e);
                         }
                     }
                 }
@@ -460,7 +460,7 @@ public class IO {
     public static List<BaseSensor> loadSensors() throws IllegalSensorAmountException {
         List<BaseSensor> result = new ArrayList<>();
         Properties sensors = new Properties();
-        InputStream stream = IO.class.getClassLoader().getResourceAsStream("defaultconfig/sensors.properties");
+        InputStream stream = IOUtils.class.getClassLoader().getResourceAsStream("defaultconfig/sensors.properties");
         try {
             sensors.load(stream);
         } catch (IOException ex1) {
@@ -497,7 +497,7 @@ public class IO {
     public static void loadAvailableLanguages() {
         ArrayList<String> langs = new ArrayList<>();
         try {
-            URI uri = IO.class.getResource("/lang").toURI();
+            URI uri = IOUtils.class.getResource("/lang").toURI();
             try (FileSystem fileSystem = (uri.getScheme().equals("jar") ? FileSystems.newFileSystem(uri, Collections.<String, Object>emptyMap()) : null)) {
                 Path myPath = Paths.get(uri);
                 Files.walkFileTree(myPath, new SimpleFileVisitor<Path>() {
@@ -529,7 +529,7 @@ public class IO {
     public static void loadAvailableStyles() {
         ArrayList<String> stylesUncut = new ArrayList<>();
         try {
-            URI uri = IO.class.getResource("/stylesheets").toURI();
+            URI uri = IOUtils.class.getResource("/stylesheets").toURI();
             try (FileSystem fileSystem = (uri.getScheme().equals("jar") ? FileSystems.newFileSystem(uri, Collections.<String, Object>emptyMap()) : null)) {
                 Path myPath = Paths.get(uri);
                 Files.walkFileTree(myPath, new SimpleFileVisitor<Path>() {
@@ -563,7 +563,7 @@ public class IO {
      */
     public static String getStyleSheet(String name) {
         try {
-            URL url = IO.class.getClassLoader().getResource("stylesheets/" + name + ".css");
+            URL url = IOUtils.class.getClassLoader().getResource("stylesheets/" + name + ".css");
             return url.toExternalForm();
         } catch (NullPointerException e) {
             setConfigProp("style", "default");

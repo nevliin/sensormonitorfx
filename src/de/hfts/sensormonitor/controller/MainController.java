@@ -175,18 +175,18 @@ public class MainController implements Initializable {
      */
     public void handleMenuItemImportRecording() {
         FileChooser fc = new FileChooser();
-        fc.setTitle(IO.getLangpackString("select_csv_file"));
+        fc.setTitle(IOUtils.getLangpackString("select_csv_file"));
         fc.setInitialDirectory(new File(System.getProperty("user.home")));
 
         File file = fc.showOpenDialog(null);
         if (file != null) {
             try {
-                IO.importRecording(file);
+                IOUtils.importRecording(file);
                 displayRecording(file.getName().split("\\.")[0].toUpperCase());
             } catch (IOException | ParseException ex) {
                 new ExceptionDialog(ex.getMessage(), null);
             } catch (ImportRecordingException | IllegalTableNameException ex) {
-                new ExceptionDialog(IO.getLangpackString(ex.getExceptionKey()), null);
+                new ExceptionDialog(IOUtils.getLangpackString(ex.getExceptionKey()), null);
             }
         }
     }
@@ -197,9 +197,9 @@ public class MainController implements Initializable {
     public void handleMenuItemShowAll() {
         if (recordingswindow == null) {
             try {
-                FXMLLoader loader = new FXMLLoader(this.getClass().getClassLoader().getResource("de/hfts/sensormonitor/view/recordingsListWindow.fxml"), IO.getLangpack());
+                FXMLLoader loader = new FXMLLoader(this.getClass().getClassLoader().getResource("de/hfts/sensormonitor/view/recordingsListWindow.fxml"), IOUtils.getLangpack());
                 BorderPane root = (BorderPane) loader.load();
-                ((RecordingsListController) loader.getController()).setListItems(IO.getTables());
+                ((RecordingsListController) loader.getController()).setListItems(IOUtils.getTables());
                 ((RecordingsListController) loader.getController()).setParentController(this);
                 recordingswindow = new Stage();
                 Scene scene = new Scene(root);
@@ -223,13 +223,13 @@ public class MainController implements Initializable {
      */
     public void handleMenuItemDeleteAll() {
         Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
-        alert.setTitle(IO.getLangpackString("delete_all"));
+        alert.setTitle(IOUtils.getLangpackString("delete_all"));
         alert.setHeaderText("");
-        alert.setContentText(IO.getLangpackString("confirm_delete_all_recordings"));
+        alert.setContentText(IOUtils.getLangpackString("confirm_delete_all_recordings"));
 
         Optional<ButtonType> pressedButton = alert.showAndWait();
         if (pressedButton.get() == ButtonType.OK) {
-            IO.dropAllTables();
+            IOUtils.dropAllTables();
         }
     }
 
@@ -239,7 +239,7 @@ public class MainController implements Initializable {
     public void handleMenuItemSettings() {
         if (settingswindow == null) {
             try {
-                FXMLLoader loader = new FXMLLoader(this.getClass().getClassLoader().getResource("de/hfts/sensormonitor/view/settingsWindow.fxml"), IO.getLangpack());
+                FXMLLoader loader = new FXMLLoader(this.getClass().getClassLoader().getResource("de/hfts/sensormonitor/view/settingsWindow.fxml"), IOUtils.getLangpack());
                 TabPane root = (TabPane) loader.load();
                 settingswindow = new Stage();
                 Scene scene = new Scene(root);
@@ -340,14 +340,14 @@ public class MainController implements Initializable {
             for (BaseSensor bs : sensors) {
                 bs.stopMeasure();
             }
-            buttonMeasuring.setText(IO.getLangpackString("start_measuring"));
+            buttonMeasuring.setText(IOUtils.getLangpackString("start_measuring"));
             isMeasuring = false;
             LogHandler.LOGGER.info(LogHandler.getLangpackString("measuring_stopped"));
         } else {
             for (BaseSensor bs : sensors) {
                 bs.startMeasure();
             }
-            buttonMeasuring.setText(IO.getLangpackString("stop_measuring"));
+            buttonMeasuring.setText(IOUtils.getLangpackString("stop_measuring"));
             isMeasuring = true;            
             LogHandler.LOGGER.info(LogHandler.getLangpackString("measuring_started"));
         }
@@ -469,8 +469,8 @@ public class MainController implements Initializable {
     }
 
     /**
-     * Sets up the ChartDatas and SensorCharts with configuration from IO and
-     * connects them.
+     * Sets up the ChartDatas and SensorCharts with configuration from IOUtils and
+ connects them.
      *
      * @param data
      */
@@ -482,21 +482,21 @@ public class MainController implements Initializable {
         ChartData dataRevolutions = new ChartData(Data.REVOLUTIONS, data);
         chartDatas.add(dataRevolutions);
         for (ChartData cd : chartDatas) {
-            cd.setxMin(0 - Double.valueOf(IO.getConfigProp("realtime_timeframe")));
+            cd.setxMin(0 - Double.valueOf(IOUtils.getConfigProp("realtime_timeframe")));
             cd.setxMax(0);
-            cd.setxScaleMin(Double.valueOf(IO.getConfigProp("realtime_xscalemin")));
-            cd.setxScaleMax(Double.valueOf(IO.getConfigProp("realtime_xscalemax")));
+            cd.setxScaleMin(Double.valueOf(IOUtils.getConfigProp("realtime_xscalemin")));
+            cd.setxScaleMax(Double.valueOf(IOUtils.getConfigProp("realtime_xscalemax")));
         }
-        dataTemperature.setyScaleMax(Double.valueOf(IO.getConfigProp("temperature_yscalemax")));
-        dataTemperature.setyScaleMin(Double.valueOf(IO.getConfigProp("temperature_yscalemin")));
-        dataPressure.setyScaleMax(Double.valueOf(IO.getConfigProp("pressure_yscalemax")));
-        dataPressure.setyScaleMin(Double.valueOf(IO.getConfigProp("pressure_yscalemin")));
-        dataRevolutions.setyScaleMax(Double.valueOf(IO.getConfigProp("revolutions_yscalemax")));
-        dataRevolutions.setyScaleMin(Double.valueOf(IO.getConfigProp("revolutions_yscalemin")));
+        dataTemperature.setyScaleMax(Double.valueOf(IOUtils.getConfigProp("temperature_yscalemax")));
+        dataTemperature.setyScaleMin(Double.valueOf(IOUtils.getConfigProp("temperature_yscalemin")));
+        dataPressure.setyScaleMax(Double.valueOf(IOUtils.getConfigProp("pressure_yscalemax")));
+        dataPressure.setyScaleMin(Double.valueOf(IOUtils.getConfigProp("pressure_yscalemin")));
+        dataRevolutions.setyScaleMax(Double.valueOf(IOUtils.getConfigProp("revolutions_yscalemax")));
+        dataRevolutions.setyScaleMin(Double.valueOf(IOUtils.getConfigProp("revolutions_yscalemin")));
 
-        chartTemperature.setChartData(dataTemperature, IO.getLangpack(), "sec", "°C", Boolean.valueOf(IO.getConfigProp("displayPointSymbols")));
-        chartPressure.setChartData(dataPressure, IO.getLangpack(), "sec", "hPa", Boolean.valueOf(IO.getConfigProp("displayPointSymbols")));
-        chartRevolutions.setChartData(dataRevolutions, IO.getLangpack(), "sec", "RPM", Boolean.valueOf(IO.getConfigProp("displayPointSymbols")));
+        chartTemperature.setChartData(dataTemperature, IOUtils.getLangpack(), "sec", "°C", Boolean.valueOf(IOUtils.getConfigProp("displayPointSymbols")));
+        chartPressure.setChartData(dataPressure, IOUtils.getLangpack(), "sec", "hPa", Boolean.valueOf(IOUtils.getConfigProp("displayPointSymbols")));
+        chartRevolutions.setChartData(dataRevolutions, IOUtils.getLangpack(), "sec", "RPM", Boolean.valueOf(IOUtils.getConfigProp("displayPointSymbols")));
         sensorCharts.add(chartTemperature);
         sensorCharts.add(chartPressure);
         sensorCharts.add(chartRevolutions);
@@ -508,17 +508,17 @@ public class MainController implements Initializable {
         ChartData dataRevolutionsSpecific = dataRevolutions.clone();
         chartDatas.add(dataRevolutionsSpecific);
 
-        chartTemperatureSpecific.setChartData(dataTemperatureSpecific, IO.getLangpack(), "sec", "°C", Boolean.valueOf(IO.getConfigProp("displayPointSymbols")));
-        chartPressureSpecific.setChartData(dataPressureSpecific, IO.getLangpack(), "sec", "hPa", Boolean.valueOf(IO.getConfigProp("displayPointSymbols")));
-        chartRevolutionsSpecific.setChartData(dataRevolutionsSpecific, IO.getLangpack(), "sec", "RPM", Boolean.valueOf(IO.getConfigProp("displayPointSymbols")));
+        chartTemperatureSpecific.setChartData(dataTemperatureSpecific, IOUtils.getLangpack(), "sec", "°C", Boolean.valueOf(IOUtils.getConfigProp("displayPointSymbols")));
+        chartPressureSpecific.setChartData(dataPressureSpecific, IOUtils.getLangpack(), "sec", "hPa", Boolean.valueOf(IOUtils.getConfigProp("displayPointSymbols")));
+        chartRevolutionsSpecific.setChartData(dataRevolutionsSpecific, IOUtils.getLangpack(), "sec", "RPM", Boolean.valueOf(IOUtils.getConfigProp("displayPointSymbols")));
         sensorCharts.add(chartTemperatureSpecific);
         sensorCharts.add(chartPressureSpecific);
         sensorCharts.add(chartRevolutionsSpecific);
     }
 
     /**
-     * Sets up the TableViews and TableDatas with configuration from IO and
-     * connects them.
+     * Sets up the TableViews and TableDatas with configuration from IOUtils and
+ connects them.
      *
      * @param sensorData
      */
@@ -531,13 +531,13 @@ public class MainController implements Initializable {
         tableDatas.put(Data.REVOLUTIONS, new TableData(Data.REVOLUTIONS, sensorData));
         for (Data data : tableViews.keySet()) {
             tableViews.get(data).setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY);
-            tableDatas.get(data).setMinTime(0 - Double.valueOf(IO.getConfigProp("realtime_timeframe")));
+            tableDatas.get(data).setMinTime(0 - Double.valueOf(IOUtils.getConfigProp("realtime_timeframe")));
             tableDatas.get(data).addListener(tableViews.get(data));
             int counter = 0;
             for (long sensorID : sensorData.getMapIDTypeCode().keySet()) {
                 TableColumn tc = new TableColumn(Long.toString(sensorID));
-                TableColumn<ObservableList<Double>, Double> tc_time = new TableColumn(IO.getLangpackString("time"));
-                TableColumn<ObservableList<Double>, Double> tc_value = new TableColumn(IO.getLangpackString("value"));
+                TableColumn<ObservableList<Double>, Double> tc_time = new TableColumn(IOUtils.getLangpackString("time"));
+                TableColumn<ObservableList<Double>, Double> tc_value = new TableColumn(IOUtils.getLangpackString("value"));
                 final int counterFixed = counter;
                 tc_time.setCellValueFactory(param -> {
                     Double d = null;
@@ -575,7 +575,7 @@ public class MainController implements Initializable {
             recorder.stopRecording();
         }
         checkComboBoxSensors.getScene().getWindow().hide();
-        IO.closeConnection();
+        IOUtils.closeConnection();
         LogHandler.LOGGER.info(LogHandler.getLangpackString("program_stopped"));
     }
 
@@ -629,9 +629,9 @@ public class MainController implements Initializable {
      */
     public void displayRecording(String recordingName) {
         try {
-            FXMLLoader loader = new FXMLLoader(this.getClass().getClassLoader().getResource("de/hfts/sensormonitor/view/recordingDisplay.fxml"), IO.getLangpack());
+            FXMLLoader loader = new FXMLLoader(this.getClass().getClassLoader().getResource("de/hfts/sensormonitor/view/recordingDisplay.fxml"), IOUtils.getLangpack());
             GridPane root = (GridPane) loader.load();
-            ((RecordingDisplayController) loader.getController()).setRecording(new Recording(IO.loadRecording(recordingName)));
+            ((RecordingDisplayController) loader.getController()).setRecording(new Recording(IOUtils.loadRecording(recordingName)));
             Tab tab = new Tab(recordingName, root);
             tab.setClosable(true);
             mainTabPane.getTabs().add(tab);

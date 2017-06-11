@@ -36,9 +36,9 @@ public class IOTest {
 
     @BeforeClass
     public static void setUpClass() {
-        IO.loadConfiguration();
+        IOUtils.loadConfiguration();
         try {
-            IO.connectDB();
+            IOUtils.connectDB();
         } catch (ClassNotFoundException ex) {
             Logger.getLogger(IOTest.class.getName()).log(Level.SEVERE, null, ex);
         } catch (SQLException ex) {
@@ -49,8 +49,8 @@ public class IOTest {
     @AfterClass
     public static void tearDownClass() {
         new File("a0c1b1f7cfe1e904368.csv").delete();
-        IO.dropTable(oldname);
-        IO.dropTable(testTableName);
+        IOUtils.dropTable(oldname);
+        IOUtils.dropTable(testTableName);
     }
 
     @Before
@@ -64,8 +64,8 @@ public class IOTest {
 
     @Test(expected = IllegalTableNameException.class)
     public void testRenamingTableWithIllegalName() throws IllegalTableNameException {
-        oldname = IO.createGenericTable();
-        IO.renameTable(oldname, "2");
+        oldname = IOUtils.createGenericTable();
+        IOUtils.renameTable(oldname, "2");
     }
 
     @Test(expected = ImportRecordingException.class)
@@ -77,7 +77,7 @@ public class IOTest {
             sb.append("2017-05-21 22:50:10.348;0;925800402;'CeBarRound-5.1.3';21;4997; \n");
             fw.write(sb.toString());
             fw.close();
-            IO.importRecording(new File("a0c1b1f7cfe1e904368.csv"));
+            IOUtils.importRecording(new File("a0c1b1f7cfe1e904368.csv"));
         } catch (IOException | IllegalTableNameException | ParseException ex) {
             Logger.getLogger(IOTest.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -91,7 +91,7 @@ public class IOTest {
         Properties template = new Properties();
         template.setProperty("1", "test");
         template.setProperty("3", "test");
-        IO.validateProperties(check, template);
+        IOUtils.validateProperties(check, template);
     }
 
     @Test(expected = IllegalConfigurationException.class)
@@ -103,7 +103,7 @@ public class IOTest {
         template.setProperty("1", "test");
         template.setProperty("2", "test");
         template.setProperty("3", "test");
-        IO.validateProperties(check, template);
+        IOUtils.validateProperties(check, template);
     }
 
     @Test
@@ -114,13 +114,13 @@ public class IOTest {
         Properties template = new Properties();
         template.setProperty("1", "test");
         template.setProperty("2", "test");
-        IO.validateProperties(check, template);
+        IOUtils.validateProperties(check, template);
     }
     
     @Test 
     public void testCreatingGenericTable() {
-        testTableName = IO.createGenericTable();
-        ResultSet rs = IO.loadRecording(testTableName);
+        testTableName = IOUtils.createGenericTable();
+        ResultSet rs = IOUtils.loadRecording(testTableName);
         if(rs == null) {
             fail();
         }

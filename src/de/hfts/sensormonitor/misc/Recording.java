@@ -105,12 +105,12 @@ public class Recording {
             chartDatas.get(d).setPartTypeCodes(sensors);
         }
 
-        chartDatas.get(Data.TEMPERATURE).setyScaleMax(Double.valueOf(IO.getConfigProp("temperature_yscalemax")));
-        chartDatas.get(Data.TEMPERATURE).setyScaleMin(Double.valueOf(IO.getConfigProp("temperature_yscalemin")));
-        chartDatas.get(Data.PRESSURE).setyScaleMax(Double.valueOf(IO.getConfigProp("pressure_yscalemax")));
-        chartDatas.get(Data.PRESSURE).setyScaleMin(Double.valueOf(IO.getConfigProp("pressure_yscalemin")));
-        chartDatas.get(Data.REVOLUTIONS).setyScaleMax(Double.valueOf(IO.getConfigProp("revolutions_yscalemax")));
-        chartDatas.get(Data.REVOLUTIONS).setyScaleMin(Double.valueOf(IO.getConfigProp("revolutions_yscalemin")));
+        chartDatas.get(Data.TEMPERATURE).setyScaleMax(Double.valueOf(IOUtils.getConfigProp("temperature_yscalemax")));
+        chartDatas.get(Data.TEMPERATURE).setyScaleMin(Double.valueOf(IOUtils.getConfigProp("temperature_yscalemin")));
+        chartDatas.get(Data.PRESSURE).setyScaleMax(Double.valueOf(IOUtils.getConfigProp("pressure_yscalemax")));
+        chartDatas.get(Data.PRESSURE).setyScaleMin(Double.valueOf(IOUtils.getConfigProp("pressure_yscalemin")));
+        chartDatas.get(Data.REVOLUTIONS).setyScaleMax(Double.valueOf(IOUtils.getConfigProp("revolutions_yscalemax")));
+        chartDatas.get(Data.REVOLUTIONS).setyScaleMin(Double.valueOf(IOUtils.getConfigProp("revolutions_yscalemin")));
 
         for (long l : temperature_points.keySet()) {
             chartDatas.get(Data.TEMPERATURE).addGraphToChart(l, temperature_points.get(l));

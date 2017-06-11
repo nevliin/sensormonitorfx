@@ -87,7 +87,7 @@ public class EditChartController implements Initializable {
      */
     public void setChartData(ChartData chartData) {
         this.chartData = chartData;
-        this.labelTitle.setText(labelTitle.getText() + ": " + IO.getLangpackString(chartData.getType().toString().toLowerCase()));
+        this.labelTitle.setText(labelTitle.getText() + ": " + IOUtils.getLangpackString(chartData.getType().toString().toLowerCase()));
         String xMin = Double.toString(chartData.getxMin());
         String xMax = Double.toString(chartData.getxMax());
         
@@ -198,10 +198,10 @@ public class EditChartController implements Initializable {
             parentChart.setEditChartWindow(null);
         } catch (IllegalXScaleException ex) {
             LogHandler.LOGGER.log(Level.SEVERE, null, ex);
-            new ExceptionDialog(IO.getLangpackString("exception_illegalxscale"), null);
+            new ExceptionDialog(IOUtils.getLangpackString("exception_illegalxscale"), null);
         } catch (IllegalYScaleException ex) {
             LogHandler.LOGGER.log(Level.SEVERE, null, ex);
-            new ExceptionDialog(IO.getLangpackString("exception_illegalyscale"), null);
+            new ExceptionDialog(IOUtils.getLangpackString("exception_illegalyscale"), null);
         }
     }
 

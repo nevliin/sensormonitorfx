@@ -3,7 +3,7 @@ package de.hfts.sensormonitor.viewelements;
 import com.sun.javafx.charts.Legend;
 import com.sun.javafx.charts.Legend.LegendItem;
 import de.hfts.sensormonitor.controller.EditChartController;
-import de.hfts.sensormonitor.misc.IO;
+import de.hfts.sensormonitor.misc.IOUtils;
 import de.hfts.sensormonitor.misc.LogHandler;
 import de.hfts.sensormonitor.model.*;
 import java.io.IOException;

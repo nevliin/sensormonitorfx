@@ -49,14 +49,14 @@ public class Recorder implements CeBarRoundObserver<SensorEvent> {
          *
          */
         public LiveRecording() {
-            genericName = IO.createGenericTable();
+            genericName = IOUtils.createGenericTable();
             this.rowid = 0;
             LogHandler.LOGGER.info(LogHandler.getLangpackString("recording_started"));
         }
 
         /**
          * Records received SensorEvent by transforming it into a String and
-         * passing it to the instance of IO
+ passing it to the instance of IOUtils
          *
          * @param cbre
          */
@@ -78,7 +78,7 @@ public class Recorder implements CeBarRoundObserver<SensorEvent> {
                 insertstmt += ", null";
             }
 
-            IO.saveData(genericName, insertstmt, new Timestamp(cbre.getDate().getTime()));
+            IOUtils.saveData(genericName, insertstmt, new Timestamp(cbre.getDate().getTime()));
             rowid++;
         }
 
@@ -89,7 +89,7 @@ public class Recorder implements CeBarRoundObserver<SensorEvent> {
         public void saveRecording() {
             recording = null;
             if (rowid == 0) {
-                IO.dropTable(genericName);
+                IOUtils.dropTable(genericName);
             } else {
                 boolean deleteRecording = false;
                 boolean isNameInvalid = true;
@@ -97,12 +97,12 @@ public class Recorder implements CeBarRoundObserver<SensorEvent> {
                 boolean secondtry = false;
                 do {
                     TextInputDialog dialog = new TextInputDialog();
-                    dialog.setTitle(IO.getLangpackString("save_recording_title"));
-                    dialog.setContentText(IO.getLangpackString("save_recording"));
+                    dialog.setTitle(IOUtils.getLangpackString("save_recording_title"));
+                    dialog.setContentText(IOUtils.getLangpackString("save_recording"));
                     if (secondtry) {
-                        dialog.setHeaderText(IO.getLangpackString("exception_illegaltablename"));
+                        dialog.setHeaderText(IOUtils.getLangpackString("exception_illegaltablename"));
                     } else {
-                        dialog.setHeaderText(IO.getLangpackString("save_recording_title"));
+                        dialog.setHeaderText(IOUtils.getLangpackString("save_recording_title"));
                     }
                     newname = dialog.showAndWait();
 
@@ -111,7 +111,7 @@ public class Recorder implements CeBarRoundObserver<SensorEvent> {
                         deleteRecording = true;
                     } else if (newname.get().length() != 0) {
                         try {
-                            IO.renameTable(genericName, newname.get());
+                            IOUtils.renameTable(genericName, newname.get());
                             LogHandler.LOGGER.info(LogHandler.getLangpackString("recording_finished") + ": " + newname.get());
                             isNameInvalid = false;
                         } catch (IllegalTableNameException ex) {
@@ -122,7 +122,7 @@ public class Recorder implements CeBarRoundObserver<SensorEvent> {
                     secondtry = true;
                 } while (isNameInvalid);
                 if (deleteRecording) {
-                    IO.dropTable(genericName);
+                    IOUtils.dropTable(genericName);
                 }
             }
         }

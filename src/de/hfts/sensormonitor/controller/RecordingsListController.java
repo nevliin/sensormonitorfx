@@ -7,7 +7,7 @@ package de.hfts.sensormonitor.controller;
 
 import de.hfts.sensormonitor.exceptions.SensorMonitorException;
 import de.hfts.sensormonitor.misc.ExceptionDialog;
-import de.hfts.sensormonitor.misc.IO;
+import de.hfts.sensormonitor.misc.IOUtils;
 import de.hfts.sensormonitor.misc.LogHandler;
 import de.hfts.sensormonitor.misc.ProgressDialog;
 import java.io.File;
@@ -56,7 +56,7 @@ public class RecordingsListController implements Initializable {
      */
     public void handleButtonDisplayRecording() {
         List<String> selectedrecordings = recordingsList.getSelectionModel().getSelectedItems();
-        ProgressDialog pd = new ProgressDialog(selectedrecordings.size(), IO.getLangpackString("loading_recordings"), IO.getLangpackString("progress_bar"));
+        ProgressDialog pd = new ProgressDialog(selectedrecordings.size(), IOUtils.getLangpackString("loading_recordings"), IOUtils.getLangpackString("progress_bar"));
         pd.getScene().getStylesheets().addAll(recordingsList.getStylesheets());
         for (String recording : selectedrecordings) {
             parentController.displayRecording(recording);
@@ -72,11 +72,11 @@ public class RecordingsListController implements Initializable {
     public void handleButtonDeleteRecording() {
         List<String> selectedrecordings = recordingsList.getSelectionModel().getSelectedItems();
         for (String recording : selectedrecordings) {
-            IO.dropTable(recording);
+            IOUtils.dropTable(recording);
         }
         LogHandler.LOGGER.info(LogHandler.getLangpackString("recordings_deleted") + ": " + String.join(", ", selectedrecordings));
         parentController.closeTab(selectedrecordings);
-        recordingsList.setItems(FXCollections.observableArrayList(IO.getTables()));
+        recordingsList.setItems(FXCollections.observableArrayList(IOUtils.getTables()));
     }
 
     /**
@@ -84,7 +84,7 @@ public class RecordingsListController implements Initializable {
      */
     public void handleButtonExportRecording() {
         DirectoryChooser directoryChooser = new DirectoryChooser();
-        directoryChooser.setTitle(IO.getLangpack().getString("select_export_directory"));
+        directoryChooser.setTitle(IOUtils.getLangpack().getString("select_export_directory"));
         directoryChooser.setInitialDirectory(new File(System.getProperty("user.home")));
 
         File dir = directoryChooser.showDialog(null);
@@ -93,15 +93,15 @@ public class RecordingsListController implements Initializable {
             Thread t = new Thread(() -> {
                 Platform.runLater(() -> {
                     List<String> selectedrecordings = recordingsList.getSelectionModel().getSelectedItems();
-                    ProgressDialog pd = new ProgressDialog(selectedrecordings.size(), IO.getLangpackString("exporting_recordings"), IO.getLangpackString("progress_bar"));
+                    ProgressDialog pd = new ProgressDialog(selectedrecordings.size(), IOUtils.getLangpackString("exporting_recordings"), IOUtils.getLangpackString("progress_bar"));
                     pd.getScene().getStylesheets().addAll(recordingsList.getStylesheets());
                     for (String recording : selectedrecordings) {
                         try {
-                            IO.exportRecording(recording, dir.getAbsolutePath());
+                            IOUtils.exportRecording(recording, dir.getAbsolutePath());
                             pd.progress();
                         } catch (IOException | SQLException ex) {
                             LogHandler.LOGGER.log(Level.SEVERE, null, ex);
-                            new ExceptionDialog(IO.getLangpackString("error_exportrecording") + ": " + recording, null);
+                            new ExceptionDialog(IOUtils.getLangpackString("error_exportrecording") + ": " + recording, null);
                             pd.hide();
                         }
                     }
