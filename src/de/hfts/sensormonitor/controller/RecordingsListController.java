@@ -90,24 +90,28 @@ public class RecordingsListController implements Initializable {
         File dir = directoryChooser.showDialog(null);
 
         if (dir != null) {
+            List<String> selectedrecordings = recordingsList.getSelectionModel().getSelectedItems();
+            ProgressDialog pd = new ProgressDialog(selectedrecordings.size(), IOUtils.getLangpackString("exporting_recordings"), IOUtils.getLangpackString("progress_bar"));
+            pd.getScene().getStylesheets().addAll(recordingsList.getStylesheets());
             Thread t = new Thread(() -> {
-                Platform.runLater(() -> {
-                    List<String> selectedrecordings = recordingsList.getSelectionModel().getSelectedItems();
-                    ProgressDialog pd = new ProgressDialog(selectedrecordings.size(), IOUtils.getLangpackString("exporting_recordings"), IOUtils.getLangpackString("progress_bar"));
-                    pd.getScene().getStylesheets().addAll(recordingsList.getStylesheets());
-                    for (String recording : selectedrecordings) {
-                        try {
-                            IOUtils.exportRecording(recording, dir.getAbsolutePath());
+                for (String recording : selectedrecordings) {
+                    try {
+                        IOUtils.exportRecording(recording, dir.getAbsolutePath());
+                        Platform.runLater(() -> {
                             pd.progress();
-                        } catch (IOException | SQLException ex) {
-                            LogHandler.LOGGER.log(Level.SEVERE, null, ex);
-                            new ExceptionDialog(IOUtils.getLangpackString("error_exportrecording") + ": " + recording, null);
+                        });
+                    } catch (IOException | SQLException ex) {
+                        LogHandler.LOGGER.log(Level.SEVERE, null, ex);
+                        new ExceptionDialog(IOUtils.getLangpackString("error_exportrecording") + ": " + recording, null);
+                        Platform.runLater(() -> {
                             pd.hide();
-                        }
+                        });
                     }
+                }
+                Platform.runLater(() -> {
                     pd.hide();
-                    LogHandler.LOGGER.info(LogHandler.getLangpackString("recordings_exported") + ": " + String.join(", ", selectedrecordings));
                 });
+                LogHandler.LOGGER.info(LogHandler.getLangpackString("recordings_exported") + ": " + String.join(", ", selectedrecordings));
             });
             t.start();
         }
