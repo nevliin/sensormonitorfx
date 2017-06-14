@@ -26,16 +26,21 @@
     -fx-text-fill: black;
 }
 
-.mainGridPane {
+.progressDialog {    
     -fx-background-color: #434343;
-    -fx-padding: 10;
+    -fx-padding: 10;    
     -fx-hgap: 10;
     -fx-vgap: 10;
 }
 
-#mainGridPane {
+.progressDialog > .label {
+    -fx-font: 16 "Arial";
+    -fx-text-fill: #cccccc;
+}
+
+.mainGridPane {
     -fx-background-color: #434343;
-    -fx-padding: 10;
+    -fx-padding: 20;
     -fx-hgap: 10;
     -fx-vgap: 10;
 }

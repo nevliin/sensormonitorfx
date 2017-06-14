@@ -16,6 +16,7 @@ import java.text.ParseException;
 import java.util.*;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javafx.application.Platform;
 import javafx.beans.property.ReadOnlyObjectWrapper;
 import javafx.collections.ListChangeListener;
 import javafx.collections.ObservableList;
@@ -180,14 +181,17 @@ public class MainController implements Initializable {
 
         File file = fc.showOpenDialog(null);
         if (file != null) {
-            try {
-                IOUtils.importRecording(file);
-                displayRecording(file.getName().split("\\.")[0].toUpperCase());
-            } catch (IOException | ParseException ex) {
-                new ExceptionDialog(ex.getMessage(), null);
-            } catch (ImportRecordingException | IllegalTableNameException ex) {
-                new ExceptionDialog(IOUtils.getLangpackString(ex.getExceptionKey()), null);
-            }
+            Thread t = new Thread(() -> {
+                try {
+                    IOUtils.importRecording(file);
+                    displayRecording(file.getName().split("\\.")[0].toUpperCase());
+                } catch (IOException | ParseException ex) {
+                    new ExceptionDialog(ex.getMessage(), null);
+                } catch (ImportRecordingException | IllegalTableNameException ex) {
+                    new ExceptionDialog(IOUtils.getLangpackString(ex.getExceptionKey()), null);
+                }
+            });
+            t.start();
         }
     }
 
@@ -251,7 +255,7 @@ public class MainController implements Initializable {
                     settingswindow = null;
                     ((SettingsController) loader.getController()).onClose();
                 });
-                settingswindow.show();                
+                settingswindow.show();
                 ((SettingsController) loader.getController()).setUpData();
             } catch (IOException ex) {
                 LogHandler.LOGGER.log(Level.SEVERE, null, ex);
@@ -348,7 +352,7 @@ public class MainController implements Initializable {
                 bs.startMeasure();
             }
             buttonMeasuring.setText(IOUtils.getLangpackString("stop_measuring"));
-            isMeasuring = true;            
+            isMeasuring = true;
             LogHandler.LOGGER.info(LogHandler.getLangpackString("measuring_started"));
         }
     }
@@ -469,8 +473,8 @@ public class MainController implements Initializable {
     }
 
     /**
-     * Sets up the ChartDatas and SensorCharts with configuration from IOUtils and
- connects them.
+     * Sets up the ChartDatas and SensorCharts with configuration from IOUtils
+     * and connects them.
      *
      * @param data
      */
@@ -518,7 +522,7 @@ public class MainController implements Initializable {
 
     /**
      * Sets up the TableViews and TableDatas with configuration from IOUtils and
- connects them.
+     * connects them.
      *
      * @param sensorData
      */
@@ -584,7 +588,9 @@ public class MainController implements Initializable {
      */
     public void rebootProgramm() {
         quitProgramm();
+        LogHandler.LOGGER.info(LogHandler.getLangpackString("program_rebooting"));
         SensorMonitor sm = new SensorMonitor();
+        sm.isReboot = true;
         try {
             sm.start(new Stage());
         } catch (Exception ex) {
@@ -634,7 +640,9 @@ public class MainController implements Initializable {
             ((RecordingDisplayController) loader.getController()).setRecording(new Recording(IOUtils.loadRecording(recordingName)));
             Tab tab = new Tab(recordingName, root);
             tab.setClosable(true);
-            mainTabPane.getTabs().add(tab);
+            Platform.runLater(() -> {
+                mainTabPane.getTabs().add(tab);
+            });
         } catch (IOException ex) {
             LogHandler.LOGGER.log(Level.SEVERE, null, ex);
         }

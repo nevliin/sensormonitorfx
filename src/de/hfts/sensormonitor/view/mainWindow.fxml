@@ -14,24 +14,21 @@
 
 <BorderPane xmlns:fx="http://javafx.com/fxml/1" fx:controller="de.hfts.sensormonitor.controller.MainController">
     <top>
-        <HBox>
-            <MenuBar>
-                <Menu text="%file">
-                    <MenuItem text="%quit" onAction="#handleMenuItemQuit"></MenuItem>
-                    <MenuItem text="%reboot" onAction="#handleMenuItemReboot"></MenuItem>  
-                </Menu> 
-                <Menu fx:id="menuRecordings" text="%recordings">
-                    <MenuItem text="%import_recording" onAction="#handleMenuItemImportRecording"></MenuItem>
-                    <MenuItem text="%show_all" onAction="#handleMenuItemShowAll"></MenuItem>
-                    <MenuItem text="%delete_all" onAction="#handleMenuItemDeleteAll"></MenuItem>  
-                </Menu> 
-                <Menu text="%help">
-                    <MenuItem text="%settings" onAction="#handleMenuItemSettings"></MenuItem>
-                    <MenuItem text="%about" onAction="#handleMenuItemAbout"></MenuItem>    
-                </Menu> 
-            </MenuBar>        
-            <Label fx:id="labelConnectionMode" />    
-        </HBox>
+        <MenuBar>
+            <Menu text="%file">
+                <MenuItem text="%quit" onAction="#handleMenuItemQuit"></MenuItem>
+                <MenuItem text="%reboot" onAction="#handleMenuItemReboot"></MenuItem>  
+            </Menu> 
+            <Menu fx:id="menuRecordings" text="%recordings">
+                <MenuItem text="%import_recording" onAction="#handleMenuItemImportRecording"></MenuItem>
+                <MenuItem text="%show_all" onAction="#handleMenuItemShowAll"></MenuItem>
+                <MenuItem text="%delete_all" onAction="#handleMenuItemDeleteAll"></MenuItem>  
+            </Menu> 
+            <Menu text="%help">
+                <MenuItem text="%settings" onAction="#handleMenuItemSettings"></MenuItem>
+                <MenuItem text="%about" onAction="#handleMenuItemAbout"></MenuItem>    
+            </Menu> 
+        </MenuBar>          
     </top>
     <center>
         <TabPane fx:id="mainTabPane" tabClosingPolicy="ALL_TABS" >

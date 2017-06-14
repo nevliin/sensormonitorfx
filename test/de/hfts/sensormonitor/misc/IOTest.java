@@ -119,9 +119,14 @@ public class IOTest {
     
     @Test 
     public void testCreatingGenericTable() {
-        testTableName = IOUtils.createGenericTable();
-        ResultSet rs = IOUtils.loadRecording(testTableName);
-        if(rs == null) {
+        try {
+            testTableName = IOUtils.createGenericTable();
+            ResultSet rs = IOUtils.getStatement().executeQuery("SELECT * FROM " + testTableName);
+            if(rs == null) {
+                fail();
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(IOTest.class.getName()).log(Level.SEVERE, null, ex);
             fail();
         }
     }

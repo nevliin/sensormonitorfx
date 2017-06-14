@@ -30,6 +30,7 @@ import javafx.stage.Stage;
  */
 public class SensorMonitor extends Application {
 
+    public boolean isReboot = false;
     static PrintStream originalOut;
 
     /**
@@ -40,11 +41,12 @@ public class SensorMonitor extends Application {
      */
     @Override
     public void start(Stage stage) throws Exception {
-
         originalOut = System.out;
         boolean isDBConnected = true;
         IOUtils.loadConfiguration();
-        LogHandler.createLogger();        
+        if (!isReboot) {
+            LogHandler.createLogger();
+        }
         LogHandler.langpack = ResourceBundle.getBundle("lang.logging", new Locale("en"));
         LogHandler.LOGGER.info(LogHandler.getLangpackString("program_started"));
         LogHandler.LOGGER.info(LogHandler.getLangpackString("program_language") + ": " + IOUtils.getConfigProp("lang"));
@@ -68,7 +70,7 @@ public class SensorMonitor extends Application {
             System.exit(0);
         }
         // Set the icon of the application
-        URL url = getClass().getClassLoader().getResource("images/logo_rose_marble.png");
+        URL url = getClass().getClassLoader().getResource("images/logo_polarix.png");
         Image image = new Image(url.toExternalForm());
         stage.getIcons().add(image);
 

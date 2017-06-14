@@ -7,7 +7,6 @@ package de.hfts.sensormonitor.misc;
 
 import de.hft.ss17.cebarround.*;
 import de.hfts.sensormonitor.exceptions.IllegalTableNameException;
-import de.hfts.sensormonitor.exceptions.SensorMonitorException;
 import java.sql.Timestamp;
 import java.util.Optional;
 import java.util.logging.*;

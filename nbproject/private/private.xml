@@ -14,9 +14,11 @@
             <file>file:/C:/WiInfProjekt/sensormonitorfx/resources/stylesheets/default.css</file>
             <file>file:/C:/WiInfProjekt/sensormonitorfx/src/de/hfts/sensormonitor/controller/EditChartController.java</file>
             <file>file:/C:/WiInfProjekt/sensormonitorfx/src/de/hfts/sensormonitor/controller/SettingsController.java</file>
+            <file>file:/C:/WiInfProjekt/sensormonitorfx/src/de/hfts/sensormonitor/exceptions/IllegalConfigurationException.java</file>
             <file>file:/C:/WiInfProjekt/sensormonitorfx/resources/defaultconfig/config.properties</file>
             <file>file:/C:/WiInfProjekt/sensormonitorfx/src/de/hfts/sensormonitor/model/SensorDataPoint.java</file>
             <file>file:/C:/WiInfProjekt/sensormonitorfx/resources/stylesheets/dark.css</file>
+            <file>file:/C:/WiInfProjekt/sensormonitorfx/src/de/hfts/sensormonitor/misc/IOUtils.java</file>
             <file>file:/C:/WiInfProjekt/sensormonitorfx/src/de/hfts/sensormonitor/execute/SensorMonitor.java</file>
             <file>file:/C:/WiInfProjekt/sensormonitorfx/src/de/hfts/sensormonitor/misc/Recording.java</file>
             <file>file:/C:/WiInfProjekt/sensormonitorfx/src/de/hfts/sensormonitor/view/mainWindow.fxml</file>
@@ -30,6 +32,7 @@
             <file>file:/C:/WiInfProjekt/sensormonitorfx/src/de/hfts/sensormonitor/model/SensorData.java</file>
             <file>file:/C:/WiInfProjekt/sensormonitorfx/src/de/hfts/sensormonitor/misc/Recorder.java</file>
             <file>file:/C:/WiInfProjekt/sensormonitorfx/src/de/hfts/sensormonitor/controller/MainController.java</file>
+            <file>file:/C:/WiInfProjekt/sensormonitorfx/resources/images/logo_polarix.png</file>
             <file>file:/C:/WiInfProjekt/sensormonitorfx/src/de/hfts/sensormonitor/controller/RecordingsListController.java</file>
             <file>file:/C:/WiInfProjekt/sensormonitorfx/src/de/hfts/sensormonitor/model/ChartDataChangeListener.java</file>
             <file>file:/C:/WiInfProjekt/sensormonitorfx/src/de/hfts/sensormonitor/exceptions/ImportRecordingException.java</file>
@@ -37,6 +40,7 @@
             <file>file:/C:/WiInfProjekt/sensormonitorfx/src/de/hfts/sensormonitor/view/editChartWindow.fxml</file>
             <file>file:/C:/WiInfProjekt/sensormonitorfx/src/de/hfts/sensormonitor/model/ChartData.java</file>
             <file>file:/C:/WiInfProjekt/sensormonitorfx/src/de/hfts/sensormonitor/model/TableData.java</file>
+            <file>file:/C:/WiInfProjekt/sensormonitorfx/src/de/hfts/sensormonitor/misc/ProgressDialog.java</file>
         </group>
     </open-files>
 </project-private>

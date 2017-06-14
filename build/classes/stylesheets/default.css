@@ -26,6 +26,18 @@
     -fx-text-fill: black;
 }
 
+.progressDialog {    
+    -fx-background-color: white;
+    -fx-padding: 10;    
+    -fx-hgap: 10;
+    -fx-vgap: 10;
+}
+
+.progressDialog > .label {
+    -fx-font: 16 "Arial";
+    -fx-text-fill: black;
+}
+
 .mainGridPane {
     -fx-background-color: white;
     -fx-padding: 20;

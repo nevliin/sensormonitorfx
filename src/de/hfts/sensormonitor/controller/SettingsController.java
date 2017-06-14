@@ -6,6 +6,7 @@
 package de.hfts.sensormonitor.controller;
 
 import de.hfts.sensormonitor.misc.IOUtils;
+import de.hfts.sensormonitor.misc.LogHandler;
 import de.hfts.sensormonitor.viewelements.SensorChart;
 import de.hfts.sensormonitor.model.ChartData;
 import de.hfts.sensormonitor.model.TableData;
@@ -96,6 +97,7 @@ public class SettingsController implements Initializable {
             IOUtils.setConfigProp("lang", IOUtils.getLanguages().get(((String) comboBoxLanguages.getValue())));
             IOUtils.saveConfigProperties();
         }
+        LogHandler.LOGGER.info(LogHandler.getLangpackString("language_changed") + ": " + IOUtils.getLanguages().get(currentLanguage) + "->" + IOUtils.getConfigProp("lang"));
     }
 
     /**
@@ -115,6 +117,7 @@ public class SettingsController implements Initializable {
             for (TableData td : mainController.getTableDatas().values()) {
                 td.setMinTime(0 - Integer.valueOf(textFieldTimeFrame.getText()));
             }
+            LogHandler.LOGGER.info(LogHandler.getLangpackString("language_changed") + ": " + IOUtils.getConfigProp("realtime_timeframe") + "->" + textFieldTimeFrame.getText());
             IOUtils.setConfigProp("realtime_timeframe", textFieldTimeFrame.getText());
             IOUtils.saveConfigProperties();
         }
@@ -122,6 +125,8 @@ public class SettingsController implements Initializable {
             for (SensorChart sc : mainController.getSensorCharts()) {
                 sc.setCreateSymbols(checkBoxDisplayPoints.isSelected());
             }
+            LogHandler.LOGGER.info(LogHandler.getLangpackString("display_point_symbols_changed") + ": " + IOUtils.getConfigProp("displayPointSymbols") + "->" + checkBoxDisplayPoints.isSelected());
+            
             IOUtils.setConfigProp("displayPointSymbols", Boolean.toString(checkBoxDisplayPoints.isSelected()));
             IOUtils.saveConfigProperties();
         }
@@ -143,6 +148,7 @@ public class SettingsController implements Initializable {
             IOUtils.setConfigProp("style", ((String) comboBoxAppearance.getValue()));
             IOUtils.saveConfigProperties();
         }
+        LogHandler.LOGGER.info(LogHandler.getLangpackString("appearance_changed") + ": " + currentAppearance + "->" + IOUtils.getConfigProp("style"));
     }
 
     // -------------- OTHER METHODS --------------------------------------------    
@@ -174,6 +180,7 @@ public class SettingsController implements Initializable {
      */
     public void onClose() {
         if (isAppearanceRebootNecessary || isLanguageRebootNecessary) {
+            LogHandler.LOGGER.info(LogHandler.getLangpackString("settings_changed_applied"));
             mainController.rebootProgramm();
         }
     }

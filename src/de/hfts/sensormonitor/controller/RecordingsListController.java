@@ -58,12 +58,15 @@ public class RecordingsListController implements Initializable {
         List<String> selectedrecordings = recordingsList.getSelectionModel().getSelectedItems();
         ProgressDialog pd = new ProgressDialog(selectedrecordings.size(), IOUtils.getLangpackString("loading_recordings"), IOUtils.getLangpackString("progress_bar"));
         pd.getScene().getStylesheets().addAll(recordingsList.getStylesheets());
-        for (String recording : selectedrecordings) {
-            parentController.displayRecording(recording);
-            pd.progress();
-        }
-        pd.hide();
-        LogHandler.LOGGER.info(LogHandler.getLangpackString("recordings_displayed") + ": " + String.join(", ", selectedrecordings));
+        Thread t = new Thread(() -> {
+            for (String recording : selectedrecordings) {
+                parentController.displayRecording(recording);
+                pd.progress();
+            }
+            pd.hide();
+            LogHandler.LOGGER.info(LogHandler.getLangpackString("recordings_displayed") + ": " + String.join(", ", selectedrecordings));
+        });
+        t.start();
     }
 
     /**
@@ -102,15 +105,11 @@ public class RecordingsListController implements Initializable {
                         });
                     } catch (IOException | SQLException ex) {
                         LogHandler.LOGGER.log(Level.SEVERE, null, ex);
+                        pd.hide();
                         new ExceptionDialog(IOUtils.getLangpackString("error_exportrecording") + ": " + recording, null);
-                        Platform.runLater(() -> {
-                            pd.hide();
-                        });
                     }
                 }
-                Platform.runLater(() -> {
-                    pd.hide();
-                });
+                pd.hide();
                 LogHandler.LOGGER.info(LogHandler.getLangpackString("recordings_exported") + ": " + String.join(", ", selectedrecordings));
             });
             t.start();

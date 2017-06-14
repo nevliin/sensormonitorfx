@@ -145,6 +145,13 @@ public class IOUtils {
         return styles;
     }
 
+    /**
+     * 
+     */
+    public static Statement getStatement() {
+        return stat;
+    }
+    
     // -------------- DATABASE METHODS -----------------------------------------
     /**
      * Connect to the H2 database located in the folder specified in the
@@ -155,7 +162,7 @@ public class IOUtils {
      */
     public static void connectDB() throws ClassNotFoundException, SQLException {
         Class.forName("org.h2.Driver");
-        conn = DriverManager.getConnection("jdbc:h2:" + getConfigProp("savepath") + "/recordings", "root", "root");
+        conn = DriverManager.getConnection("jdbc:h2:" + getConfigProp("savepath") + File.separator + "recordings", "root", "root");
         DatabaseMetaData meta = conn.getMetaData();
         ResultSet rs = meta.getTables(null, null, null,
                 new String[]{"TABLE"});
@@ -581,7 +588,7 @@ public class IOUtils {
      * @param exportpath
      */
     public static void exportRecording(String recordingname, String exportpath) throws IOException, SQLException {
-        exportpath += "/" + recordingname + ".csv";
+        exportpath += File.separator + recordingname + ".csv";
         FileWriter writer;
         writer = new FileWriter(exportpath);
         StringBuilder sb = new StringBuilder();

@@ -5,16 +5,11 @@
  */
 package de.hfts.sensormonitor.misc;
 
+import javafx.application.Platform;
 import javafx.scene.Scene;
-import javafx.scene.control.Dialog;
 import javafx.scene.control.Label;
 import javafx.scene.control.ProgressBar;
-import javafx.scene.layout.BorderPane;
-import javafx.scene.layout.ColumnConstraints;
 import javafx.scene.layout.GridPane;
-import javafx.scene.layout.HBox;
-import javafx.scene.layout.Priority;
-import javafx.scene.text.Font;
 import javafx.stage.Stage;
 
 /**
@@ -24,7 +19,7 @@ import javafx.stage.Stage;
 public class ProgressDialog {
 
     private Scene scene;
-    private Stage stage;    
+    private Stage stage;
     private ProgressBar progressBar;
     private int stages;
 
@@ -32,30 +27,34 @@ public class ProgressDialog {
         this.stages = stages;
         stage = new Stage();
         stage.setTitle(title);
-        
+
         GridPane gp = new GridPane();
-        gp.setId("mainGridPane");
-        
+        gp.getStyleClass().add("progressDialog");
+
         Label label = new Label(message);
         gp.add(label, 0, 0);
-        
+
         progressBar = new ProgressBar(0);
         gp.add(progressBar, 0, 1);
-        
+
         scene = new Scene(gp);
         stage.setScene(scene);
-        stage.show();        
+        stage.show();
     }
 
     public void hide() {
-        stage.hide();
+        Platform.runLater(() -> {
+            stage.hide();
+        });
     }
 
     public void progress() {
-        double d = progressBar.getProgress();
-        progressBar.setProgress(d + (1.0 / stages));
+        Platform.runLater(() -> {
+            double d = progressBar.getProgress();
+            progressBar.setProgress(d + (1.0 / stages));
+        });
     }
-    
+
     public Scene getScene() {
         return scene;
     }
