@@ -22,7 +22,8 @@ import java.util.logging.*;
 import javafx.stage.DirectoryChooser;
 
 /**
- * IOUtils --- Handle all input/output actions, both from the JAR itself and the OS
+ * IOUtils --- Handle all input/output actions, both from the JAR itself and the
+ * OS
  *
  * @author Polarix IT Solutions
  */
@@ -146,12 +147,12 @@ public class IOUtils {
     }
 
     /**
-     * 
+     *
      */
     public static Statement getStatement() {
         return stat;
     }
-    
+
     // -------------- DATABASE METHODS -----------------------------------------
     /**
      * Connect to the H2 database located in the folder specified in the
@@ -350,11 +351,10 @@ public class IOUtils {
     // -------------- PROPERTIES METHODS ---------------------------------------
     /**
      * Tries to load the configuration and creates it if it doesn't exist yet.
-     * IMPORTANT: Do not use IOUtils.LOGGER in this method as it is created only
- after loading the configuration
+     * IMPORTANT: Do not use LogHandler.LOGGER in this method as it is created only
+     * after loading the configuration
      */
     public static void loadConfiguration() {
-
         LogHandler.langpack = ResourceBundle.getBundle("lang.logging", new Locale("en"));
 
         String currentUsersHomeDir = System.getProperty("user.home");
@@ -377,7 +377,7 @@ public class IOUtils {
             logfolder.mkdir();
         }
 
-        // Try to load the configProperties from home.dir/.sensormonitor
+        // Try to load the configProperties from user.home/.sensormonitor
         boolean isPropertiesExistant = true;
         configProp = new Properties();
         try {

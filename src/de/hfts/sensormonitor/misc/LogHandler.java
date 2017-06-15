@@ -9,6 +9,7 @@ import java.io.File;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.io.StringWriter;
+import java.nio.file.NoSuchFileException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.GregorianCalendar;
@@ -63,14 +64,24 @@ public class LogHandler {
      * Create a logger, add a FileHandler
      */
     public static void createLogger() {
+        GregorianCalendar cal = new GregorianCalendar();
+        SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd-HH-mm-ss-SSS");
+        String logfilename = format.format(cal.getTime()) + ".txt";
         try {
             LOGGER = Logger.getLogger("");
-            GregorianCalendar cal = new GregorianCalendar();
-            SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd-HH-mm-ss-SSS");
-            String logfilename = format.format(cal.getTime()) + ".txt";
             FileHandler fh = new FileHandler(System.getProperty("user.home") + File.separator + ".sensormonitor" + File.separator + "logs" + File.separator + logfilename);
             fh.setFormatter(new LogFormatter());
             LOGGER.addHandler(fh);
+        } catch (NoSuchFileException ex) {
+            try {
+                File f = new File(System.getProperty("user.home") + File.separator + ".sensormonitor" + File.separator + "logs");
+                f.mkdir();
+                FileHandler fh = new FileHandler(System.getProperty("user.home") + File.separator + ".sensormonitor" + File.separator + "logs" + File.separator + logfilename);
+                fh.setFormatter(new LogFormatter());
+                LOGGER.addHandler(fh);
+            } catch (IOException | SecurityException ex1) {
+                Logger.getLogger(LogHandler.class.getName()).log(Level.SEVERE, null, ex1);
+            }
         } catch (IOException | SecurityException ex) {
             Logger.getLogger(IOUtils.class.getName()).log(Level.SEVERE, null, ex);
         }
