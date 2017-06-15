@@ -15,5 +15,10 @@ public interface ChartDataChangeListener {
      * Triggered when the axis bounds in the ChartData changes
      */
     void axisChanged();
+    
+    /**
+     * Triggered when a graph is added or removed
+     */
+    void graphsChanged();
 
 }

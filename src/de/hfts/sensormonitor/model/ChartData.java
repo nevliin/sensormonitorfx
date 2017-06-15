@@ -63,6 +63,7 @@ public class ChartData implements SensorDataChangeListener {
 
     /**
      * Creates new ChartData and sets type
+     *
      * @param type
      */
     public ChartData(Data type) {
@@ -92,12 +93,19 @@ public class ChartData implements SensorDataChangeListener {
 
     /**
      * Notifies all listeners of a change in the graph axis
-     *
-     *
      */
     public void notifyListenersOfAxisChange() {
         for (ChartDataChangeListener dcl : listeners) {
             dcl.axisChanged();
+        }
+    }
+
+    /**
+     * Notifies all listeners of a change in the graph axis
+     */
+    public void notifyListenersOfGraphChange() {
+        for (ChartDataChangeListener dcl : listeners) {
+            dcl.graphsChanged();
         }
     }
 
@@ -115,7 +123,9 @@ public class ChartData implements SensorDataChangeListener {
             chartGraphs.put(sensorID, series);
             Platform.runLater(() -> {
                 lineChartModel.add(series);
+                notifyListenersOfGraphChange();
             });
+           
         }
         setPointsToSeries(chartGraphs.get(sensorID), points);
     }
@@ -169,6 +179,7 @@ public class ChartData implements SensorDataChangeListener {
             partTypeCodes.put(sensorID, sensorData.getTypeCode(sensorID));
             Platform.runLater(() -> {
                 lineChartModel.add(series);
+                notifyListenersOfGraphChange();
             });
         }
         setPointsToSeries(chartGraphs.get(sensorID), points);
@@ -201,10 +212,12 @@ public class ChartData implements SensorDataChangeListener {
         if (isVisible) {
             if (!lineChartModel.contains(chartGraphs.get(sensorID))) {
                 lineChartModel.add(chartGraphs.get(sensorID));
+                notifyListenersOfGraphChange();
             }
         } else {
             try {
                 lineChartModel.remove(chartGraphs.get(sensorID));
+                notifyListenersOfGraphChange();
             } catch (NullPointerException ex) {
                 // NO-OP
             }
@@ -397,7 +410,5 @@ public class ChartData implements SensorDataChangeListener {
     public void setPartTypeCodes(HashMap<Long, String> partTypeCodes) {
         this.partTypeCodes = partTypeCodes;
     }
-    
-    
 
 }

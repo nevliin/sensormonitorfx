@@ -89,6 +89,7 @@ public class Recording {
                 revolutions_points.get(Long.valueOf(recording.getString("SENSORID"))).add(revolutions);
 
             }
+            recording.close();
         } catch (SQLException ex) {
             LogHandler.LOGGER.log(Level.SEVERE, null, ex);
         }

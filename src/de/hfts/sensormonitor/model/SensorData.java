@@ -44,7 +44,7 @@ public class SensorData implements CeBarRoundObserver<SensorEvent> {
     // -------------- PRIVATE FIELDS -------------------------------------------
     private List<SensorDataChangeListener> listeners = new ArrayList<>();
     private ObservableList<String> sensorIDs = new ObservableListWrapper<>(new ArrayList<String>());
-    private Map<Long, String> mapIDTypeCode = new LinkedHashMap<>();
+    private Map<Long, String> partTypeCodes = new LinkedHashMap<>();
     private Map<Data, Map<Long, ArrayList<SensorDataPoint>>> graphs = new LinkedHashMap<>();
 
     // -------------- CONSTRUCTORS ---------------------------------------------
@@ -68,8 +68,8 @@ public class SensorData implements CeBarRoundObserver<SensorEvent> {
     public void sensorDataEventListener(SensorEvent cbre) {
         Platform.runLater(() -> {            
             // Create new ArrayList's and save the TypeCode if the SensorID is unknown
-            if (!mapIDTypeCode.keySet().contains(cbre.getUniqueSensorIdentifier())) {
-                mapIDTypeCode.put(cbre.getUniqueSensorIdentifier(), cbre.getSensorTypeCode());
+            if (!partTypeCodes.keySet().contains(cbre.getUniqueSensorIdentifier())) {
+                partTypeCodes.put(cbre.getUniqueSensorIdentifier(), cbre.getSensorTypeCode());
                 sensorIDs.add(Long.toString(cbre.getUniqueSensorIdentifier()));
                 graphs.get(Data.TEMPERATURE).put(cbre.getUniqueSensorIdentifier(), new ArrayList<>());
                 graphs.get(Data.PRESSURE).put(cbre.getUniqueSensorIdentifier(), new ArrayList<>());
@@ -91,7 +91,7 @@ public class SensorData implements CeBarRoundObserver<SensorEvent> {
      * @param typeCode
      */
     public void addSensor(long sensorID, String typeCode) {
-        mapIDTypeCode.put(sensorID, typeCode);
+        partTypeCodes.put(sensorID, typeCode);
         sensorIDs.add(Long.toString(sensorID));
         graphs.get(Data.TEMPERATURE).put(sensorID, new ArrayList<>());
         graphs.get(Data.PRESSURE).put(sensorID, new ArrayList<>());
@@ -146,7 +146,7 @@ public class SensorData implements CeBarRoundObserver<SensorEvent> {
      * @return
      */
     public String getTypeCode(long sensorID) {
-        return mapIDTypeCode.get(sensorID);
+        return partTypeCodes.get(sensorID);
     }
 
     /**
@@ -161,8 +161,8 @@ public class SensorData implements CeBarRoundObserver<SensorEvent> {
      *
      * @return
      */
-    public Map<Long, String> getMapIDTypeCode() {
-        return mapIDTypeCode;
+    public Map<Long, String> getPartTypeCodes() {
+        return partTypeCodes;
     }
 
     public Map<Data, Map<Long, ArrayList<SensorDataPoint>>> getGraphs() {

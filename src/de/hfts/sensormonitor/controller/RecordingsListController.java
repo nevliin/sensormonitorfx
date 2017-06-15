@@ -65,6 +65,10 @@ public class RecordingsListController implements Initializable {
             }
             pd.hide();
             LogHandler.LOGGER.info(LogHandler.getLangpackString("recordings_displayed") + ": " + String.join(", ", selectedrecordings));
+            Platform.runLater(() -> {
+                parentController.recordingswindow.hide();
+                parentController.recordingswindow = null;
+            });
         });
         t.start();
     }

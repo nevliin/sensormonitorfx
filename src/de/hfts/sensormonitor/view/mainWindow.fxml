@@ -144,7 +144,7 @@
                                     GridPane.columnSpan="2" />       
                                 <SensorChart fx:id="chartPressureSpecific"
                                              GridPane.columnIndex="0" GridPane.rowIndex="2"
-                                             title="%temperature">
+                                             title="%pressure">
                                 </SensorChart>
                                 <SensorTable fx:id="tableViewPressure" 
                                              GridPane.columnIndex="1" GridPane.rowIndex="2" />
@@ -170,7 +170,7 @@
                                     GridPane.columnSpan="2" />       
                                 <SensorChart fx:id="chartRevolutionsSpecific"
                                              GridPane.columnIndex="0" GridPane.rowIndex="2"
-                                             title="%temperature">
+                                             title="%revolutions">
                                 </SensorChart>
                                 <SensorTable fx:id="tableViewRevolutions" 
                                              GridPane.columnIndex="1" GridPane.rowIndex="2" />

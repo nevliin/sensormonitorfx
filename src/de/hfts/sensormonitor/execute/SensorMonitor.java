@@ -31,7 +31,6 @@ import javafx.stage.Stage;
 public class SensorMonitor extends Application {
 
     public boolean isReboot = false;
-    static PrintStream originalOut;
 
     /**
      * Creates the IOUtils and loads resources
@@ -41,7 +40,6 @@ public class SensorMonitor extends Application {
      */
     @Override
     public void start(Stage stage) throws Exception {
-        originalOut = System.out;
         boolean isDBConnected = true;
         IOUtils.loadConfiguration();
         if (!isReboot) {
@@ -63,7 +61,6 @@ public class SensorMonitor extends Application {
         try {
             sensors = IOUtils.loadSensors();
             LogHandler.LOGGER.info(LogHandler.getLangpackString("sensors_loaded"));
-            disableOutput();
         } catch (IllegalSensorAmountException e) {
             LogHandler.LOGGER.severe(e.getMessage());
             new ExceptionDialog(IOUtils.getLangpackString(e.getExceptionKey()), null);
@@ -137,24 +134,5 @@ public class SensorMonitor extends Application {
     public static void main(String[] args) {
         // Start the application
         launch(args);
-    }
-
-    /**
-     * Disables System.out
-     */
-    public static void disableOutput() {
-        System.setOut(new PrintStream(new OutputStream() {
-            @Override
-            public void write(int b) throws IOException {
-                // NO-OP
-            }
-        }));
-    }
-
-    /**
-     * Enables System.out
-     */
-    public static void enableOutput() {
-        System.setOut(originalOut);
     }
 }

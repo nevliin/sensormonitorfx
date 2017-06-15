@@ -21,6 +21,9 @@ import javafx.scene.control.*;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.input.*;
 import javafx.scene.layout.*;
+import javafx.scene.paint.Color;
+import javafx.scene.text.Font;
+import javafx.scene.text.FontWeight;
 import javafx.stage.Stage;
 
 /**
@@ -83,7 +86,7 @@ public class SensorChart extends LineChart implements ChartDataChangeListener {
     // -------------- OTHER METHODS --------------------------------------------
     /**
      * Set the Data model of the SensorChart as well as the language
-     * ResourceBundle and the axis titles. 
+     * ResourceBundle and the axis titles.
      *
      * @param chartData
      * @param xAxisTitle
@@ -97,10 +100,8 @@ public class SensorChart extends LineChart implements ChartDataChangeListener {
 
         chartData.addListener(this);
 
-        Platform.runLater(() -> {
-            this.setData(chartdata.getObservableList());
-            updateAxis();
-        });
+        this.setData(chartdata.getObservableList());
+        updateAxis();
 
         // Set up the ContextMenu
         contextMenu = initContextMenu();
@@ -166,32 +167,36 @@ public class SensorChart extends LineChart implements ChartDataChangeListener {
      * Add tooltips displaying additional information when hovering over the
      * label identifying the series.
      */
-    public void installLabelTooltips() {
-        for (LegendItem li : ((Legend) this.getLegend()).getItems()) {
-            Tooltip tooltip = new Tooltip(langpack.getString("sensor_id") + ": " + li.getText() + "\n"
-                    + langpack.getString("average") + ": " + this.getYAverage(li.getText()) + " " + this.getYAxis().getLabel());
-            Tooltip.install(li.getSymbol(), tooltip);
-            /*try {
-                //Adding class on hover
-                
-                li.getSymbol().setOnMouseEntered(new EventHandler<MouseEvent>() {
-                    @Override
-                    public void handle(MouseEvent event) {
-                        tooltip.show(li.getSymbol().getScene().getWindow(), li.getSymbol().getScene().getX() + event.getScreenX() + 10, li.getSymbol().getScene().getX() + event.getScreenY() + 10);
-                    }
+    public void installLegendTooltips() {
+        Set<Node> items = this.lookupAll("Label.chart-legend-item");
+        for (Node n : items) {
+            if (n instanceof Label) {
+                Label l = (Label) n;
+                Tooltip tooltip = new Tooltip();
+                try {
+                    //Adding class on hover
+                    l.setOnMouseEntered(new EventHandler<MouseEvent>() {
+                        @Override
+                        public void handle(MouseEvent event) {
+                            tooltip.setText(langpack.getString("sensor_id") + ": " + l.getText() + "\n"
+                                    + langpack.getString("partTypeCode") + ": " + chartdata.getPartTypeCodes().get(Long.valueOf(l.getText())) + "\n"
+                                    + langpack.getString("average") + ": " + getYAverage(l.getText()) + " " + getYAxis().getLabel());
+                            tooltip.show(l.getScene().getWindow(), l.getScene().getX() + event.getScreenX() + 5, l.getScene().getX() + event.getScreenY() + 5);
+                        }
 
-                });
+                    });
 
-                //Removing class on exit
-                li.getSymbol().setOnMouseExited(new EventHandler<MouseEvent>() {
-                    @Override
-                    public void handle(MouseEvent event) {
-                        tooltip.hide();
-                    }
-                });
-            } catch (NullPointerException ex) {
-                // NO-OP --- catch NullPointerException if SensorChart is not visible yet
-            }*/
+                    //Removing class on exit
+                    l.setOnMouseExited(new EventHandler<MouseEvent>() {
+                        @Override
+                        public void handle(MouseEvent event) {
+                            tooltip.hide();
+                        }
+                    });
+                } catch (NullPointerException ex) {
+                    // NO-OP --- catch NullPointerException if SensorChart is not visible yet
+                }
+            }
         }
     }
 
@@ -244,7 +249,7 @@ public class SensorChart extends LineChart implements ChartDataChangeListener {
                 editChartWindow = null;
             });
 
-            ((EditChartController) loader.getController()).setChartData(chartdata);            
+            ((EditChartController) loader.getController()).setChartData(chartdata);
             ((EditChartController) loader.getController()).setParentChart(this);
 
             Scene editChartScene = new Scene(root);
@@ -309,6 +314,11 @@ public class SensorChart extends LineChart implements ChartDataChangeListener {
     @Override
     public void axisChanged() {
         updateAxis();
+    }
+
+    @Override
+    public void graphsChanged() {
+        installLegendTooltips();
     }
 
 }

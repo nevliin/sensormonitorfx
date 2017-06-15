@@ -451,7 +451,7 @@ public class MainController implements Initializable {
             @Override
             public void onChanged(ListChangeListener.Change c) {
                 List<String> checkedsensors = new ArrayList<>(checkComboBoxSensors.getCheckModel().getCheckedItems());
-                for (long l : data.getMapIDTypeCode().keySet()) {
+                for (long l : data.getPartTypeCodes().keySet()) {
                     if (checkedsensors.contains(Long.toString(l))) {
                         for (ChartData cd : chartDatas) {
                             cd.setGraphVisible(l, true);
@@ -538,7 +538,7 @@ public class MainController implements Initializable {
             tableDatas.get(data).setMinTime(0 - Double.valueOf(IOUtils.getConfigProp("realtime_timeframe")));
             tableDatas.get(data).addListener(tableViews.get(data));
             int counter = 0;
-            for (long sensorID : sensorData.getMapIDTypeCode().keySet()) {
+            for (long sensorID : sensorData.getPartTypeCodes().keySet()) {
                 TableColumn tc = new TableColumn(Long.toString(sensorID));
                 TableColumn<ObservableList<Double>, Double> tc_time = new TableColumn(IOUtils.getLangpackString("time"));
                 TableColumn<ObservableList<Double>, Double> tc_value = new TableColumn(IOUtils.getLangpackString("value"));
