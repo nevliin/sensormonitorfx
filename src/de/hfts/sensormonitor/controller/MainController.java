@@ -381,7 +381,7 @@ public class MainController implements Initializable {
     // -------------- GETTERS & SETTERS ----------------------------------------
     /**
      *
-     * @return
+     * @return Boolean indicating if the application is connected to the database
      */
     public boolean isDBConnected() {
         return isDBConnected;
@@ -389,7 +389,7 @@ public class MainController implements Initializable {
 
     /**
      *
-     * @param isDBConnected
+     * @param isDBConnected Boolean indicating if the application is connected to the database
      */
     public void setDBConnected(boolean isDBConnected) {
         this.isDBConnected = isDBConnected;
@@ -402,11 +402,10 @@ public class MainController implements Initializable {
         }
     }
 
-    /**
-     *
-     * @return
+    /**     
+     * @return List of all ChartData's
      */
-    public ArrayList<ChartData> getChartDatas() {
+    public List<ChartData> getChartDatas() {
         return chartDatas;
     }
 
@@ -414,7 +413,7 @@ public class MainController implements Initializable {
      *
      * @return
      */
-    public ArrayList<SensorChart> getSensorCharts() {
+    public List<SensorChart> getSensorCharts() {
         return sensorCharts;
     }
 
@@ -422,7 +421,7 @@ public class MainController implements Initializable {
      *
      * @return
      */
-    public HashMap<Data, TableData> getTableDatas() {
+    public Map<Data, TableData> getTableDatas() {
         return tableDatas;
     }
 

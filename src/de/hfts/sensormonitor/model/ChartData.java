@@ -33,16 +33,51 @@ public class ChartData implements SensorDataChangeListener {
      * Map storing the Series with the SensorID's as keys for easy access
      */
     private HashMap<Long, XYChart.Series<Double, Double>> chartGraphs;
+    /**
+     * Map of part type codes with the SensorIDs as key
+     */
     private HashMap<Long, String> partTypeCodes = new HashMap<>();
+    /**
+     * Related SensorData; null if the ChartData was created from a recording
+     */
     private SensorData sensorData;
-    private Data type;
+    /**
+     * Data type displayed in the SensorChart
+     */
+    private SensorData.Data type;
+    /**
+     * Minimal value of the X-axis
+     */
     private double xScaleMin;
+    /**
+     * Maximal value of the X-axis
+     */
     private double xScaleMax;
+    /**
+     * Minimal value of the Y-axis
+     */
     private double yScaleMin;
+    /**
+     * Maximal value of the Y-axis
+     */
     private double yScaleMax;
+    /**
+     * Lower bound of the X-axis
+     */
     private double xMin;
+    /**
+     * Upper bound of the X-axis
+     */
     private double xMax;
+    /**
+     * Lower bound of the Y-axis; Double.MAX_VALUE if the Y-axis is set to
+     * autoranging
+     */
     private double yMin = Double.MAX_VALUE;
+    /**
+     * Upper bound of the Y-axis; Double.MAX_VALUE if the Y-axis is set to
+     * autoranging
+     */
     private double yMax = Double.MAX_VALUE;
 
     // -------------- CONSTRUCTORS ---------------------------------------------

@@ -88,11 +88,11 @@ public class SensorChart extends LineChart implements ChartDataChangeListener {
      * Set the Data model of the SensorChart as well as the language
      * ResourceBundle and the axis titles.
      *
-     * @param chartData
-     * @param xAxisTitle
-     * @param yAxisTitle
-     * @param langpack
-     * @param createSymbols
+     * @param chartData Model of the SensorChart
+     * @param xAxisTitle Title of the X-axis
+     * @param yAxisTitle Title of the Y-axis
+     * @param langpack Language pack for the ContextMenu
+     * @param createSymbols Boolean indicating if symbols should be created or not
      */
     public void setChartData(ChartData chartData, ResourceBundle langpack, String xAxisTitle, String yAxisTitle, boolean createSymbols) {
         this.chartdata = chartData;
@@ -204,7 +204,7 @@ public class SensorChart extends LineChart implements ChartDataChangeListener {
      * Initialise and return a ContextMenu with options regarding the
      * SensorChart
      *
-     * @return
+     * @return ContextMenu of the SensorChart
      */
     private ContextMenu initContextMenu() {
         ContextMenu contextMenu = new ContextMenu();
@@ -270,7 +270,7 @@ public class SensorChart extends LineChart implements ChartDataChangeListener {
      *
      * @param graphname Sensor ID (name) of the graph the average should be
      * retrieved from
-     * @return
+     * @return Average of the Y-values
      */
     public String getYAverage(String graphname) {
         if (graphname == null) {

@@ -69,7 +69,7 @@ public class IOUtils {
      * Statement to execute queries and commands for the database
      */
     private static Statement stat;
-    
+
     private static final int tableColumns = 7;
 
     // -------------- GETTERS & SETTERS ----------------------------------------    
@@ -166,6 +166,7 @@ public class IOUtils {
     public static void connectDB() throws ClassNotFoundException, SQLException {
         Class.forName("org.h2.Driver");
         conn = DriverManager.getConnection("jdbc:h2:" + getConfigProp("savepath") + File.separator + "recordings", "root", "root");
+        stat = conn.createStatement();
         DatabaseMetaData meta = conn.getMetaData();
         ResultSet rs = meta.getTables(null, null, null,
                 new String[]{"TABLE"});
@@ -174,8 +175,6 @@ public class IOUtils {
             tables.add(rs.getString("TABLE_NAME"));
         }
         rs.close();
-        stat = conn.createStatement();
-
     }
 
     /**
@@ -612,7 +611,7 @@ public class IOUtils {
         if (!namesplit[0].toUpperCase().matches("[a-zA-Z][a-zA-Z0-9_]{1,30}") || tables.contains(namesplit[0].toUpperCase())) {
             throw new IllegalTableNameException();
         }
-        if(!namesplit[1].equals("csv")) {
+        if (!namesplit[1].equals("csv")) {
             throw new ImportRecordingException();
         }
         String genericName = createGenericTable();

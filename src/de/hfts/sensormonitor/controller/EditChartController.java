@@ -114,8 +114,8 @@ public class EditChartController implements Initializable {
      * @param xmax Upper bound of the X-axis
      * @param ymin Lower bound of the Y-axis
      * @param ymax Upper bound of the Y-axis
-     * @throws IllegalXScaleException
-     * @throws IllegalYScaleException
+     * @throws IllegalXScaleException Thrown when the X-axis values are illegal
+     * @throws IllegalYScaleException Thrown when the Y-axis values are illegal
      */
     void updateBounds(String xmin, String xmax, String ymin, String ymax) throws IllegalXScaleException, IllegalYScaleException {
         boolean isXScaleValid = true;
@@ -218,7 +218,7 @@ public class EditChartController implements Initializable {
     // -------------- GETTERS & SETTERS ----------------------------------------
     /**
      *
-     * @param sc
+     * @param sc SensorChart related to the editChartWindow
      */
     public void setParentChart(SensorChart sc) {
         this.parentChart = sc;

@@ -13,6 +13,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Map;
 import javafx.collections.ObservableList;
 
 /**
@@ -23,21 +24,45 @@ import javafx.collections.ObservableList;
  */
 public class TableData implements SensorDataChangeListener {
 
+    // -------------- PRIVATE FIELDS -------------------------------------------
+    /**
+     * Count of columns in the Table
+     */
     private int maxColumn = 0;
+    /**
+     * Minimal time to be displayed in the Table
+     */
     private double minTime;
 
-    private ArrayList<TableDataChangeListener> listeners = new ArrayList<>();
+    /**
+     * List of listeners
+     */
+    private List<TableDataChangeListener> listeners = new ArrayList<>();
 
-    private LinkedHashMap<Long, Integer> columnIDs = new LinkedHashMap<>();
+    /**
+     * Number of the column related to each SensorID, stored in a map with the
+     * SensorID's as key
+     */
+    private Map<Long, Integer> columnIDs = new LinkedHashMap<>();
+    /**
+     * Data model of the SensorTable
+     */
     private ObservableList<ObservableList<Double>> data = new ObservableListWrapper<>(new ArrayList<>());
-    private Data type;
+    /**
+     * Data type of the TableData
+     */
+    private SensorData.Data type;
+    /**
+     * Related SensorData
+     */
     private SensorData sensorData;
 
+    // -------------- CONSTRUCTOR ----------------------------------------------
     /**
      * Standard Constructor
      *
-     * @param type
-     * @param sensorData
+     * @param type Data type of the TableData
+     * @param sensorData SensorData related to the TableData
      */
     public TableData(Data type, SensorData sensorData) {
         this.type = type;
@@ -45,9 +70,36 @@ public class TableData implements SensorDataChangeListener {
         sensorData.addListener(this);
     }
 
+    // -------------- GETTERS & SETTERS ----------------------------------------
     /**
      *
-     * @param sensorID
+     * @return
+     */
+    public ObservableList<ObservableList<Double>> getData() {
+        return data;
+    }
+
+    /**
+     *
+     * @return
+     */
+    public double getMinTime() {
+        return minTime;
+    }
+
+    /**
+     *
+     * @param minTime
+     */
+    public void setMinTime(double minTime) {
+        this.minTime = minTime;
+    }
+
+    // -------------- OTHER METHODS -----------------------------------------
+    /**
+     * Save the column number of the sensor
+     *
+     * @param sensorID SensorID
      */
     public void addSensor(long sensorID) {
         columnIDs.put(sensorID, maxColumn);
@@ -61,10 +113,12 @@ public class TableData implements SensorDataChangeListener {
     }
 
     /**
+     * Sets the values of the SensorDataPoints to the specified columns of the
+     * data model
      *
-     * @param points
-     * @param observList
-     * @param columnId
+     * @param points List of SensorDataPoints
+     * @param observList Data model of the SensorTable
+     * @param columnId Number of the column related to the SensorID
      */
     public void setPointsToData(List<SensorDataPoint> points, List<ObservableList<Double>> observList, int columnId) {
         double lastTime = 0;
@@ -103,34 +157,10 @@ public class TableData implements SensorDataChangeListener {
     }
 
     /**
-     *
-     * @return
-     */
-    public ObservableList<ObservableList<Double>> getData() {
-        return data;
-    }
-
-    /**
-     *
-     * @return
-     */
-    public double getMinTime() {
-        return minTime;
-    }
-
-    /**
-     *
-     * @param minTime
-     */
-    public void setMinTime(double minTime) {
-        this.minTime = minTime;
-    }
-
-    /**
      * Utility for rounding numbers to a certain amount of places
      *
-     * @param value
-     * @param places
+     * @param value Number
+     * @param places Decimal places
      * @return
      */
     public static double round(double value, int places) {

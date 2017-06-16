@@ -30,6 +30,9 @@ import javafx.stage.Stage;
  */
 public class SensorMonitor extends Application {
 
+    /**
+     * Indicator if the application is rebooting
+     */
     public boolean isReboot = false;
 
     /**
@@ -77,9 +80,9 @@ public class SensorMonitor extends Application {
     /**
      * Load mainWindow.fxml and pass parameters to the MainWindowController
      *
-     * @param stage
-     * @param sensors
-     * @param isDBConnected
+     * @param stage Stage of the JavaFX Application
+     * @param sensors List of BaseSensor's
+     * @param isDBConnected Boolean indicating if the application is connected to the database
      */
     private void loadMainWindow(Stage stage, List<BaseSensor> sensors, boolean isDBConnected) {
         try {
