@@ -125,7 +125,6 @@ public class ChartData implements SensorDataChangeListener {
                 lineChartModel.add(series);
                 notifyListenersOfGraphChange();
             });
-           
         }
         setPointsToSeries(chartGraphs.get(sensorID), points);
     }
@@ -138,30 +137,37 @@ public class ChartData implements SensorDataChangeListener {
      */
     private void setPointsToSeries(XYChart.Series series, List<SensorDataPoint> points) {
         try {
-            series.getData().clear();
+            Platform.runLater(() -> {
+                series.getData().clear();
+            });
         } catch (NullPointerException e) {
             // NO-OP - Catching NullPointerException if the series doesn't have any data yet
         }
-        double lastTime = 0;
-        Date lastPoint = null;
-        for (SensorDataPoint p : points) {
-            double time = 0;
-            if (lastPoint != null) {
-                time = lastPoint.getTime() - p.time.getTime();
-                time = lastTime - (time / 1000.0);
-            }
-            if (time >= this.getxMin() - 1) {
-                if (!p.isEmpty()) {
-                    try {
-                        series.getData().add(new XYChart.Data(time, p.value));
-                    } catch (NullPointerException e) {
-
+        Platform.runLater(() -> {
+            double lastTime = 0;
+            Date lastPoint = null;
+            for (SensorDataPoint p : points) {
+                double time = 0;
+                if (lastPoint != null) {
+                    time = lastPoint.getTime() - p.time.getTime();
+                    time = lastTime - (time / 1000.0);
+                }
+                if (time >= this.getxMin() - 1) {
+                    if (!p.isEmpty()) {
+                        try {
+                            final double currentTime = time;
+                            Platform.runLater(() -> {
+                                series.getData().add(new XYChart.Data(currentTime, p.value));
+                            });
+                        } catch (NullPointerException e) {
+                            // NO-OP
+                        }
                     }
                 }
+                lastPoint = p.time;
+                lastTime = time;
             }
-            lastPoint = p.time;
-            lastTime = time;
-        }
+        });
     }
 
     /**
@@ -173,16 +179,9 @@ public class ChartData implements SensorDataChangeListener {
     public void dataChanged(long sensorID) {
         ArrayList<SensorDataPoint> points = sensorData.getPoints(type, sensorID);
         if (chartGraphs.get(sensorID) == null) {
-            XYChart.Series<Double, Double> series = new XYChart.Series<>();
-            series.setName(Long.toString(sensorID));
-            chartGraphs.put(sensorID, series);
             partTypeCodes.put(sensorID, sensorData.getTypeCode(sensorID));
-            Platform.runLater(() -> {
-                lineChartModel.add(series);
-                notifyListenersOfGraphChange();
-            });
         }
-        setPointsToSeries(chartGraphs.get(sensorID), points);
+        addGraphToChart(sensorID, points);
     }
 
     /**

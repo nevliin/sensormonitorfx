@@ -15,7 +15,6 @@ import java.net.URL;
 import java.text.ParseException;
 import java.util.*;
 import java.util.logging.Level;
-import java.util.logging.Logger;
 import javafx.application.Platform;
 import javafx.beans.property.ReadOnlyObjectWrapper;
 import javafx.collections.ListChangeListener;
@@ -137,22 +136,52 @@ public class MainController implements Initializable {
     @FXML
     private CheckBox checkBoxRevolutions;
 
+    // -------------- PACKAGE PRIVATE FIELDS -----------------------------------
+    /**
+     * Stage containing the scene loaded from recordingsListWindow.fxml
+     */
+    Stage recordingsListWindow;
+    /**
+     * Stage containing the scene loaded from settingsWindow.fxml
+     */
+    Stage settingsWindow;
+
+    /**
+     * Indicates if the application is connected to the H2 database
+     */
+    boolean isDBConnected;
+    /**
+     * Indicates if the sensors are currently being measured
+     */
+    boolean isMeasuring = false;
+
     // -------------- PRIVATE FIELDS -------------------------------------------
+    /**
+     * Instance of Recorder, to start/stop recording the incoming sensor data
+     */
     private Recorder recorder;
 
-    Stage recordingswindow;
-    Stage settingswindow;
-    Stage aboutwindow;
-
+    /**
+     * List of all ChartData's
+     */
     private ArrayList<ChartData> chartDatas = new ArrayList<>();
+    /**
+     * List of all SensorChart's
+     */
     private ArrayList<SensorChart> sensorCharts = new ArrayList<>();
+    /**
+     * Map of all SensorTable's with the data type as key
+     */
     private HashMap<Data, SensorTable> tableViews = new HashMap<>();
+    /**
+     * Map of all TableData's with the data type as key
+     */
     private HashMap<Data, TableData> tableDatas = new HashMap<>();
 
+    /**
+     * List of all sensors connected to the application
+     */
     private List<BaseSensor> sensors;
-
-    boolean isDBConnected;
-    boolean isMeasuring = false;
 
     // -------------- FXML HANDLERS -------------------------------------------------    
     /**
@@ -186,9 +215,15 @@ public class MainController implements Initializable {
                     IOUtils.importRecording(file);
                     displayRecording(file.getName().split("\\.")[0].toUpperCase());
                 } catch (IOException | ParseException ex) {
-                    new ExceptionDialog(ex.getMessage(), null);
+                    Platform.runLater(() -> {
+                        new ExceptionDialog(ex.getMessage(), null);
+                    });
+                    LogHandler.LOGGER.log(Level.SEVERE, null, ex);
                 } catch (ImportRecordingException | IllegalTableNameException ex) {
-                    new ExceptionDialog(IOUtils.getLangpackString(ex.getExceptionKey()), null);
+                    Platform.runLater(() -> {
+                        new ExceptionDialog(IOUtils.getLangpackString(ex.getExceptionKey()), null);
+                    });
+                    LogHandler.LOGGER.log(Level.SEVERE, null, ex);
                 }
             });
             t.start();
@@ -199,26 +234,26 @@ public class MainController implements Initializable {
      * Handle clicking the MenuItem "Show all", part of the Menu "Recordings"
      */
     public void handleMenuItemShowAll() {
-        if (recordingswindow == null) {
+        if (recordingsListWindow == null) {
             try {
                 FXMLLoader loader = new FXMLLoader(this.getClass().getClassLoader().getResource("de/hfts/sensormonitor/view/recordingsListWindow.fxml"), IOUtils.getLangpack());
                 BorderPane root = (BorderPane) loader.load();
                 ((RecordingsListController) loader.getController()).setListItems(IOUtils.getTables());
                 ((RecordingsListController) loader.getController()).setParentController(this);
-                recordingswindow = new Stage();
+                recordingsListWindow = new Stage();
                 Scene scene = new Scene(root);
                 scene.getStylesheets().addAll(checkComboBoxSensors.getScene().getStylesheets());
-                recordingswindow.setScene(scene);
-                recordingswindow.sizeToScene();
-                recordingswindow.setOnCloseRequest(eh -> {
-                    recordingswindow = null;
+                recordingsListWindow.setScene(scene);
+                recordingsListWindow.sizeToScene();
+                recordingsListWindow.setOnCloseRequest(eh -> {
+                    recordingsListWindow = null;
                 });
-                recordingswindow.show();
+                recordingsListWindow.show();
             } catch (IOException ex) {
                 LogHandler.LOGGER.log(Level.SEVERE, null, ex);
             }
         } else {
-            recordingswindow.toFront();
+            recordingsListWindow.toFront();
         }
     }
 
@@ -241,27 +276,27 @@ public class MainController implements Initializable {
      * Handle clicking the MenuItem "Settings", part of the Menu "Help"
      */
     public void handleMenuItemSettings() {
-        if (settingswindow == null) {
+        if (settingsWindow == null) {
             try {
                 FXMLLoader loader = new FXMLLoader(this.getClass().getClassLoader().getResource("de/hfts/sensormonitor/view/settingsWindow.fxml"), IOUtils.getLangpack());
                 TabPane root = (TabPane) loader.load();
-                settingswindow = new Stage();
+                settingsWindow = new Stage();
                 Scene scene = new Scene(root);
                 scene.getStylesheets().addAll(checkComboBoxSensors.getScene().getStylesheets());
                 ((SettingsController) loader.getController()).setMainController(this);
-                settingswindow.setScene(scene);
-                settingswindow.sizeToScene();
-                settingswindow.setOnCloseRequest(eh -> {
-                    settingswindow = null;
+                settingsWindow.setScene(scene);
+                settingsWindow.sizeToScene();
+                settingsWindow.setOnCloseRequest(eh -> {
+                    settingsWindow = null;
                     ((SettingsController) loader.getController()).onClose();
                 });
-                settingswindow.show();
+                settingsWindow.show();
                 ((SettingsController) loader.getController()).setUpData();
             } catch (IOException ex) {
                 LogHandler.LOGGER.log(Level.SEVERE, null, ex);
             }
         } else {
-            settingswindow.toFront();
+            settingsWindow.toFront();
         }
     }
 
@@ -269,20 +304,6 @@ public class MainController implements Initializable {
      * Handle clicking the MenuItem "About", part of the Menu "Help"
      */
     public void handleMenuItemAbout() {
-        if (aboutwindow == null) {
-            aboutwindow = new Stage();
-            BorderPane bp = new BorderPane();
-            Scene scene = new Scene(bp);
-            scene.getStylesheets().addAll(checkComboBoxSensors.getScene().getStylesheets());
-            aboutwindow.setScene(scene);
-            aboutwindow.sizeToScene();
-            aboutwindow.setOnCloseRequest(eh -> {
-                aboutwindow = null;
-            });
-            aboutwindow.show();
-        } else {
-            aboutwindow.toFront();
-        }
     }
 
     /**

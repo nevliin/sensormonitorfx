@@ -69,6 +69,8 @@ public class IOUtils {
      * Statement to execute queries and commands for the database
      */
     private static Statement stat;
+    
+    private static final int tableColumns = 7;
 
     // -------------- GETTERS & SETTERS ----------------------------------------    
     /**
@@ -147,7 +149,7 @@ public class IOUtils {
     }
 
     /**
-     *
+     * Get a Statement for interacting with the connected database
      */
     public static Statement getStatement() {
         return stat;
@@ -211,7 +213,7 @@ public class IOUtils {
      * @throws IllegalTableNameException
      */
     public static void renameTable(String oldname, String newname) throws IllegalTableNameException {
-        if (!newname.toUpperCase().matches("[a-zA-Z][a-zA-Z0-9_]{1,30}") || isTableExistant(newname.toUpperCase())) {
+        if (!newname.toUpperCase().matches("[a-zA-Z][a-zA-Z0-9_]{1,30}") || tables.contains(newname.toUpperCase())) {
             throw new IllegalTableNameException();
         }
         try {
@@ -243,7 +245,7 @@ public class IOUtils {
     /**
      * Loads a table/recording from the database and returns it as ResultSet
      *
-     * @param table
+     * @param table Name of the database table/recording
      * @return
      */
     public static ResultSet loadRecording(String table) {
@@ -258,11 +260,11 @@ public class IOUtils {
 
     /**
      * Clear the list of database tables, get a list of all tables from the
-     * database and add
+     * database and add them to the list
      */
     public static void reloadTables() {
+        tables.clear();
         try {
-            tables.clear();
             DatabaseMetaData meta = conn.getMetaData();
             ResultSet rs = meta.getTables(null, null, null,
                     new String[]{"TABLE"});
@@ -293,28 +295,14 @@ public class IOUtils {
     /**
      * Drops a specific table in the database
      *
-     * @param name
+     * @param table Name of the table to be dropped
      */
-    public static void dropTable(String name) {
+    public static void dropTable(String table) {
         try {
-            stat.execute("DROP TABLE " + name);
-            tables.remove(name);
+            stat.execute("DROP TABLE " + table);
+            tables.remove(table);
         } catch (SQLException ex) {
             LogHandler.LOGGER.log(Level.SEVERE, null, ex);
-        }
-    }
-
-    /**
-     * Returns true if a table with this name exists in the database
-     *
-     * @param name
-     * @return
-     */
-    public static boolean isTableExistant(String name) {
-        if (tables.contains(name.toUpperCase())) {
-            return true;
-        } else {
-            return false;
         }
     }
 
@@ -335,7 +323,7 @@ public class IOUtils {
     /**
      * Generate a random String as placeholder name for a table
      *
-     * @param length
+     * @param length Length of the String
      * @return
      */
     private static String generateRandomString(int length) {
@@ -351,8 +339,8 @@ public class IOUtils {
     // -------------- PROPERTIES METHODS ---------------------------------------
     /**
      * Tries to load the configuration and creates it if it doesn't exist yet.
-     * IMPORTANT: Do not use LogHandler.LOGGER in this method as it is created only
-     * after loading the configuration
+     * IMPORTANT: Do not use LogHandler.LOGGER in this method as it can only be
+     * created after loading the configuration
      */
     public static void loadConfiguration() {
         LogHandler.langpack = ResourceBundle.getBundle("lang.logging", new Locale("en"));
@@ -445,7 +433,7 @@ public class IOUtils {
     }
 
     /**
-     * Saves the config.configProperties
+     * Saves the config.properties
      */
     public static void saveConfigProperties() {
         try {
@@ -459,7 +447,7 @@ public class IOUtils {
     }
 
     /**
-     * Get a List of the sensors defined in sensors.configProperties
+     * Get a List of the sensors defined in sensors.properties
      *
      * @return List of sensors
      * @throws IllegalSensorAmountException
@@ -497,9 +485,8 @@ public class IOUtils {
 
     // -------------- RESOURCEBUNDLE METHODS -----------------------------------
     /**
-     * Get a hashmap of the available language packs with the corresponding
-     * Locale
-     *
+     * Load all available language packs from the JAR and add them to the
+     * HashMap languages with the corresponding name
      */
     public static void loadAvailableLanguages() {
         ArrayList<String> langs = new ArrayList<>();
@@ -521,6 +508,7 @@ public class IOUtils {
         } catch (URISyntaxException ex) {
             LogHandler.LOGGER.log(Level.SEVERE, null, ex);
         }
+        languages.clear();
         for (String s : langs) {
             String s1 = s.split("_")[1];
             String abbreviation = s1.split("\\.")[0];
@@ -531,7 +519,7 @@ public class IOUtils {
     // -------------- CSS STYLESHEET METHODS -----------------------------------
     /**
      * Load a list of the available stylesheets from the JAR (excluding
-     * base.css)
+     * base.css) and add them to the List styles
      */
     public static void loadAvailableStyles() {
         ArrayList<String> stylesUncut = new ArrayList<>();
@@ -563,9 +551,9 @@ public class IOUtils {
     }
 
     /**
-     * Get a specific stylesheet from the JAR
+     * Get the path to a specific stylesheet from the JAR
      *
-     * @param name
+     * @param name Name of the stylesheet (excluding .css)
      * @return
      */
     public static String getStyleSheet(String name) {
@@ -584,8 +572,8 @@ public class IOUtils {
      * Export a recording from the database into a CSV file in the selected
      * directory
      *
-     * @param recordingname
-     * @param exportpath
+     * @param recordingname Name of the database table/recording
+     * @param exportpath Path the folder the recording should be exported to
      */
     public static void exportRecording(String recordingname, String exportpath) throws IOException, SQLException {
         exportpath += File.separator + recordingname + ".csv";
@@ -612,7 +600,7 @@ public class IOUtils {
     /**
      * Imports a recording from the selected CSV file into the database
      *
-     * @param file
+     * @param file CSV file containing the recording
      * @throws IllegalTableNameException
      * @throws IOException
      * @throws ParseException
@@ -621,8 +609,11 @@ public class IOUtils {
     public static void importRecording(File file) throws IllegalTableNameException, IOException, ParseException, ImportRecordingException {
         String name = file.getName();
         String[] namesplit = name.split("\\.");
-        if (!namesplit[0].toUpperCase().matches("[a-zA-Z][a-zA-Z0-9_]{1,30}") || isTableExistant(namesplit[0].toUpperCase())) {
+        if (!namesplit[0].toUpperCase().matches("[a-zA-Z][a-zA-Z0-9_]{1,30}") || tables.contains(namesplit[0].toUpperCase())) {
             throw new IllegalTableNameException();
+        }
+        if(!namesplit[1].equals("csv")) {
+            throw new ImportRecordingException();
         }
         String genericName = createGenericTable();
         renameTable(genericName, namesplit[0]);
@@ -630,7 +621,7 @@ public class IOUtils {
         String line = "";
         while ((line = in.readLine()) != null) {
             String[] linesplit = line.split(";");
-            if (linesplit.length != 4 + Data.values().length) {
+            if (linesplit.length != tableColumns) {
                 dropTable(namesplit[0]);
                 in.close();
                 throw new ImportRecordingException();
@@ -656,8 +647,8 @@ public class IOUtils {
      * Validate that the keys of the properties to check match the keys of the
      * template properties
      *
-     * @param check
-     * @param template
+     * @param check Properties that need to be checked
+     * @param template Properties that provide the template for checking
      * @throws de.hfts.sensormonitor.exceptions.IllegalConfigurationException
      */
     public static void validateProperties(Properties check, Properties template) throws IllegalConfigurationException {

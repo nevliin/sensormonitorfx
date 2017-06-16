@@ -6,6 +6,7 @@
 package de.hfts.sensormonitor.viewelements;
 
 import de.hfts.sensormonitor.model.TableDataChangeListener;
+import javafx.application.Platform;
 import javafx.collections.ObservableList;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
@@ -13,15 +14,18 @@ import javafx.scene.control.TableView;
 /**
  * SensorTable --- Class inherited from JavaFX' TableView. Displays the data
  * saved in a TableData and reacts to changes of the data.
- * 
+ *
  * @author Polarix IT Solutions
  */
 public class SensorTable extends TableView implements TableDataChangeListener {
 
     @Override
     public void dataChanged() {
-        ((TableColumn) this.getColumns().get(0)).setVisible(false);
-        ((TableColumn) this.getColumns().get(0)).setVisible(true);
+        // Force the SensorTable to update its data
+        Platform.runLater(() -> {
+            ((TableColumn) this.getColumns().get(0)).setVisible(false);
+            ((TableColumn) this.getColumns().get(0)).setVisible(true);
+        });
     }
 
 }

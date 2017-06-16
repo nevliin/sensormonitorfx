@@ -8,6 +8,8 @@ package de.hfts.sensormonitor.model;
 import com.sun.javafx.collections.ObservableListWrapper;
 import de.hft.ss17.cebarround.*;
 import java.util.*;
+import java.util.concurrent.Executor;
+import java.util.concurrent.Executors;
 import javafx.application.Platform;
 import javafx.collections.ObservableList;
 
@@ -18,8 +20,6 @@ import javafx.collections.ObservableList;
  * @author Polarix IT Solutions
  */
 public class SensorData implements CeBarRoundObserver<SensorEvent> {
-    
-    long oldTime = 0;
 
     // -------------- PUBLIC ENUMERATIONS --------------------------------------
     /**
@@ -42,9 +42,28 @@ public class SensorData implements CeBarRoundObserver<SensorEvent> {
     }
 
     // -------------- PRIVATE FIELDS -------------------------------------------
+    /**
+     * Executor for processing incoming sensor data IMPORTANT:
+     * Platform.runlater() must be used when adding processed data to the UI
+     */
+    private Executor dataExecutor = Executors.newSingleThreadExecutor();
+    /**
+     * List of SensorDataChangeListeners added to this instance of SensorData
+     */
     private List<SensorDataChangeListener> listeners = new ArrayList<>();
+    /**
+     * List of SensorIDs, provides the model for the ComboCheckBox on the main
+     * page
+     */
     private ObservableList<String> sensorIDs = new ObservableListWrapper<>(new ArrayList<String>());
+    /**
+     * Map of Part type codes with the SensorIDs as key
+     */
     private Map<Long, String> partTypeCodes = new LinkedHashMap<>();
+    /**
+     * Map of received sensor data, stored separated by type of data and
+     * SensorID
+     */
     private Map<Data, Map<Long, ArrayList<SensorDataPoint>>> graphs = new LinkedHashMap<>();
 
     // -------------- CONSTRUCTORS ---------------------------------------------
@@ -66,7 +85,7 @@ public class SensorData implements CeBarRoundObserver<SensorEvent> {
      */
     @Override
     public void sensorDataEventListener(SensorEvent cbre) {
-        Platform.runLater(() -> {            
+        dataExecutor.execute(() -> {
             // Create new ArrayList's and save the TypeCode if the SensorID is unknown
             if (!partTypeCodes.keySet().contains(cbre.getUniqueSensorIdentifier())) {
                 partTypeCodes.put(cbre.getUniqueSensorIdentifier(), cbre.getSensorTypeCode());
@@ -82,10 +101,11 @@ public class SensorData implements CeBarRoundObserver<SensorEvent> {
 
             notifyListenersOfDataChange(cbre.getUniqueSensorIdentifier());
         });
-        
     }
 
     /**
+     * Adds a sensor by adding it to the corresponding Lists and Maps as well as
+     * notifying listeners
      *
      * @param sensorID
      * @param typeCode
@@ -168,7 +188,5 @@ public class SensorData implements CeBarRoundObserver<SensorEvent> {
     public Map<Data, Map<Long, ArrayList<SensorDataPoint>>> getGraphs() {
         return graphs;
     }
-    
-        
 
 }

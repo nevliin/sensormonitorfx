@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package de.hfts.sensormonitor.controller;
 
 import de.hfts.sensormonitor.exceptions.*;
@@ -12,7 +7,6 @@ import de.hfts.sensormonitor.viewelements.SensorChart;
 import java.net.URL;
 import java.util.ResourceBundle;
 import java.util.logging.Level;
-import java.util.logging.Logger;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.*;
@@ -30,6 +24,8 @@ public class EditChartController implements Initializable {
      * ChartData of the related SensorChart
      */
     ChartData chartData;
+
+    // -------------- PRIVATE FIELDS -----------------------------------
     /**
      * SensorChart related to the editChartWindow
      */
@@ -90,7 +86,7 @@ public class EditChartController implements Initializable {
         this.labelTitle.setText(labelTitle.getText() + ": " + IOUtils.getLangpackString(chartData.getType().toString().toLowerCase()));
         String xMin = Double.toString(chartData.getxMin());
         String xMax = Double.toString(chartData.getxMax());
-        
+
         String yMin = Double.toString(chartData.getyMin());
         if (chartData.getyMin() == Double.MAX_VALUE) {
             yMin = "AUTO";
@@ -102,7 +98,7 @@ public class EditChartController implements Initializable {
             yMax = "AUTO";
             textFieldYMax.setDisable(true);
         }
-        
+
         textFieldXMin.setText(xMin);
         textFieldXMax.setText(xMax);
         textFieldYMin.setText(yMin);
