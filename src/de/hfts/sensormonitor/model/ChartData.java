@@ -169,36 +169,36 @@ public class ChartData implements SensorDataChangeListener {
      * @param points List of SensorDataPoint's with received data
      */
     private void setPointsToSeries(XYChart.Series series, List<SensorDataPoint> points) {
-        try {
-            Platform.runLater(() -> {
-                series.getData().clear();
-            });
-        } catch (NullPointerException e) {
-            // NO-OP - Catching NullPointerException if the series doesn't have any data yet
+        List<XYChart.Data> data = new ArrayList<>();
+        double lastTime = 0;
+        Date lastPoint = null;
+        for (SensorDataPoint p : points) {
+            double time = 0;
+            if (lastPoint != null) {
+                time = lastPoint.getTime() - p.time.getTime();
+                time = lastTime - (time / 1000.0);
+            }
+            if (time >= this.getxMin() - 1) {
+                if (!p.isEmpty()) {
+                    final double currentTime = time;
+                    data.add(new XYChart.Data(currentTime, p.value));
+                }
+            }
+            lastPoint = p.time;
+            lastTime = time;
         }
         Platform.runLater(() -> {
-            double lastTime = 0;
-            Date lastPoint = null;
-            for (SensorDataPoint p : points) {
-                double time = 0;
-                if (lastPoint != null) {
-                    time = lastPoint.getTime() - p.time.getTime();
-                    time = lastTime - (time / 1000.0);
-                }
-                if (time >= this.getxMin() - 1) {
-                    if (!p.isEmpty()) {
-                        try {
-                            final double currentTime = time;
-                            Platform.runLater(() -> {
-                                series.getData().add(new XYChart.Data(currentTime, p.value));
-                            });
-                        } catch (NullPointerException e) {
-                            // NO-OP
-                        }
-                    }
-                }
-                lastPoint = p.time;
-                lastTime = time;
+            try {
+                series.getData().clear();
+            } catch (NullPointerException e) {
+                // NO-OP - Catching NullPointerException if the series doesn't have any data yet
+            }
+        });
+
+        // Add all new data at once to prevent lag in the rendering of the data
+        Platform.runLater(() -> {
+            for (XYChart.Data d : data) {
+                series.getData().add(d);
             }
         });
     }
@@ -272,7 +272,7 @@ public class ChartData implements SensorDataChangeListener {
 
     /**
      * Returns all series of the ChartData
-     * 
+     *
      * @return Collection of all series
      */
     public Collection<XYChart.Series<Double, Double>> getSeries() {
