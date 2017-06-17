@@ -73,11 +73,28 @@ public class SettingsController implements Initializable {
     private Label labelErrorAppearance;
 
     // -------------- PRIVATE FIELDS -------------------------------------------
+    /**
+     * Controller of the main window
+     */
     private MainController mainController;
+    /**
+     * Indicator if a reboot of the application is necessary because the
+     * language was changed
+     */
     private boolean isLanguageRebootNecessary = false;
+    /**
+     * Indicator if a reboot of the application is necessary because the
+     * appearance was changed
+     */
     private boolean isAppearanceRebootNecessary = false;
 
+    /**
+     * Current language of the application
+     */
     private String currentLanguage;
+    /**
+     * Current appearance of the application
+     */
     private String currentAppearance;
 
     // -------------- FXML HANDLERS --------------------------------------------
@@ -117,7 +134,7 @@ public class SettingsController implements Initializable {
             for (TableData td : mainController.getTableDatas().values()) {
                 td.setMinTime(0 - Integer.valueOf(textFieldTimeFrame.getText()));
             }
-            LogHandler.LOGGER.info(LogHandler.getLangpackString("language_changed") + ": " + IOUtils.getConfigProp("realtime_timeframe") + "->" + textFieldTimeFrame.getText());
+            LogHandler.LOGGER.info(LogHandler.getLangpackString("timeframe_changed") + ": " + IOUtils.getConfigProp("realtime_timeframe") + "->" + textFieldTimeFrame.getText());
             IOUtils.setConfigProp("realtime_timeframe", textFieldTimeFrame.getText());
             IOUtils.saveConfigProperties();
         }
@@ -126,7 +143,7 @@ public class SettingsController implements Initializable {
                 sc.setCreateSymbols(checkBoxDisplayPoints.isSelected());
             }
             LogHandler.LOGGER.info(LogHandler.getLangpackString("display_point_symbols_changed") + ": " + IOUtils.getConfigProp("displayPointSymbols") + "->" + checkBoxDisplayPoints.isSelected());
-            
+
             IOUtils.setConfigProp("displayPointSymbols", Boolean.toString(checkBoxDisplayPoints.isSelected()));
             IOUtils.saveConfigProperties();
         }
@@ -188,7 +205,7 @@ public class SettingsController implements Initializable {
     // -------------- GETTERS & SETTERS ----------------------------------------
     /**
      *
-     * @param mc
+     * @param mc Controller of the main window
      */
     public void setMainController(MainController mc) {
         this.mainController = mc;

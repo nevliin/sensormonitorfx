@@ -411,7 +411,7 @@ public class MainController implements Initializable {
 
     /**
      *
-     * @return
+     * @return List of ChartData's 
      */
     public List<SensorChart> getSensorCharts() {
         return sensorCharts;
@@ -419,7 +419,7 @@ public class MainController implements Initializable {
 
     /**
      *
-     * @return
+     * @return Map of TableData's with the data type as key
      */
     public Map<Data, TableData> getTableDatas() {
         return tableDatas;
@@ -435,7 +435,7 @@ public class MainController implements Initializable {
      * setUpCharts() and setUpTables(). Starts receiving data from the sensors
      * when done.
      *
-     * @param sensors
+     * @param sensors List of sensors connected to the application
      */
     public void startDisplay(List<BaseSensor> sensors) {
         this.sensors = sensors;
@@ -496,14 +496,14 @@ public class MainController implements Initializable {
      * Sets up the ChartDatas and SensorCharts with configuration from IOUtils
      * and connects them.
      *
-     * @param data
+     * @param data SensorData connected to the sensors
      */
-    public void setUpCharts(SensorData data) {
-        ChartData dataTemperature = new ChartData(Data.TEMPERATURE, data);
+    public void setUpCharts(SensorData sensorData) {
+        ChartData dataTemperature = new ChartData(Data.TEMPERATURE, sensorData);
         chartDatas.add(dataTemperature);
-        ChartData dataPressure = new ChartData(Data.PRESSURE, data);
+        ChartData dataPressure = new ChartData(Data.PRESSURE, sensorData);
         chartDatas.add(dataPressure);
-        ChartData dataRevolutions = new ChartData(Data.REVOLUTIONS, data);
+        ChartData dataRevolutions = new ChartData(Data.REVOLUTIONS, sensorData);
         chartDatas.add(dataRevolutions);
         for (ChartData cd : chartDatas) {
             cd.setxMin(0 - Double.valueOf(IOUtils.getConfigProp("realtime_timeframe")));
@@ -544,7 +544,7 @@ public class MainController implements Initializable {
      * Sets up the TableViews and TableDatas with configuration from IOUtils and
      * connects them.
      *
-     * @param sensorData
+     * @param sensorData SensorData connected to the sensors
      */
     public void setUpTables(SensorData sensorData) {
         tableViews.put(Data.TEMPERATURE, tableViewTemperature);
@@ -622,7 +622,7 @@ public class MainController implements Initializable {
     /**
      * Closes tabs of the mainTabPane based on the name of the Tab
      *
-     * @param name
+     * @param name Title of the tab
      */
     public void closeTab(String name) {
         ObservableList<Tab> tabs = mainTabPane.getTabs();
@@ -636,7 +636,7 @@ public class MainController implements Initializable {
     /**
      * Closes tabs of the mainTabPane based on the names of the Tab's
      *
-     * @param names
+     * @param names List of the titles of the tabs
      */
     public void closeTab(List<String> names) {
         ObservableList<Tab> tabs = mainTabPane.getTabs();
@@ -651,7 +651,7 @@ public class MainController implements Initializable {
      * Creates a Tab and loads the according FXML file for displaying a
      * recording from the Embedded H2 Database in SensorChart's
      *
-     * @param recordingName
+     * @param recordingName Name of the recording to be displayed
      */
     public void displayRecording(String recordingName) {
         try {

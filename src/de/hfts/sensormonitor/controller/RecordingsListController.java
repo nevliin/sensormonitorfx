@@ -123,7 +123,7 @@ public class RecordingsListController implements Initializable {
     // -------------- GETTERS & SETTERS
     /**
      *
-     * @param tables
+     * @param tables List of database tables/recordings
      */
     public void setListItems(List<String> tables) {
         recordingsList.setItems(FXCollections.observableArrayList(tables));
@@ -131,7 +131,7 @@ public class RecordingsListController implements Initializable {
 
     /**
      *
-     * @param mc
+     * @param mc Controller of the main window
      */
     public void setParentController(MainController mc) {
         this.parentController = mc;

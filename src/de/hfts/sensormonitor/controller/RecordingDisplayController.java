@@ -51,8 +51,10 @@ public class RecordingDisplayController implements Initializable {
     }
 
     /**
-     * Sets the recording of the tab, adds data to the CheckComboBox, Label and SensorChart's.
-     * @param recording
+     * Sets the recording of the tab, adds data to the CheckComboBox, Label and
+     * SensorChart's.
+     *
+     * @param recording Recording loaded from the database and converted
      */
     public void setRecording(Recording recording) {
         labelInfo.setText(recording.getFirsttimestamp().toString() + " - " + recording.getLasttimestamp().toString());

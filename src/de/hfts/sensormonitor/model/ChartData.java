@@ -24,7 +24,7 @@ public class ChartData implements SensorDataChangeListener {
     /**
      * List of listeners for changes in the axis-bounds
      */
-    private List<ChartDataChangeListener> listeners;
+    private List<ChartDataChangeListener> listeners = new ArrayList<>();
     /**
      * Data model for SensorCharts
      */
@@ -32,7 +32,7 @@ public class ChartData implements SensorDataChangeListener {
     /**
      * Map storing the Series with the SensorID's as keys for easy access
      */
-    private HashMap<Long, XYChart.Series<Double, Double>> chartGraphs;
+    private Map<Long, XYChart.Series<Double, Double>> chartGraphs = new HashMap<>();
     /**
      * Map of part type codes with the SensorIDs as key
      */
@@ -102,9 +102,7 @@ public class ChartData implements SensorDataChangeListener {
      * @param type
      */
     public ChartData(Data type) {
-        listeners = new ArrayList<>();
         this.type = type;
-        this.chartGraphs = new HashMap<>();
     }
 
     // -------------- LISTENER METHODS -----------------------------------------
@@ -148,8 +146,8 @@ public class ChartData implements SensorDataChangeListener {
     /**
      * Adds a List of SensorDataPoint's to the ChartData
      *
-     * @param sensorID
-     * @param points
+     * @param sensorID Sensor ID of the sensors the data was received from
+     * @param points List of SensorDataPoint's with received data
      */
     public void addGraphToChart(long sensorID, List<SensorDataPoint> points) {
         if (chartGraphs.get(sensorID) == null) {
@@ -167,8 +165,8 @@ public class ChartData implements SensorDataChangeListener {
     /**
      * Clears the series and adds the given SensorDataPoint's to it
      *
-     * @param series
-     * @param points
+     * @param series Series of the SensorChart
+     * @param points List of SensorDataPoint's with received data
      */
     private void setPointsToSeries(XYChart.Series series, List<SensorDataPoint> points) {
         try {
@@ -208,7 +206,7 @@ public class ChartData implements SensorDataChangeListener {
     /**
      * Listener for changes in the connected SensorData
      *
-     * @param sensorID
+     * @param sensorID SensorID of the sensor which data changed
      */
     @Override
     public void dataChanged(long sensorID) {
@@ -222,7 +220,7 @@ public class ChartData implements SensorDataChangeListener {
     /**
      * Returns a new ChartData with the attributes of this ChartData
      *
-     * @return
+     * @return New ChartData with similar variable values
      */
     public ChartData clone() {
         ChartData result = new ChartData(this.type, this.sensorData);
@@ -239,8 +237,11 @@ public class ChartData implements SensorDataChangeListener {
     }
 
     /**
-     * @param sensorID
-     * @param isVisible
+     * Changes the visibility of a specific graph
+     *
+     * @param sensorID SensorID of the sensors whose graphs visibility should be
+     * changed
+     * @param isVisible Boolean indicating the visibility
      */
     public void setGraphVisible(long sensorID, boolean isVisible) {
         if (isVisible) {
@@ -262,16 +263,17 @@ public class ChartData implements SensorDataChangeListener {
     /**
      * Returns a series from the ChartData based on the SensorID
      *
-     * @param sensorID
-     * @return
+     * @param sensorID SensorID of the sensor
+     * @return Series of the SensorChart
      */
     public XYChart.Series<Double, Double> getSeries(long sensorID) {
         return chartGraphs.get(sensorID);
     }
 
     /**
-     *
-     * @return
+     * Returns all series of the ChartData
+     * 
+     * @return Collection of all series
      */
     public Collection<XYChart.Series<Double, Double>> getSeries() {
         return chartGraphs.values();
