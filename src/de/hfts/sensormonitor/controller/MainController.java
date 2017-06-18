@@ -225,6 +225,7 @@ public class MainController implements Initializable {
                     });
                     LogHandler.LOGGER.log(Level.SEVERE, null, ex);
                 }
+                LogHandler.LOGGER.info(LogHandler.getLangpackString("recording_imported") + ": " + file.getName().split("\\.")[0]);
             });
             t.start();
         }
