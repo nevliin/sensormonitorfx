@@ -10,6 +10,7 @@
             <file>file:/I:/WiInfProjekt/sensormonitorfx/src/de/hfts/sensormonitor/misc/Recorder.java</file>
             <file>file:/I:/WiInfProjekt/sensormonitorfx/src/de/hfts/sensormonitor/execute/SensorMonitor.java</file>
             <file>file:/I:/WiInfProjekt/sensormonitorfx/src/de/hfts/sensormonitor/controller/RecordingDisplayController.java</file>
+            <file>file:/I:/WiInfProjekt/sensormonitorfx/resources/lang/lang_fr.properties</file>
             <file>file:/I:/WiInfProjekt/sensormonitorfx/src/de/hfts/sensormonitor/view/recordingDisplay.fxml</file>
             <file>file:/I:/WiInfProjekt/sensormonitorfx/resources/images/logo_polarix.png</file>
             <file>file:/I:/WiInfProjekt/sensormonitorfx/src/de/hfts/sensormonitor/exceptions/IllegalSensorAmountException.java</file>
@@ -29,6 +30,7 @@
             <file>file:/I:/WiInfProjekt/sensormonitorfx/src/de/hfts/sensormonitor/misc/LogHandler.java</file>
             <file>file:/I:/WiInfProjekt/sensormonitorfx/resources/lang/lang_en.properties</file>
             <file>file:/I:/WiInfProjekt/sensormonitorfx/src/de/hfts/sensormonitor/view/editChartWindow.fxml</file>
+            <file>file:/I:/WiInfProjekt/sensormonitorfx/resources/lang/lang_tr.properties</file>
             <file>file:/I:/WiInfProjekt/sensormonitorfx/src/de/hfts/sensormonitor/model/SensorData.java</file>
             <file>file:/I:/WiInfProjekt/sensormonitorfx/src/de/hfts/sensormonitor/exceptions/IllegalConfigurationException.java</file>
             <file>file:/I:/WiInfProjekt/sensormonitorfx/src/de/hfts/sensormonitor/exceptions/SensorMonitorException.java</file>

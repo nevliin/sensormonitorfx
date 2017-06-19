@@ -302,12 +302,6 @@ public class MainController implements Initializable {
     }
 
     /**
-     * Handle clicking the MenuItem "About", part of the Menu "Help"
-     */
-    public void handleMenuItemAbout() {
-    }
-
-    /**
      * Handle clicking the Button "Start recording"
      */
     public void handleButtonStartRecording() {
