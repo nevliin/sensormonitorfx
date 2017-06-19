@@ -491,7 +491,7 @@ public class MainController implements Initializable {
      * Sets up the ChartDatas and SensorCharts with configuration from IOUtils
      * and connects them.
      *
-     * @param data SensorData connected to the sensors
+     * @param sensorData SensorData connected to the sensors
      */
     public void setUpCharts(SensorData sensorData) {
         ChartData dataTemperature = new ChartData(Data.TEMPERATURE, sensorData);

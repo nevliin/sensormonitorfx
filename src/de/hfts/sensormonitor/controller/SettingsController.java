@@ -99,7 +99,7 @@ public class SettingsController implements Initializable {
 
     // -------------- FXML HANDLERS --------------------------------------------
     /**
-     *
+     * Handle the Button "Save" in the Tab "Language"
      */
     public void handleSaveButtonLanguage() {
         if (((String) comboBoxLanguages.getValue()).equals(currentLanguage)) {
@@ -118,7 +118,7 @@ public class SettingsController implements Initializable {
     }
 
     /**
-     *
+     * Handle the Button "Apply" in the Tab "Graphs"
      */
     public void handleApplyButtonGraphs() {
         if (Integer.valueOf(textFieldTimeFrame.getText()) > (0 - Integer.valueOf(IOUtils.getConfigProp("realtime_xscalemin")))) {
@@ -150,7 +150,7 @@ public class SettingsController implements Initializable {
     }
 
     /**
-     *
+     * Handle the Button "Save" in the Tab "Appearance"
      */
     public void handleSaveButtonAppearance() {
         if (((String) comboBoxAppearance.getValue()).equals(currentAppearance)) {

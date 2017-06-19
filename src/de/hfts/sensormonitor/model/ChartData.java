@@ -297,7 +297,7 @@ public class ChartData implements SensorDataChangeListener {
 
     /**
      *
-     * @param xScaleMin
+     * @param xScaleMin Minimal value of the X-axis
      */
     public void setxScaleMin(double xScaleMin) {
         this.xScaleMin = xScaleMin;
@@ -313,7 +313,7 @@ public class ChartData implements SensorDataChangeListener {
 
     /**
      *
-     * @param xScaleMax
+     * @param xScaleMax Maximal value of the X-axis
      */
     public void setxScaleMax(double xScaleMax) {
         this.xScaleMax = xScaleMax;
@@ -329,7 +329,7 @@ public class ChartData implements SensorDataChangeListener {
 
     /**
      *
-     * @param yScaleMin
+     * @param yScaleMin Minimal value of the Y-axis
      */
     public void setyScaleMin(double yScaleMin) {
         this.yScaleMin = yScaleMin;
@@ -345,7 +345,7 @@ public class ChartData implements SensorDataChangeListener {
 
     /**
      *
-     * @param yScaleMax
+     * @param yScaleMax Maximal value of the Y-axis
      */
     public void setyScaleMax(double yScaleMax) {
         this.yScaleMax = yScaleMax;

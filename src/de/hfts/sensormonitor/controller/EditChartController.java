@@ -79,7 +79,7 @@ public class EditChartController implements Initializable {
      * Sets the ChartData to the Controller and assigns the values of it to the
      * according TextField's
      *
-     * @param chartData
+     * @param chartData ChartData of the related SensorChart
      */
     public void setChartData(ChartData chartData) {
         this.chartData = chartData;

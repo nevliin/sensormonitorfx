@@ -1,16 +1,11 @@
 package de.hfts.sensormonitor.viewelements;
-
-import com.sun.javafx.charts.Legend;
-import com.sun.javafx.charts.Legend.LegendItem;
 import de.hfts.sensormonitor.controller.EditChartController;
-import de.hfts.sensormonitor.misc.IOUtils;
 import de.hfts.sensormonitor.misc.LogHandler;
 import de.hfts.sensormonitor.model.*;
 import java.io.IOException;
 import java.net.URL;
 import java.util.*;
 import java.util.logging.Level;
-import java.util.logging.Logger;
 import javafx.application.Platform;
 import javafx.event.EventHandler;
 import javafx.fxml.FXMLLoader;
@@ -21,9 +16,6 @@ import javafx.scene.control.*;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.input.*;
 import javafx.scene.layout.*;
-import javafx.scene.paint.Color;
-import javafx.scene.text.Font;
-import javafx.scene.text.FontWeight;
 import javafx.stage.Stage;
 
 /**

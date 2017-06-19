@@ -127,16 +127,16 @@ public class Recording {
 
     // -------------- GETTERS & SETTERS ----------------------------------------
     /**
-     *
-     * @return
+     * Returns the first timestamp in the recording
+     * @return First timestamp in the recording
      */
     public Timestamp getFirsttimestamp() {
         return firsttimestamp;
     }
 
     /**
-     *
-     * @return
+     * Returns the last timestamp in the recording
+     * @return Last Timestamp in the recording
      */
     public Timestamp getLasttimestamp() {
         return lasttimestamp;

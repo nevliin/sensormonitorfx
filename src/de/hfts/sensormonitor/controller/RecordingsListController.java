@@ -32,10 +32,16 @@ import javafx.stage.DirectoryChooser;
 public class RecordingsListController implements Initializable {
 
     // -------------- FXML FIELDS ----------------------------------------------
+    /**
+     * ListView displaying a list of all available recordings
+     */
     @FXML
     private ListView recordingsList;
 
     // -------------- PRIVATE FIELDS -------------------------------------------
+    /**
+     * Controller of the main window
+     */
     private MainController parentController;
 
     // -------------- OTHER METHODS --------------------------------------------
