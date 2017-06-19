@@ -147,10 +147,6 @@ public class MainController implements Initializable {
     Stage settingsWindow;
 
     /**
-     * Indicates if the application is connected to the H2 database
-     */
-    boolean isDBConnected;
-    /**
      * Indicates if the sensors are currently being measured
      */
     boolean isMeasuring = false;
@@ -374,28 +370,6 @@ public class MainController implements Initializable {
     }
 
     // -------------- GETTERS & SETTERS ----------------------------------------
-    /**
-     *
-     * @return Boolean indicating if the application is connected to the database
-     */
-    public boolean isDBConnected() {
-        return isDBConnected;
-    }
-
-    /**
-     *
-     * @param isDBConnected Boolean indicating if the application is connected to the database
-     */
-    public void setDBConnected(boolean isDBConnected) {
-        this.isDBConnected = isDBConnected;
-        if (isDBConnected) {
-            menuRecordings.setDisable(false);
-            buttonStartRecording.setDisable(false);
-        } else {
-            menuRecordings.setDisable(true);
-            buttonStartRecording.setDisable(true);
-        }
-    }
 
     /**     
      * @return List of all ChartData's

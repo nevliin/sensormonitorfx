@@ -42,7 +42,6 @@ public class CeBarRoundMonitor extends Application {
      */
     @Override
     public void start(Stage stage) throws Exception {
-        boolean isDBConnected = true;
         IOUtils.loadConfiguration();
         if (!isReboot) {
             LogHandler.createLogger();
@@ -53,11 +52,13 @@ public class CeBarRoundMonitor extends Application {
         try {
             IOUtils.connectDB();
             LogHandler.LOGGER.info(LogHandler.getLangpackString("database_connected"));
-        } catch (ClassNotFoundException | SQLException e) {
-            isDBConnected = false;
+        } catch (ClassNotFoundException e) {            
+            LogHandler.LOGGER.log(Level.SEVERE, null, e);
+        } catch (SQLException e) {
             LogHandler.LOGGER.log(Level.SEVERE, null, e);
             LogHandler.LOGGER.warning(LogHandler.getLangpackString("exception_databaseconnect"));
             new ExceptionDialog(IOUtils.getLangpackString("db_connect_error"), null);
+            System.exit(0);
         }
         List<BaseSensor> sensors = null;
         try {
@@ -73,7 +74,7 @@ public class CeBarRoundMonitor extends Application {
         Image image = new Image(url.toExternalForm());
         stage.getIcons().add(image);
 
-        loadMainWindow(stage, sensors, isDBConnected);
+        loadMainWindow(stage, sensors);
     }
 
     /**
@@ -83,7 +84,7 @@ public class CeBarRoundMonitor extends Application {
      * @param sensors List of BaseSensor's
      * @param isDBConnected Boolean indicating if the application is connected to the database
      */
-    private void loadMainWindow(Stage stage, List<BaseSensor> sensors, boolean isDBConnected) {
+    private void loadMainWindow(Stage stage, List<BaseSensor> sensors) {
         try {
             // Load the FXML file and save it as root
             FXMLLoader loader = new FXMLLoader();
@@ -91,9 +92,6 @@ public class CeBarRoundMonitor extends Application {
             loader.setLocation(url);
             loader.setResources(IOUtils.getLangpack());
             BorderPane root = (BorderPane) loader.load();
-
-            // Pass parameters to the controller
-            ((MainController) loader.getController()).setDBConnected(isDBConnected);
 
             // Create the scene and add it to the stage
             Scene scene = new Scene(root);
