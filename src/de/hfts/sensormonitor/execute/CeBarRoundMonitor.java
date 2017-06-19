@@ -12,7 +12,6 @@ import java.util.Locale;
 import java.util.Optional;
 import java.util.ResourceBundle;
 import java.util.logging.Level;
-import java.util.logging.Logger;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
@@ -23,12 +22,12 @@ import javafx.scene.layout.BorderPane;
 import javafx.stage.Stage;
 
 /**
- * SensorMonitor --- Starts the applications by loading Properties and the
- * mainWindow
+ * CeBarRoundMonitor --- Starts the applications by loading Properties and the
+ mainWindow
  *
  * @author Polarix IT Solutions
  */
-public class SensorMonitor extends Application {
+public class CeBarRoundMonitor extends Application {
 
     /**
      * Indicator if the application is rebooting

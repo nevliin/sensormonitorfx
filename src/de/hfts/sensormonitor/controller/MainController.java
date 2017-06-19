@@ -4,7 +4,7 @@ import de.hfts.sensormonitor.viewelements.SensorTable;
 import de.hfts.sensormonitor.viewelements.SensorChart;
 import de.hft.ss17.cebarround.BaseSensor;
 import de.hfts.sensormonitor.exceptions.*;
-import de.hfts.sensormonitor.execute.SensorMonitor;
+import de.hfts.sensormonitor.execute.CeBarRoundMonitor;
 import de.hfts.sensormonitor.misc.*;
 import de.hfts.sensormonitor.model.*;
 import de.hfts.sensormonitor.model.SensorData.Data;
@@ -604,7 +604,7 @@ public class MainController implements Initializable {
     public void rebootProgramm() {
         quitProgramm();
         LogHandler.LOGGER.info(LogHandler.getLangpackString("program_rebooting"));
-        SensorMonitor sm = new SensorMonitor();
+        CeBarRoundMonitor sm = new CeBarRoundMonitor();
         sm.isReboot = true;
         try {
             sm.start(new Stage());

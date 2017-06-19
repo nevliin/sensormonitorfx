@@ -92,7 +92,8 @@ public class SensorChart extends LineChart implements ChartDataChangeListener {
      * @param xAxisTitle Title of the X-axis
      * @param yAxisTitle Title of the Y-axis
      * @param langpack Language pack for the ContextMenu
-     * @param createSymbols Boolean indicating if symbols should be created or not
+     * @param createSymbols Boolean indicating if symbols should be created or
+     * not
      */
     public void setChartData(ChartData chartData, ResourceBundle langpack, String xAxisTitle, String yAxisTitle, boolean createSymbols) {
         this.chartdata = chartData;
@@ -100,7 +101,9 @@ public class SensorChart extends LineChart implements ChartDataChangeListener {
 
         chartData.addListener(this);
 
-        this.setData(chartdata.getObservableList());
+        Platform.runLater(() -> {
+            this.setData(chartdata.getObservableList());
+        });
         updateAxis();
 
         // Set up the ContextMenu
