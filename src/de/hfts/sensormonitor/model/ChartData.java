@@ -85,8 +85,8 @@ public class ChartData implements SensorDataChangeListener {
      * Creates new ChartData, sets type and starts listening to the SensorData
      * for new data
      *
-     * @param type
-     * @param sensorData
+     * @param type Type of data saved in the ChartData
+     * @param sensorData SensorData providing sensor data to the ChartData
      */
     public ChartData(Data type, SensorData sensorData) {
         listeners = new ArrayList<>();
@@ -99,7 +99,7 @@ public class ChartData implements SensorDataChangeListener {
     /**
      * Creates new ChartData and sets type
      *
-     * @param type
+     * @param type Type of data saved in the ChartData
      */
     public ChartData(Data type) {
         this.type = type;
@@ -210,7 +210,7 @@ public class ChartData implements SensorDataChangeListener {
      */
     @Override
     public void dataChanged(long sensorID) {
-        ArrayList<SensorDataPoint> points = sensorData.getPoints(type, sensorID);
+        List<SensorDataPoint> points = sensorData.getPoints(type, sensorID);
         if (chartGraphs.get(sensorID) == null) {
             partTypeCodes.put(sensorID, sensorData.getTypeCode(sensorID));
         }
@@ -281,7 +281,7 @@ public class ChartData implements SensorDataChangeListener {
 
     /**
      *
-     * @return
+     * @return ObservableList of the Series displayed in the related SensorChart
      */
     public ObservableList<XYChart.Series<Double, Double>> getObservableList() {
         return lineChartModel;
@@ -289,7 +289,7 @@ public class ChartData implements SensorDataChangeListener {
 
     /**
      *
-     * @return
+     * @return Minimal value of the lower bound of the X-axis
      */
     public double getxScaleMin() {
         return xScaleMin;
@@ -297,7 +297,7 @@ public class ChartData implements SensorDataChangeListener {
 
     /**
      *
-     * @param xScaleMin Minimal value of the X-axis
+     * @param xScaleMin Minimal value of the lower bound of the X-axis
      */
     public void setxScaleMin(double xScaleMin) {
         this.xScaleMin = xScaleMin;
@@ -305,7 +305,7 @@ public class ChartData implements SensorDataChangeListener {
 
     /**
      *
-     * @return
+     * @return Maximal value of the upper bound of the X-axis
      */
     public double getxScaleMax() {
         return xScaleMax;
@@ -313,7 +313,7 @@ public class ChartData implements SensorDataChangeListener {
 
     /**
      *
-     * @param xScaleMax Maximal value of the X-axis
+     * @param xScaleMax Maximal value of the upper bound of the X-axis
      */
     public void setxScaleMax(double xScaleMax) {
         this.xScaleMax = xScaleMax;
@@ -321,7 +321,7 @@ public class ChartData implements SensorDataChangeListener {
 
     /**
      *
-     * @return
+     * @return Minimal value of the lower bound of the Y-axis
      */
     public double getyScaleMin() {
         return yScaleMin;
@@ -329,7 +329,7 @@ public class ChartData implements SensorDataChangeListener {
 
     /**
      *
-     * @param yScaleMin Minimal value of the Y-axis
+     * @param yScaleMin Minimal value of the lower bound of the Y-axis
      */
     public void setyScaleMin(double yScaleMin) {
         this.yScaleMin = yScaleMin;
@@ -337,7 +337,7 @@ public class ChartData implements SensorDataChangeListener {
 
     /**
      *
-     * @return
+     * @return Maximal value of the upper bound of the Y-axis
      */
     public double getyScaleMax() {
         return yScaleMax;
@@ -345,7 +345,7 @@ public class ChartData implements SensorDataChangeListener {
 
     /**
      *
-     * @param yScaleMax Maximal value of the Y-axis
+     * @param yScaleMax Maximal value of the upper bound of the Y-axis
      */
     public void setyScaleMax(double yScaleMax) {
         this.yScaleMax = yScaleMax;
@@ -353,7 +353,7 @@ public class ChartData implements SensorDataChangeListener {
 
     /**
      *
-     * @return
+     * @return Lower bound of the X-axis
      */
     public double getxMin() {
         return xMin;
@@ -361,7 +361,7 @@ public class ChartData implements SensorDataChangeListener {
 
     /**
      *
-     * @param xMin
+     * @param xMin Lower bound of the X-axis
      */
     public void setxMin(double xMin) {
         this.xMin = xMin;
@@ -369,7 +369,7 @@ public class ChartData implements SensorDataChangeListener {
 
     /**
      *
-     * @return
+     * @return Upper bound of the X-axis
      */
     public double getxMax() {
         return xMax;
@@ -377,7 +377,7 @@ public class ChartData implements SensorDataChangeListener {
 
     /**
      *
-     * @param xMax
+     * @param xMax Upper bound of the X-axis
      */
     public void setxMax(double xMax) {
         this.xMax = xMax;
@@ -385,7 +385,7 @@ public class ChartData implements SensorDataChangeListener {
 
     /**
      *
-     * @return
+     * @return Lower bound of the Y-axis
      */
     public double getyMin() {
         return yMin;
@@ -393,7 +393,7 @@ public class ChartData implements SensorDataChangeListener {
 
     /**
      *
-     * @param yMin
+     * @param yMin Lower bound of the Y-axis
      */
     public void setyMin(double yMin) {
         this.yMin = yMin;
@@ -401,7 +401,7 @@ public class ChartData implements SensorDataChangeListener {
 
     /**
      *
-     * @return
+     * @return Upper bound of the Y-axis
      */
     public double getyMax() {
         return yMax;
@@ -409,7 +409,7 @@ public class ChartData implements SensorDataChangeListener {
 
     /**
      *
-     * @param yMax
+     * @param yMax Upper bound of the Y-axis
      */
     public void setyMax(double yMax) {
         this.yMax = yMax;
@@ -417,7 +417,7 @@ public class ChartData implements SensorDataChangeListener {
 
     /**
      *
-     * @return
+     * @return Type of data saved in the ChartData
      */
     public Data getType() {
         return type;
@@ -425,7 +425,7 @@ public class ChartData implements SensorDataChangeListener {
 
     /**
      *
-     * @param type
+     * @param type Type of data saved in the ChartData
      */
     public void setType(Data type) {
         this.type = type;
@@ -433,15 +433,15 @@ public class ChartData implements SensorDataChangeListener {
 
     /**
      *
-     * @return
+     * @return Map of part type codes with SensorID's as keys
      */
-    public HashMap<Long, String> getPartTypeCodes() {
+    public Map<Long, String> getPartTypeCodes() {
         return partTypeCodes;
     }
 
     /**
      *
-     * @param partTypeCodes
+     * @param partTypeCodes Map of part type codes with SensorID's as keys
      */
     public void setPartTypeCodes(HashMap<Long, String> partTypeCodes) {
         this.partTypeCodes = partTypeCodes;

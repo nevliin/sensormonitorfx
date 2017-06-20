@@ -8,6 +8,49 @@
 
 <TabPane fx:id="Settings" xmlns:fx="http://javafx.com/fxml/1" 
          fx:controller="de.hfts.sensormonitor.controller.SettingsController" tabClosingPolicy="UNAVAILABLE" >
+    <Tab text="%graphs" >
+        <GridPane styleClass="mainGridPane">
+            <children>
+                <Label text="%displayedtimeframe"
+                       GridPane.rowIndex="0" GridPane.columnIndex="0" />
+                <TextField fx:id="textFieldTimeFrame" 
+                           GridPane.rowIndex="0" GridPane.columnIndex="1" />
+                <CheckBox text="%display_point_symbols" fx:id="checkBoxDisplayPoints"
+                          GridPane.rowIndex="1" GridPane.columnIndex="0" 
+                          GridPane.columnSpan="2" />
+                <Label text=""
+                       GridPane.rowIndex="2" GridPane.columnIndex="0" />
+                <Label text=""
+                       GridPane.rowIndex="2" GridPane.columnIndex="1" />
+                <Label text=""
+                       GridPane.rowIndex="3" GridPane.columnIndex="0" />
+                <Label text=""
+                       GridPane.rowIndex="3" GridPane.columnIndex="1" />
+                <Label text=""
+                       GridPane.rowIndex="4" GridPane.columnIndex="0" />
+                <Label text=""
+                       GridPane.rowIndex="4" GridPane.columnIndex="1" />
+                <Label fx:id="labelErrorGraphs" 
+                       GridPane.rowIndex="5" GridPane.columnIndex="0" 
+                       GridPane.columnSpan="2" />
+                <Button text="%apply" onAction="#handleApplyButtonGraphs" maxWidth="1000"
+                        GridPane.rowIndex="6" GridPane.columnIndex="1" />
+            </children>
+            <columnConstraints>
+                <ColumnConstraints hgrow="ALWAYS" percentWidth="50" />                
+                <ColumnConstraints hgrow="ALWAYS" percentWidth="50" />
+            </columnConstraints>
+            <rowConstraints>
+                <RowConstraints vgrow="ALWAYS" />
+                <RowConstraints vgrow="ALWAYS" />
+                <RowConstraints vgrow="ALWAYS" />
+                <RowConstraints vgrow="ALWAYS" />
+                <RowConstraints vgrow="ALWAYS" />
+                <RowConstraints vgrow="ALWAYS" />
+                <RowConstraints vgrow="ALWAYS" />
+            </rowConstraints>
+        </GridPane>
+    </Tab>
     <Tab text="%language" >
         <GridPane styleClass="mainGridPane">
             <children>
@@ -52,56 +95,13 @@
             </rowConstraints>
         </GridPane>
     </Tab>
-    <Tab text="%graphs" >
-        <GridPane styleClass="mainGridPane">
-            <children>
-                <Label text="%displayedtimeframe"
-                       GridPane.rowIndex="0" GridPane.columnIndex="0" />
-                <TextField fx:id="textFieldTimeFrame" 
-                           GridPane.rowIndex="0" GridPane.columnIndex="1" />
-                <CheckBox text="%display_point_symbols" fx:id="checkBoxDisplayPoints"
-                          GridPane.rowIndex="1" GridPane.columnIndex="0" 
-                          GridPane.columnSpan="2" />
-                <Label text=""
-                       GridPane.rowIndex="2" GridPane.columnIndex="0" />
-                <Label text=""
-                       GridPane.rowIndex="2" GridPane.columnIndex="1" />
-                <Label text=""
-                       GridPane.rowIndex="3" GridPane.columnIndex="0" />
-                <Label text=""
-                       GridPane.rowIndex="3" GridPane.columnIndex="1" />
-                <Label text=""
-                       GridPane.rowIndex="4" GridPane.columnIndex="0" />
-                <Label text=""
-                       GridPane.rowIndex="4" GridPane.columnIndex="1" />
-                <Label fx:id="labelErrorGraphs" 
-                       GridPane.rowIndex="5" GridPane.columnIndex="0" 
-                       GridPane.columnSpan="2" />
-                <Button text="%apply" onAction="#handleApplyButtonGraphs" maxWidth="1000"
-                        GridPane.rowIndex="6" GridPane.columnIndex="1" />
-            </children>
-            <columnConstraints>
-                <ColumnConstraints hgrow="ALWAYS" percentWidth="50" />                
-                <ColumnConstraints hgrow="ALWAYS" percentWidth="50" />
-            </columnConstraints>
-            <rowConstraints>
-                <RowConstraints vgrow="ALWAYS" />
-                <RowConstraints vgrow="ALWAYS" />
-                <RowConstraints vgrow="ALWAYS" />
-                <RowConstraints vgrow="ALWAYS" />
-                <RowConstraints vgrow="ALWAYS" />
-                <RowConstraints vgrow="ALWAYS" />
-                <RowConstraints vgrow="ALWAYS" />
-            </rowConstraints>
-        </GridPane>
-    </Tab>
     <Tab text="%appearance" >
         <GridPane styleClass="mainGridPane">
             <children>
                 <Label text="%appearance"
                        GridPane.rowIndex="0" GridPane.columnIndex="0" />
                 <ComboBox fx:id="comboBoxAppearance" editable="false" 
-                           GridPane.rowIndex="0" GridPane.columnIndex="1" />
+                          GridPane.rowIndex="0" GridPane.columnIndex="1" />
                 <Label text=""
                        GridPane.rowIndex="1" GridPane.columnIndex="0" />
                 <Label text=""

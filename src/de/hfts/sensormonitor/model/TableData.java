@@ -72,8 +72,8 @@ public class TableData implements SensorDataChangeListener {
 
     // -------------- GETTERS & SETTERS ----------------------------------------
     /**
-     *
-     * @return
+     * 
+     * @return Data model for a SensorTable
      */
     public ObservableList<ObservableList<Double>> getData() {
         return data;
@@ -81,7 +81,7 @@ public class TableData implements SensorDataChangeListener {
 
     /**
      *
-     * @return
+     * @return Minimal time listed in the SensorTable model
      */
     public double getMinTime() {
         return minTime;
@@ -89,7 +89,7 @@ public class TableData implements SensorDataChangeListener {
 
     /**
      *
-     * @param minTime
+     * @param minTime Minimal time listed in the SensorTable model
      */
     public void setMinTime(double minTime) {
         this.minTime = minTime;
@@ -161,7 +161,7 @@ public class TableData implements SensorDataChangeListener {
      *
      * @param value Number
      * @param places Decimal places
-     * @return
+     * @return Rounded double
      */
     public static double round(double value, int places) {
         if (places < 0) {

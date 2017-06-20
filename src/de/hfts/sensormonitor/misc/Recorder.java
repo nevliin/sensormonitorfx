@@ -148,8 +148,7 @@ public class Recorder implements CeBarRoundObserver<SensorEvent> {
 
     // -------------- CONSTRUCTORS ---------------------------------------------
     /**
-     * Standard constructor
-     *
+     * Default constructor
      */
     public Recorder() {
     }
@@ -157,7 +156,7 @@ public class Recorder implements CeBarRoundObserver<SensorEvent> {
     // -------------- OTHER METHODS --------------------------------------------
     /**
      *
-     * @param cbre
+     * @param cbre SensorEvent containing detailed sensor data
      */
     @Override
     public void sensorDataEventListener(SensorEvent cbre) {
@@ -182,16 +181,17 @@ public class Recorder implements CeBarRoundObserver<SensorEvent> {
 
     // -------------- GETTERS & SETTERS ----------------------------------------
     /**
+     * Get the current LiveRecording; null if no LiveRecording is running
      *
-     * @return
+     * @return Current LiveRecording
      */
     public LiveRecording getRecording() {
         return recording;
     }
 
     /**
-     *
-     * @param recording
+     * Set the current LiveRecording; set null if no LiveRecording is running
+     * @param recording Current LiveRecording; null if none is running
      */
     public void setRecording(LiveRecording recording) {
         this.recording = recording;

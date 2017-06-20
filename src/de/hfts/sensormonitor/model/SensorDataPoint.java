@@ -16,26 +16,29 @@ import java.util.Date;
 public class SensorDataPoint {
 
     // -------------- PUBLIC FIELDS --------------------------------------------
-
     /**
-     *
+     * X-value of the point
      */
     public double value;
 
     /**
-     *
+     * Y-value of the point; time in seconds relative to the current time or to
+     * the start of the recording
      */
     public Date time;
-    
+
     // -------------- PRIVATE FIELDS -------------------------------------------
+    /**
+     * Indicates if this SensorDataPoint contains no data
+     */
     private boolean isEmpty = false;
 
     // -------------- CONSTRUCTORS ---------------------------------------------
     /**
-     * 
-     * @param value
-     * @param time
-     * @param isEmpty
+     *
+     * @param value Y-value of the point
+     * @param time X-value of the point
+     * @param isEmpty Indicates if this SensorDataPoint contains no data
      */
     public SensorDataPoint(double value, Date time, boolean isEmpty) {
         this.value = value;
@@ -45,8 +48,8 @@ public class SensorDataPoint {
 
     /**
      *
-     * @param value
-     * @param time
+     * @param value Y-value of the point
+     * @param time X-value of the point
      */
     public SensorDataPoint(double value, Date time) {
         this.value = value;
@@ -62,7 +65,7 @@ public class SensorDataPoint {
     // -------------- GETTERS & SETTERS ----------------------------------------
     /**
      *
-     * @return
+     * @return Indicates if this SensorDataPoint contains no data
      */
     public boolean isEmpty() {
         return isEmpty;
@@ -70,7 +73,7 @@ public class SensorDataPoint {
 
     /**
      *
-     * @param isEmpty
+     * @param isEmpty Indicates if this SensorDataPoint contains no data
      */
     public void isEmpty(boolean isEmpty) {
         this.isEmpty = isEmpty;

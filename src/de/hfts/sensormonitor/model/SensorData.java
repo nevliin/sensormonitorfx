@@ -81,7 +81,7 @@ public class SensorData implements CeBarRoundObserver<SensorEvent> {
      * Receives SensorEvent's from the BaseSensor's, reads the information and
      * saves it. Notifies SensorDataChangeListener's of the change in data
      *
-     * @param cbre
+     * @param cbre SensorEvent containing detailed sensor data
      */
     @Override
     public void sensorDataEventListener(SensorEvent cbre) {
@@ -107,8 +107,8 @@ public class SensorData implements CeBarRoundObserver<SensorEvent> {
      * Adds a sensor by adding it to the corresponding Lists and Maps as well as
      * notifying listeners
      *
-     * @param sensorID
-     * @param typeCode
+     * @param sensorID Unique ID of the sensor
+     * @param typeCode Part type code of the sensor
      */
     public void addSensor(long sensorID, String typeCode) {
         partTypeCodes.put(sensorID, typeCode);
@@ -152,18 +152,18 @@ public class SensorData implements CeBarRoundObserver<SensorEvent> {
     // -------------- GETTERS & SETTERS ----------------------------------------
     /**
      *
-     * @param type
-     * @param sensorID
-     * @return
+     * @param type Type of data to be retrieved
+     * @param sensorID ID of the sensor of which data should be retrieved
+     * @return List of SensorDataPoint's of a single type of Data and received from a single sensor
      */
-    public ArrayList<SensorDataPoint> getPoints(Data type, long sensorID) {
+    public List<SensorDataPoint> getPoints(Data type, long sensorID) {
         return graphs.get(type).get(sensorID);
     }
 
     /**
      *
-     * @param sensorID
-     * @return
+     * @param sensorID ID of the sensor
+     * @return Part type code of the sensor
      */
     public String getTypeCode(long sensorID) {
         return partTypeCodes.get(sensorID);
@@ -171,7 +171,7 @@ public class SensorData implements CeBarRoundObserver<SensorEvent> {
 
     /**
      *
-     * @return
+     * @return List of SensorIDs of all connected sensors
      */
     public ObservableList<String> getSensorIDs() {
         return sensorIDs;
@@ -179,7 +179,7 @@ public class SensorData implements CeBarRoundObserver<SensorEvent> {
 
     /**
      *
-     * @return
+     * @return Map of part type codes with SensorID's as keys
      */
     public Map<Long, String> getPartTypeCodes() {
         return partTypeCodes;

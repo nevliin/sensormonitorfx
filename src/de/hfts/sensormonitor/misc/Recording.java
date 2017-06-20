@@ -32,7 +32,7 @@ public class Recording {
     /**
      * Map storing SensorIDs and TypeCodes
      */
-    private HashMap<Long, String> sensors = new HashMap<>();
+    private HashMap<Long, String> partTypeCodes = new HashMap<>();
     /**
      * Map storing ChartData's based on SensorData.Data
      */
@@ -41,7 +41,7 @@ public class Recording {
     // -------------- CONSTRUCTOR ----------------------------------------------
     /**
      * Creates Recording, converts the given ResultSet into multiple ChartData's, sets their attributes and stores them
-     * @param recording
+     * @param recording ResultSet containing the data of a database table
      */
     public Recording(ResultSet recording) {
         HashMap<Long, List<SensorDataPoint>> temperature_points = new HashMap<>();
@@ -52,8 +52,8 @@ public class Recording {
                 if (firsttimestamp == null) {
                     firsttimestamp = recording.getTimestamp("TIME");
                 }
-                if (sensors.get(Long.valueOf(recording.getString("SENSORID"))) == null) {
-                    sensors.put(Long.valueOf(recording.getString("SENSORID")), recording.getString("SENSORTYPE"));
+                if (partTypeCodes.get(Long.valueOf(recording.getString("SENSORID"))) == null) {
+                    partTypeCodes.put(Long.valueOf(recording.getString("SENSORID")), recording.getString("SENSORTYPE"));
                     temperature_points.put(Long.valueOf(recording.getString("SENSORID")), new ArrayList<>());
                     pressure_points.put(Long.valueOf(recording.getString("SENSORID")), new ArrayList<>());
                     revolutions_points.put(Long.valueOf(recording.getString("SENSORID")), new ArrayList<>());
@@ -103,7 +103,7 @@ public class Recording {
             chartDatas.get(d).setxMax((lasttimestamp.getTime() - firsttimestamp.getTime()) / 1000);
             chartDatas.get(d).setxScaleMin(0);
             chartDatas.get(d).setxScaleMax((lasttimestamp.getTime() - firsttimestamp.getTime()) / 1000);
-            chartDatas.get(d).setPartTypeCodes(sensors);
+            chartDatas.get(d).setPartTypeCodes(partTypeCodes);
         }
 
         chartDatas.get(Data.TEMPERATURE).setyScaleMax(Double.valueOf(IOUtils.getConfigProp("temperature_yscalemax")));
@@ -144,16 +144,16 @@ public class Recording {
 
     /**
      *
-     * @return
+     * @return Map of part types codes with SensorID's as key
      */
-    public HashMap<Long, String> getSensors() {
-        return sensors;
+    public Map<Long, String> getPartTypeCodes() {
+        return partTypeCodes;
     }
 
     /**
-     *
-     * @param d
-     * @return
+     * Get a specific ChartData base on the type of data stored in the ChartData
+     * @param d Type of data of the ChartData
+     * @return ChartData
      */
     public ChartData getChartData(Data d) {
         return chartDatas.get(d);

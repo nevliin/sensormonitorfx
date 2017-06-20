@@ -17,8 +17,8 @@ public class ExceptionDialog {
     /**
      * Creates a JavaFX error alert with the given parameters and displays it
      * 
-     * @param text
-     * @param subtext
+     * @param text Text of the dialog; can be null
+     * @param subtext Lower text of the dialog; can be null
      */
     public ExceptionDialog(String text, String subtext) {
         Alert alert = new Alert(Alert.AlertType.ERROR);

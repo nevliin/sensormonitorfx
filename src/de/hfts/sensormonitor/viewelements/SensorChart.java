@@ -53,7 +53,7 @@ public class SensorChart extends LineChart implements ChartDataChangeListener {
     // -------------- GETTERS & SETTERS ----------------------------------------
     /**
      *
-     * @return
+     * @return Related ChartData of the SensorChart
      */
     public ChartData getChartData() {
         return chartdata;
@@ -61,7 +61,7 @@ public class SensorChart extends LineChart implements ChartDataChangeListener {
 
     /**
      *
-     * @return
+     * @return Stage of the window for editing the chart
      */
     public Stage getEditChartWindow() {
         return editChartWindow;
@@ -69,7 +69,7 @@ public class SensorChart extends LineChart implements ChartDataChangeListener {
 
     /**
      *
-     * @param editChartWindow
+     * @param editChartWindow Stage of the window for editing the chart
      */
     public void setEditChartWindow(Stage editChartWindow) {
         this.editChartWindow = editChartWindow;

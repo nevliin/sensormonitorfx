@@ -89,7 +89,10 @@ public class LogHandler {
 
     // -------------- GETTERS & SETTERS ----------------------------------------
     /**
+     * Get a text from the logging language pack based on the key
      *
+     * @param key Key of the text
+     * @return Text related to the key
      */
     public static String getLangpackString(String key) {
         return langpack.getString(key);

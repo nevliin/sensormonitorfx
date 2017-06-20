@@ -21,8 +21,8 @@ public class SensorMonitorException extends RuntimeException {
     // -------------- CONSTRUCTORS ---------------------------------------------
     /**
      * Creates an exception with the corresponding text from the langpack
-     * 
-     * @param exceptionKey
+     *
+     * @param exceptionKey Key for exception text
      */
     public SensorMonitorException(String exceptionKey) {
         super(LogHandler.getLangpackString(exceptionKey));
@@ -38,8 +38,10 @@ public class SensorMonitorException extends RuntimeException {
 
     // -------------- GETTERS & SETTERS ----------------------------------------
     /**
-     * 
-     * @return 
+     * Get the key of the exception to retrieve the text related to the key from
+     * a logging language pack
+     *
+     * @return Key for exception text
      */
     public String getExceptionKey() {
         return exceptionKey;

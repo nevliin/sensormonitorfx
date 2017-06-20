@@ -67,13 +67,13 @@ public class RecordingDisplayController implements Initializable {
         chartRevolutions.setChartData(recording.getChartData(Data.REVOLUTIONS), langpack, "sec", "RPM", true);
         chartDatas.add(recording.getChartData(Data.REVOLUTIONS));
         sensorCharts.add(chartRevolutions);
-        checkComboBoxSensors.getItems().addAll(recording.getSensors().keySet());
+        checkComboBoxSensors.getItems().addAll(recording.getPartTypeCodes().keySet());
         checkComboBoxSensors.getCheckModel().checkAll();
         checkComboBoxSensors.getCheckModel().getCheckedItems().addListener(new ListChangeListener() {
             @Override
             public void onChanged(ListChangeListener.Change c) {
                 List<String> checkedsensors = new ArrayList<>(checkComboBoxSensors.getCheckModel().getCheckedItems());
-                for (long l : recording.getSensors().keySet()) {
+                for (long l : recording.getPartTypeCodes().keySet()) {
                     if (checkedsensors.contains(l)) {
                         for (ChartData cd : chartDatas) {
                             cd.setGraphVisible(l, true);

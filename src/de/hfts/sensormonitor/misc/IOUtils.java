@@ -71,12 +71,13 @@ public class IOUtils {
     private static Statement stat;
 
     private static final int tableColumns = 7;
+    private static final int maxConnectedSensors = 10;
 
     // -------------- GETTERS & SETTERS ----------------------------------------    
     /**
      * Returns the list of tables in the database
      *
-     * @return
+     * @return List of tables in the database
      */
     public static List<String> getTables() {
         return tables;
@@ -85,8 +86,8 @@ public class IOUtils {
     /**
      * Get a config configProperty
      *
-     * @param key
-     * @return
+     * @param key Key of the property
+     * @return Value related to the key
      */
     public static String getConfigProp(String key) {
         return configProp.getProperty(key);
@@ -95,8 +96,8 @@ public class IOUtils {
     /**
      * Set a config configProperty
      *
-     * @param key
-     * @param value
+     * @param key Key of the property
+     * @param value Value related to the key
      */
     public static void setConfigProp(String key, String value) {
         configProp.setProperty(key, value);
@@ -105,7 +106,7 @@ public class IOUtils {
     /**
      * Returns the loaded language ResourceBundle
      *
-     * @return
+     * @return Display language pack of the application
      */
     public static ResourceBundle getLangpack() {
         return langpack;
@@ -114,7 +115,7 @@ public class IOUtils {
     /**
      * Sets the language ResourceBundle
      *
-     * @param langpack
+     * @param langpack Display language pack of the application
      */
     public static void setLangpack(ResourceBundle langpack) {
         IOUtils.langpack = langpack;
@@ -123,8 +124,8 @@ public class IOUtils {
     /**
      * Get a value from the loaded language ResourceBundle
      *
-     * @param key
-     * @return
+     * @param key Key of the text
+     * @return Text related to the key
      */
     public static String getLangpackString(String key) {
         return langpack.getString(key);
@@ -133,7 +134,7 @@ public class IOUtils {
     /**
      * Get a list of all available language ResourceBundle's
      *
-     * @return
+     * @return List of all available language ResourceBundle's
      */
     public static Map<String, String> getLanguages() {
         return languages;
@@ -142,7 +143,7 @@ public class IOUtils {
     /**
      * Get a list of all available stylesheets excluding base.css
      *
-     * @return
+     * @return List of all available stylesheets excluding base.css
      */
     public static List<String> getStyles() {
         return styles;
@@ -150,6 +151,8 @@ public class IOUtils {
 
     /**
      * Get a Statement for interacting with the connected database
+     *
+     * @return Statement for interacting with the connected database
      */
     public static Statement getStatement() {
         return stat;
@@ -160,8 +163,11 @@ public class IOUtils {
      * Connect to the H2 database located in the folder specified in the
      * configProperties and get a list of all tables
      *
-     * @throws java.lang.ClassNotFoundException
-     * @throws java.sql.SQLException
+     * @throws java.lang.ClassNotFoundException Thrown when no driver for the
+     * database can be found
+     * @throws java.sql.SQLException Thrown when an exception occurs while
+     * connecting to the database; usually because the database is already
+     * connected to another application
      */
     public static void connectDB() throws ClassNotFoundException, SQLException {
         Class.forName("org.h2.Driver");
@@ -207,9 +213,11 @@ public class IOUtils {
     /**
      * Rename the specified table (oldname) to newname
      *
-     * @param oldname
-     * @param newname
-     * @throws IllegalTableNameException
+     * @param oldname Old name of the table
+     * @param newname New name of the table
+     * @throws IllegalTableNameException Thrown when the table name cannot be
+     * applied because it doesn't match the SQL naming requirements or is
+     * already in use
      */
     public static void renameTable(String oldname, String newname) throws IllegalTableNameException {
         if (!newname.toUpperCase().matches("[a-zA-Z][a-zA-Z0-9_]{1,30}") || tables.contains(newname.toUpperCase())) {
@@ -227,9 +235,10 @@ public class IOUtils {
     /**
      * Save recorded data in the specified table
      *
-     * @param table
-     * @param insertstmt
-     * @param timestamp
+     * @param table Table in the database
+     * @param insertstmt Statement containing the data to be insered (excluding
+     * the timestamp)
+     * @param timestamp Timestamp of the data
      */
     public static void saveData(String table, String insertstmt, Timestamp timestamp) {
         try {
@@ -245,7 +254,7 @@ public class IOUtils {
      * Loads a table/recording from the database and returns it as ResultSet
      *
      * @param table Name of the database table/recording
-     * @return
+     * @return ResultSet containing the data of the table
      */
     public static ResultSet loadRecording(String table) {
         ResultSet rs = null;
@@ -323,7 +332,7 @@ public class IOUtils {
      * Generate a random String as placeholder name for a table
      *
      * @param length Length of the String
-     * @return
+     * @return String of random characters
      */
     private static String generateRandomString(int length) {
         String alphabet = "abcdefghijklmnopqrstuvwxyz";
@@ -449,7 +458,9 @@ public class IOUtils {
      * Get a List of the sensors defined in sensors.properties
      *
      * @return List of sensors
-     * @throws IllegalSensorAmountException
+     * @throws IllegalSensorAmountException Thrown when the amount of sensors to
+     * be connected is larger than the maximum of connected sensors
+     * (maxConnectedSensors)
      */
     public static List<BaseSensor> loadSensors() throws IllegalSensorAmountException {
         List<BaseSensor> result = new ArrayList<>();
@@ -460,7 +471,7 @@ public class IOUtils {
         } catch (IOException ex1) {
             LogHandler.LOGGER.log(Level.SEVERE, null, ex1);
         }
-        if (Integer.valueOf(sensors.getProperty("sensortyp1")) + Integer.valueOf(sensors.getProperty("sensortyp2")) > 10) {
+        if (Integer.valueOf(sensors.getProperty("sensortyp1")) + Integer.valueOf(sensors.getProperty("sensortyp2")) > maxConnectedSensors) {
             throw new IllegalSensorAmountException();
         }
         for (int i = 0; i < Integer.valueOf(sensors.getProperty("sensortyp1")); i++) {
@@ -553,7 +564,7 @@ public class IOUtils {
      * Get the path to a specific stylesheet from the JAR
      *
      * @param name Name of the stylesheet (excluding .css)
-     * @return
+     * @return Path to a CSS Stylesheet in the JAR
      */
     public static String getStyleSheet(String name) {
         try {
@@ -573,6 +584,8 @@ public class IOUtils {
      *
      * @param recordingname Name of the database table/recording
      * @param exportpath Path the folder the recording should be exported to
+     * @throws java.io.IOException
+     * @throws java.sql.SQLException
      */
     public static void exportRecording(String recordingname, String exportpath) throws IOException, SQLException {
         exportpath += File.separator + recordingname + ".csv";
@@ -600,10 +613,15 @@ public class IOUtils {
      * Imports a recording from the selected CSV file into the database
      *
      * @param file CSV file containing the recording
-     * @throws IllegalTableNameException
+     * @throws IllegalTableNameException Thrown when the name of the CSV file
+     * cannot be applied as table name because it doesn't match the SQL naming
+     * requirements or is already in use
      * @throws IOException
-     * @throws ParseException
-     * @throws ImportRecordingException
+     * @throws ParseException Thrown when data in the file can not be parsed to
+     * the appropriate data type
+     * @throws ImportRecordingException Thrown when the file is not a CSV file
+     * or the amount of columns doesn't match the required amount of table
+     * columns (tableColumns)
      */
     public static void importRecording(File file) throws IllegalTableNameException, IOException, ParseException, ImportRecordingException {
         String name = file.getName();
@@ -649,6 +667,8 @@ public class IOUtils {
      * @param check Properties that need to be checked
      * @param template Properties that provide the template for checking
      * @throws de.hfts.sensormonitor.exceptions.IllegalConfigurationException
+     * Thrown when the keys of the properties to check do not match the keys of
+     * the template
      */
     public static void validateProperties(Properties check, Properties template) throws IllegalConfigurationException {
         List<String> checkKeys = new ArrayList<>();

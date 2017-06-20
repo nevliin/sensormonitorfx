@@ -82,7 +82,6 @@ public class CeBarRoundMonitor extends Application {
      *
      * @param stage Stage of the JavaFX Application
      * @param sensors List of BaseSensor's
-     * @param isDBConnected Boolean indicating if the application is connected to the database
      */
     private void loadMainWindow(Stage stage, List<BaseSensor> sensors) {
         try {
