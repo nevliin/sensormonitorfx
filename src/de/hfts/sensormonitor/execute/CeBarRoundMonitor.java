@@ -96,7 +96,7 @@ public class CeBarRoundMonitor extends Application {
             Scene scene = new Scene(root);
             scene.getStylesheets().addAll(IOUtils.getStyleSheet("base"), IOUtils.getStyleSheet(IOUtils.getConfigProp("style")));
             stage.setScene(scene);
-            stage.setTitle("CeBarRoundMonitor");
+            stage.setTitle("CeBarRoundMonitor 1.0.1");
             stage.setMaximized(true);
             stage.setOnCloseRequest(eh -> {
                 Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
