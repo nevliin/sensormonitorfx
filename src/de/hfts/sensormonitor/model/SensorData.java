@@ -64,7 +64,7 @@ public class SensorData implements CeBarRoundObserver<SensorEvent> {
      * Map of received sensor data, stored separated by type of data and
      * SensorID
      */
-    private Map<Data, Map<Long, ArrayList<SensorDataPoint>>> graphs = new LinkedHashMap<>();
+    private Map<Data, Map<Long, List<SensorDataPoint>>> graphs = new LinkedHashMap<>();
 
     // -------------- CONSTRUCTORS ---------------------------------------------
     /**
@@ -185,7 +185,7 @@ public class SensorData implements CeBarRoundObserver<SensorEvent> {
         return partTypeCodes;
     }
 
-    public Map<Data, Map<Long, ArrayList<SensorDataPoint>>> getGraphs() {
+    public Map<Data, Map<Long, List<SensorDataPoint>>> getGraphs() {
         return graphs;
     }
 

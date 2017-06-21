@@ -82,4 +82,13 @@ public class EditChartControllerTest {
         ecc.updateBounds("-50", "-40", "70", "50");
     }
 
+    @Test
+    public void testXAxisUpdateWithCorrectValues() {
+        try {
+            ecc.updateBounds("-50", "-40", "0", "40");
+        } catch (NullPointerException ex) {
+            // NO-OP - Caused by now window being connected to the Controller
+        }
+    }
+
 }

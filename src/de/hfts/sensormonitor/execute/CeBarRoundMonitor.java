@@ -23,7 +23,7 @@ import javafx.stage.Stage;
 
 /**
  * CeBarRoundMonitor --- Starts the applications by loading Properties and the
- mainWindow
+ * mainWindow
  *
  * @author Polarix IT Solutions
  */
@@ -52,7 +52,7 @@ public class CeBarRoundMonitor extends Application {
         try {
             IOUtils.connectDB();
             LogHandler.LOGGER.info(LogHandler.getLangpackString("database_connected"));
-        } catch (ClassNotFoundException e) {            
+        } catch (ClassNotFoundException e) {
             LogHandler.LOGGER.log(Level.SEVERE, null, e);
         } catch (SQLException e) {
             LogHandler.LOGGER.log(Level.SEVERE, null, e);

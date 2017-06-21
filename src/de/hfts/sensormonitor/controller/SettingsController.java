@@ -121,7 +121,7 @@ public class SettingsController implements Initializable {
      * Handle the Button "Apply" in the Tab "Graphs"
      */
     public void handleApplyButtonGraphs() {
-        if (Integer.valueOf(textFieldTimeFrame.getText()) > (0 - Integer.valueOf(IOUtils.getConfigProp("realtime_xscalemin")))) {
+        if (Integer.valueOf(textFieldTimeFrame.getText()) > (0 - Integer.valueOf(IOUtils.getConfigProp("realtime_xscalemin"))) || Integer.valueOf(textFieldTimeFrame.getText()) <= 0) {
             labelErrorGraphs.setText(IOUtils.getLangpackString("timeframe_exceeds_bounds"));
             labelErrorGraphs.setVisible(true);
             textFieldTimeFrame.setText(IOUtils.getConfigProp("realtime_timeframe"));
