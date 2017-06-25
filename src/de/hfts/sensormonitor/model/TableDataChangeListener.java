@@ -5,10 +5,9 @@
  */
 package de.hfts.sensormonitor.model;
 
-import javafx.collections.ObservableList;
-
 /**
- * ChartDataChangeListener --- Listener for a ChartData
+ * TableDataChangeListener --- Interface to be implemented by objects who want
+ * to be informed about changes in a TableData
  * @author Polarix IT Solutions
  */
 public interface TableDataChangeListener {

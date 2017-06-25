@@ -2,7 +2,6 @@ package de.hfts.sensormonitor.misc;
 
 import de.hft.ss17.cebarround.*;
 import de.hfts.sensormonitor.exceptions.*;
-import de.hfts.sensormonitor.model.SensorData.Data;
 import java.io.*;
 import java.net.*;
 import java.nio.file.*;
@@ -22,7 +21,7 @@ import java.util.logging.*;
 import javafx.stage.DirectoryChooser;
 
 /**
- * IOUtils --- Handle all input/output actions, both from the JAR itself and the
+ * IOUtils --- Handles all input/output actions, both from the JAR itself and the
  * OS
  *
  * @author Polarix IT Solutions

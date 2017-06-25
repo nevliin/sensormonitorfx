@@ -6,7 +6,9 @@
 package de.hfts.sensormonitor.model;
 
 /**
- * ChartDataChangeListener --- Listener for a ChartData
+ * ChartDataChangeListener --- Interface to be implemented by objects who want
+ * to be informed about changes in a ChartData
+ * 
  * @author Polarix IT Solutions
  */
 public interface ChartDataChangeListener {

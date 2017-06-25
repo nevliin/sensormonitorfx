@@ -13,6 +13,8 @@ import javafx.scene.layout.GridPane;
 import javafx.stage.Stage;
 
 /**
+ * ProgressDialog --- Used to display the progress of a certain background
+ * action
  *
  * @author Polarix IT Solutions
  */

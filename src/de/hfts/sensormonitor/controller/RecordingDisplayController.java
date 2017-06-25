@@ -15,7 +15,6 @@ import java.util.List;
 import java.util.ResourceBundle;
 import javafx.collections.ListChangeListener;
 import javafx.fxml.*;
-import javafx.scene.chart.LineChart;
 import javafx.scene.control.Label;
 import org.controlsfx.control.CheckComboBox;
 

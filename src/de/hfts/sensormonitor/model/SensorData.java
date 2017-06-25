@@ -10,7 +10,6 @@ import de.hft.ss17.cebarround.*;
 import java.util.*;
 import java.util.concurrent.Executor;
 import java.util.concurrent.Executors;
-import javafx.application.Platform;
 import javafx.collections.ObservableList;
 
 /**

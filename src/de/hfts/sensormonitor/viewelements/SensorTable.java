@@ -7,7 +7,6 @@ package de.hfts.sensormonitor.viewelements;
 
 import de.hfts.sensormonitor.model.TableDataChangeListener;
 import javafx.application.Platform;
-import javafx.collections.ObservableList;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 

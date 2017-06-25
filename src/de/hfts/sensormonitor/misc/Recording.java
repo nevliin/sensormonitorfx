@@ -10,7 +10,6 @@ import de.hfts.sensormonitor.model.SensorData.Data;
 import java.sql.*;
 import java.util.*;
 import java.util.logging.Level;
-import java.util.logging.Logger;
 
 /**
  * Recording --- Converts a given ResultSet into ChartData's, stores them to be

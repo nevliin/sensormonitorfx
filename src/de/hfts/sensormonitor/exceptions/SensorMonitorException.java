@@ -1,7 +1,6 @@
 package de.hfts.sensormonitor.exceptions;
 
 import de.hfts.sensormonitor.misc.LogHandler;
-import java.util.ResourceBundle;
 
 /**
  * SensorMonitorException --- Parent-exception for all exceptions thrown by the

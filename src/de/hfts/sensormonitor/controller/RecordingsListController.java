@@ -5,7 +5,6 @@
  */
 package de.hfts.sensormonitor.controller;
 
-import de.hfts.sensormonitor.exceptions.SensorMonitorException;
 import de.hfts.sensormonitor.misc.ExceptionDialog;
 import de.hfts.sensormonitor.misc.IOUtils;
 import de.hfts.sensormonitor.misc.LogHandler;
@@ -16,7 +15,6 @@ import java.net.URL;
 import java.sql.SQLException;
 import java.util.*;
 import java.util.logging.Level;
-import java.util.logging.Logger;
 import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.fxml.*;
